@@ -1,0 +1,558 @@
+# Canterbury tales	## 0 = Geoffrey Chaucer
+ch/01/*-ch.cat	The Canterbury Tales
+ch/01/01-?-ch.cat	Canterbury Tales - Fragment I
+ch/01/01-1-ch.cat	General Prologoue
+ch/01/01-2-ch.cat	Knight's Tale
+ch/01/01-3-ch.cat	Miller's Prologue
+ch/01/01-4-ch.cat	Miller's Tale
+ch/01/01-5-ch.cat	Reeve's Prologue
+ch/01/01-6-ch.cat	Reeve's Tale
+ch/01/01-7-ch.cat	Cook's Prologue
+ch/01/01-8-ch.cat	Cook's Tale
+ch/01/02-*-ch.cat	Canterbury Tales - Fragment II
+ch/01/02-1-ch.cat	Introduction to the Man of Law's Tale
+ch/01/02-2-ch.cat	Man of Law's Tale
+ch/01/02-3-ch.cat	Epilogue to the Man of Law's Tale
+ch/01/03-?-ch.cat	Canterbury Tales - Fragment III
+ch/01/03-1-ch.cat	Wife of Bath's Prologue
+ch/01/03-2-ch.cat	Wife of Bath's Tale
+ch/01/03-3-ch.cat	Friar's Prologue
+ch/01/03-4-ch.cat	Friar's Tale
+ch/01/03-5-ch.cat	Summoner's Prologue
+ch/01/03-6-ch.cat	Summoner's Tale
+ch/01/04-?-ch.cat	Canterbury Tales - Fragment IV
+ch/01/04-1-ch.cat	Clerk's Prologue
+ch/01/04-2-ch.cat	Clerk's Tale
+ch/01/04-3-ch.cat	Merchant's Prologue
+ch/01/04-4-ch.cat	Merchant's Tale
+ch/01/04-5-ch.cat	Epilogue to the Merchant's Tale
+ch/01/05-?-ch.cat	Canterbury Tales - Fragment V
+ch/01/05-1-ch.cat	Introduction to the Squire's Tale
+ch/01/05-2-ch.cat	Squire's Tale
+ch/01/05-3-ch.cat	Prologue to the Franklin's Tale
+ch/01/05-4-ch.cat	Franklin's Tale
+ch/01/06-?-ch.cat	Canterbury Tales - Fragment VI
+ch/01/06-1-ch.cat	Physician's Tale
+ch/01/06-2-ch.cat	Introduction to the Pardoner's Tale
+ch/01/06-3-ch.cat	Pardoner's Prologue
+ch/01/06-4-ch.cat	Pardoner's Tale
+ch/01/07-*-ch.cat	Canterbury Tales - Fragment VII
+ch/01/07-0-ch.cat	Shipman's Tale
+ch/01/07-00-ch.cat	Prologue to the Prioress' Tale 
+ch/01/07-1-ch.cat	Prioress' Tale
+ch/01/07-2-ch.cat	Prologue to Sir Thopas
+ch/01/07-3-ch.cat	Sir Thopas
+ch/01/07-4-ch.cat	Melibee
+ch/01/07-5-ch.cat	Prologue to the Monk's Tale
+ch/01/07-6-ch.cat	Monk's Tale
+ch/01/07-7-ch.cat	Prologue to the Nun's Priest's Tale
+ch/01/07-8-ch.cat	Nun's Priest's Tale
+ch/01/07-9-ch.cat	Epilogue to the Nun's Priest's Tale
+ch/01/08-?-ch.cat	Canterbury Tales - Fragment VIII
+ch/01/08-1-ch.cat	Prologue to the Second Nun's Tale 
+ch/01/08-2-ch.cat	Second Nun's Tale 
+ch/01/08-3-ch.cat	Prologue to the Canon's Yeoman's Tale
+ch/01/08-4-ch.cat	Canon's Yeoman's Tale
+ch/01/09-?-ch.cat	Canterbury Tales - Fragment IX
+ch/01/09-1-ch.cat	Prologue to the Manciple's Tale
+ch/01/09-2-ch.cat	Manciple's Tale
+ch/01/10-?-ch.cat	Canterbury Tales - Fragment X
+ch/01/10-1-ch.cat	Prologue to the Parson's Tale
+ch/01/10-2-ch.cat	Parson's Tale
+#	##
+ch/02/1?-ch.cat	The Minor poems
+ch/02/11-ch.cat	Book of the Duchess
+ch/02/12-ch.cat	House of Fame
+ch/02/13-ch.cat	Anelida and Arcite
+ch/02/14-ch.cat	Parliament of Fowls
+#	##
+ch/03/5/*-ch.cat	Boece
+ch/03/1/*-ch.cat	Boece - Book I
+ch/03/1/15-ch.cat	Boece - Book I: Meter 1
+ch/03/1/16-ch.cat	Boece - Book I: Prose 1
+ch/03/1/17-ch.cat	Boece - Book I: Meter 2
+ch/03/1/18-ch.cat	Boece - Book I: Prose 2
+ch/03/1/19-ch.cat	Boece - Book I: Meter 3
+ch/03/1/20-ch.cat	Boece - Book I: Prose 3
+ch/03/1/21-ch.cat	Boece - Book I: Meter 4
+ch/03/1/22-ch.cat	Boece - Book I: Prose 4
+ch/03/1/23-ch.cat	Boece - Book I: Meter 5
+ch/03/1/24-ch.cat	Boece - Book I: Prose 5
+ch/03/1/25-ch.cat	Boece - Book I: Meter 6
+ch/03/1/26-ch.cat	Boece - Book I: Prose 6
+ch/03/1/27-ch.cat	Boece - Book I: Meter 7
+ch/03/2/*-ch.cat	Boece - Book II
+ch/03/2/28-ch.cat	Boece - Book II: Prose 1
+ch/03/2/29-ch.cat	Boece - Book II: Meter 1
+ch/03/2/30-ch.cat	Boece - Book II: Prose 2
+ch/03/2/31-ch.cat	Boece - Book II: Meter 2
+ch/03/2/32-ch.cat	Boece - Book II: Prose 3
+ch/03/2/33-ch.cat	Boece - Book II: Meter 3
+ch/03/2/34-ch.cat	Boece - Book II: Prose 4
+ch/03/2/35-ch.cat	Boece - Book II: Meter 4
+ch/03/2/36-ch.cat	Boece - Book II: Prose 5
+ch/03/2/37-ch.cat	Boece - Book II: Meter 5
+ch/03/2/38-ch.cat	Boece - Book II: Prose 6
+ch/03/2/39-ch.cat	Boece - Book II: Meter 6
+ch/03/2/40-ch.cat	Boece - Book II: Prose 7
+ch/03/2/41-ch.cat	Boece - Book II: Meter 7
+ch/03/2/42-ch.cat	Boece - Book II: Prose 8
+ch/03/2/43-ch.cat	Boece - Book II: Meter 8
+ch/03/3/*-ch.cat	Boece - Book III
+ch/03/3/44-ch.cat	Boece - Book III: Prose 1
+ch/03/3/45-ch.cat	Boece - Book III: Meter 1
+ch/03/3/46-ch.cat	Boece - Book III: Prose 2
+ch/03/3/47-ch.cat	Boece - Book III: Meter 2
+ch/03/3/48-ch.cat	Boece - Book III: Prose 3
+ch/03/3/49-ch.cat	Boece - Book III: Meter 3
+ch/03/3/50-ch.cat	Boece - Book III: Prose 4
+ch/03/3/51-ch.cat	Boece - Book III: Meter 4
+ch/03/3/52-ch.cat	Boece - Book III: Prose 5
+ch/03/3/53-ch.cat	Boece - Book III: Meter 5
+ch/03/3/54-ch.cat	Boece - Book III: Prose 6
+ch/03/3/55-ch.cat	Boece - Book III: Meter 6
+ch/03/3/56-ch.cat	Boece - Book III: Prose 7
+ch/03/3/57-ch.cat	Boece - Book III: Meter 7
+ch/03/3/58-ch.cat	Boece - Book III: Prose 8
+ch/03/3/59-ch.cat	Boece - Book III: Meter 8
+ch/03/3/60-ch.cat	Boece - Book III: Prose 9
+ch/03/3/61-ch.cat	Boece - Book III: Meter 9
+ch/03/3/62-ch.cat	Boece - Book III: Prose 10
+ch/03/3/63-ch.cat	Boece - Book III: Meter 10
+ch/03/3/64-ch.cat	Boece - Book III: Prose 11
+ch/03/3/65-ch.cat	Boece - Book III: Meter 11
+ch/03/3/66-ch.cat	Boece - Book III: Prose 12
+ch/03/3/67-ch.cat	Boece - Book III: Meter 12
+ch/03/4/*-ch.cat	Boece - Book IV
+ch/03/4/68-ch.cat	 Prose 1
+ch/03/4/69-ch.cat	Boece - Book IV: Meter 1
+ch/03/4/70-ch.cat	 Prose 2
+ch/03/4/71-ch.cat	Boece - Book IV: Meter 2
+ch/03/4/72-ch.cat	 Prose 3
+ch/03/4/73-ch.cat	Boece - Book IV: Meter 3
+ch/03/4/74-ch.cat	 Prose 4
+ch/03/4/75-ch.cat	Boece - Book IV: Meter 4
+ch/03/4/76-ch.cat	 Prose 5
+ch/03/4/77-ch.cat	Boece - Book IV: Meter 5
+ch/03/4/78-ch.cat	Boece - Book IV: Prose 6
+ch/03/4/79-ch.cat	Boece - Book IV: Meter 6
+ch/03/4/80-ch.cat	Boece - Book IV: Prose 7
+ch/03/4/81-ch.cat	Boece - Book IV: Meter 7
+ch/03/5/*-ch.cat	Boece - Book V
+ch/03/5/82-ch.cat	Boece - Book V: Prose 1
+ch/03/5/83-ch.cat	Boece - Book V: Meter 1
+ch/03/5/84-ch.cat	Boece - Book V: Prose 2
+ch/03/5/85-ch.cat	Boece - Book V: Meter 2
+ch/03/5/86-ch.cat	Boece - Book V: Prose 3
+ch/03/5/87-ch.cat	Boece - Book V: Meter 3
+ch/03/5/88-ch.cat	Boece - Book V: Prose 4
+ch/03/5/89-ch.cat	Boece - Book V: Meter 4
+ch/03/5/90-ch.cat	Boece - Book V: Prose 5
+ch/03/5/91-ch.cat	Boece - Book V: Meter 5
+ch/03/5/92-ch.cat	Boece - Book V: Prose 6
+#	##
+ch/04/*-ch.cat	The Boke of Troilus
+ch/04/93-ch.cat	Troilus Book 1
+ch/04/94-ch.cat	Troilus Book 2
+ch/04/95-ch.cat	Troilus Book 3
+ch/04/96-ch.cat	Troilus Book 4
+ch/04/97-ch.cat	Troilus Book 5
+#	##
+ch/05/*-ch.cat	The Legend of Good Women
+ch/05/98-ch.cat	The Legend of Good Women- Prologue F
+ch/05/99-ch.cat	The Legend of Good Women- Prologue G (Not yet ready)
+#	##
+ch/06/*-ch.cat	The Short Poems
+ch/06/101-ch.cat	An ABC 
+ch/06/102-ch.cat	The Complaint unto Pity
+ch/06/103-ch.cat	The Complaint to His Lady
+ch/06/104-ch.cat	The Complaint of Mars
+ch/06/105-ch.cat	The Complaint of Venus
+ch/06/106-ch.cat	To Rosemounde
+ch/06/107-ch.cat	Womanly Noblesse
+ch/06/108-ch.cat	Adam Scrivener
+ch/06/109-ch.cat	The Former Age
+ch/06/110-ch.cat	Fortune
+ch/06/111-ch.cat	Truth
+ch/06/112-ch.cat	Gentilesse
+ch/06/113-ch.cat	Lak of Stedfastnesse
+ch/06/114-ch.cat	Lenvoy de Chaucer a Scogan
+ch/06/115-ch.cat	Lenvoy de Chuacer a Bukton
+ch/06/116-ch.cat	the Complaint of Chaucer to his Purse
+# Treatise on the Astrolabe	##
+ch/07/0/*-ch.cat	The Treatise on the Astrolabe
+ch/07/0/122-ch.cat	The Treatise on the Astrolabe - Prologue
+ch/07/1/*-ch.cat	The Treatise on the Astrolabe - Part I
+ch/07/1/123-ch.cat	Astrolabe - Part I, Section 1
+ch/07/1/124-ch.cat	Astrolabe - Part I, Section 2
+ch/07/1/125-ch.cat	Astrolabe - Part I, Section 3
+ch/07/1/126-ch.cat	Astrolabe - Part I, Section 4
+ch/07/1/127-ch.cat	Astrolabe - Part I, Section 5
+ch/07/1/128-ch.cat	Astrolabe - Part I, Section 6
+ch/07/1/129-ch.cat	Astrolabe - Part I, Section 7
+ch/07/1/130-ch.cat	Astrolabe - Part I, Section 8
+ch/07/1/131-ch.cat	Astrolabe - Part I,  Section 9
+ch/07/1/132-ch.cat	Astrolabe - Part I, Section 10
+ch/07/1/133-ch.cat	Astrolabe - Part I,  Section 11
+ch/07/1/134-ch.cat	Astrolabe - Part I, Section 12
+ch/07/1/135-ch.cat	Astrolabe - Part I, Section 13
+ch/07/1/136-ch.cat	Astrolabe - Part I, Section 14
+ch/07/1/137-ch.cat	Astrolabe - Part I, Section 15
+ch/07/1/138-ch.cat	Astrolabe - Part I, Section 16
+ch/07/1/139-ch.cat	Astrolabe - Part I, Section 17
+ch/07/1/140-ch.cat	Astrolabe - Part I, Section 18
+ch/07/1/141-ch.cat	Astrolabe - Part I, Section 19
+ch/07/1/142-ch.cat	Astrolabe - Part I, Section 20
+ch/07/1/143-ch.cat	Astrolabe - Part I, Section 21
+ch/07/2/*-ch.cat	The Treatise on the Astrolabe - Part II
+ch/07/2/144-ch.cat	Astrolabe - To fynde the degre in which the sonne is day by day, after his cours aboute.
+ch/07/2/145-ch.cat	Astrolabe - To knowe the altitude of the sonne or of othre celestial bodies.
+ch/07/2/146-ch.cat	Astrolabe - To knowe every tyme of the day by light of the sonne; and every tyme of the nyght by the sterres fixe; and eke to knowe by nyght or by day the degre of eny signe that ascendith on the est orisonte, which that is clepid comounly the ascendent, or ellis horoscopum.
+ch/07/2/147-ch.cat	Astrolabe - A special declaracioun of the ascendent.
+ch/07/2/148-ch.cat	Astrolabe - To knowe the verrey equacioun of the degre of the sonne yf so be that it falle bitwene two almykanteras.
+ch/07/2/149-ch.cat	Astrolabe - To knowe the spryng of the dawenyng and the ende of the evenyng, the whiche ben called the two crepuscules.
+ch/07/2/150-ch.cat	Astrolabe - To knowe the arch of the day, that sorne folk callen the day artificiall, fro sonne arisyng tyl it go to reste.
+ch/07/2/151-ch.cat	Astrolabe - To turne the houres inequales in houres equales.
+ch/07/2/152-ch.cat	Astrolabe - To knowe the quantite of the day vulgar, that is to seyn fro spryng of the day unto verrey nyght.
+ch/07/2/153-ch.cat	Astrolabe - To knowe the quantite of houres in, equales by day.
+ch/07/2/154-ch.cat	Astrolabe - To knowe the quantite of houres equales.
+ch/07/2/155-ch.cat	Astrolabe - Special declaracioun of the houres of planetes.
+ch/07/2/156-ch.cat	Astrolabe - To knowe the altitude of the sonne in myddes of the day that is clepid the altitude meridian.
+ch/07/2/157-ch.cat	Astrolabe - To knowe the degre of the sonne by thy ryet, for a maner curiosite.
+ch/07/2/158-ch.cat	Astrolabe - To knowe which day is lik to which day as of lengthe.
+ch/07/2/159-ch.cat	Astrolabe - This chapitre is a maner declaracioun to conclusiouns that folewen.
+ch/07/2/160-ch.cat	Astrolabe - To knowe the verrey degre of eny maner sterre, straunge or unstraunge, after his longitude; though he be indetermynat in thin Astralabye, sothly to the trouthe thus he shal be knowe.
+ch/07/2/161-ch.cat	Astrolabe - To knowe the degrees of longitudes of fixe sterres after that they be determynat in thin Astrelabye, yf so be that thei be trewly sette.
+ch/07/2/162-ch.cat	Astrolabe - To knowe with which degre of the zodiak eny sterre fix in thin Astrelabie arisith upon the est orisonte, all though his dwellyng be in another signe.
+ch/07/2/163-ch.cat	Astrolabe - To knowe the declinacioun of eny degre in the zodiak fro the equinoxiall cercle.
+ch/07/2/164-ch.cat	Astrolabe - To knowe for what latitude in eny regioun the almykanteras of eny table ben com powned.
+ch/07/2/165-ch.cat	Astrolabe - To know in speciall the latitude of oure countre, and the height of oure pool.
+ch/07/2/166-ch.cat	Astrolabe - To prove evidently the latitude of eny place in a regioun by the preve of the height of the pool artik in that same place.
+ch/07/2/167-ch.cat	Astrolabe - Another conclusioun to prove the height of the pool artik fro the orisonte.
+ch/07/2/168-ch.cat	Astrolabe - Another conclusioun to prove the latitude of the regioun.
+ch/07/2/169-ch.cat	Astrolabe - Declaracioun of the ascensioun of signes.
+ch/07/2/170-ch.cat	Astrolabe - This is the conclusioun to knowe the ascensions of signes in the right cercle, that is circulus directus.
+ch/07/2/171-ch.cat	Astrolabe - To knowe the ascensions of signes in the embelif cercle in every regioun, I mene, in circulo obliquo.
+ch/07/2/172-ch.cat	Astrolabe - To knowe justly the 4 quarters of the world, as Est, West, North, and South.
+ch/07/2/173-ch.cat	Astrolabe - To knowe the altitude of planetes fro the wey of the sonne, whethir so they be north or south fro the forseide wey.
+ch/07/2/174-ch.cat	Astrolabe - To knowe the cenyth of the arising of the sonne, this is to seyn, the partie of the orisonte in which that the sonne arisith.
+ch/07/2/175-ch.cat	Astrolabe - To knowe in which partie of the firmament is the conjunccyoun.
+ch/07/2/176-ch.cat	Astrolabe - To knowe the cenyth of the altitude of the sonne.
+ch/07/2/177-ch.cat	Astrolabe - To knowe sothly the degre of the longitude of the mone, or of eny planete that hath no latitude for the tyme fro the ecliptik lyne.
+ch/07/2/178-ch.cat	Astrolabe - This is the worchynge of the conclusioun to knowe yf that eny planete be direct or retrograd.
+ch/07/2/179-ch.cat	Astrolabe - The conclusioun of equaciouns of houses after the Astrelabie.
+ch/07/2/180-ch.cat	Astrolabe - Another maner of equaciouns of houses by the Astrelabie.
+ch/07/2/181-ch.cat	Astrolabe - To fynde the lyne meridional to dwelle fix in eny certeyn place.
+ch/07/2/182-ch.cat	Astrolabe - Descripcion of the meridional lyne, of longitudes and latitudes of citees and townes, as wel as of climates.
+ch/07/2/183-ch.cat	Astrolabe - To knowe with which degre of the zodiak that eny planete ascendith on the orisonte, whether so that his latitude be north or south.
+anon/ch/07/*-ap.cat	Supplemental Propositions to the Astrolabe
+#	Poems Not Ascribed to Chaucer in the Manuscripts
+ch/06/118-ch.cat	Against Women Unconstant
+anon/ch/06/119-ap.cat	Complaynt D'Amours (Complaint)
+ch/06/120-ch.cat	Merciles Beaute (Beauty)
+anon/ch/06/121-ap.cat	Balade of Complaint
+#
+ch/05/100-1-ch.cat	The Legend of Cleopatra
+ch/05/100-2-ch.cat	The Legend of Thisbe
+ch/05/100-3-ch.cat	The Legend of Dido
+ch/05/100-4-ch.cat	The Legend of Hypsipyle and Medea
+ch/05/100-5-ch.cat	The Legend of Lucrece
+ch/05/100-6-ch.cat	The Legend of Ariadne
+ch/05/100-7-ch.cat	The Legend of Philomela
+ch/05/100-8-ch.cat	The Legend of Phyllis
+ch/05/100-9-ch.cat	The Legend of Hypermnestra
+# Works Attributed to Chaucer
+ch/08/190-ch.cat	Romaunt of the Rose - Fragment A
+anon/ch/08/191-ap.cat	Romaunt of the Rose - Fragment B
+anon/ch/08/192-ap.cat	Romaunt of the Rose - Fragment C
+#	John Gower
+gow/08/*-gow.cat	Confessio Amantis
+gow/00/*-gow.cat	Confessio Amantis - Prologue
+gow/00/01-gow.cat	Design of the Book; Dedication
+gow/00/02-gow.cat	Temporal Rulers
+gow/00/03-gow.cat	The Church
+gow/00/04-gow.cat	The Commons
+gow/00/05-gow.cat	Nebuchadnezzar's Dream; The Empires of the World; The latest Time
+gow/00/06-gow.cat	Division the Cause of Evil
+gow/01/*-gow.cat	Confessio Amantis - Book I
+gow/01/07-gow.cat	Love rules the world; example of the author
+gow/01/08-gow.cat	Author's woful Case; His Complaint to Cupid and Venus; The Fiery Dart;  Venus Queen of Love; Genius- the priest of Love
+gow/01/09-gow.cat	The Lover's Shrift
+gow/01/10-gow.cat	The Five Senses; Seeing
+gow/01/11-gow.cat	Tale of Acteon
+gow/01/12-gow.cat	The Tale of Medusa
+gow/01/13-gow.cat	Hearing; Prudence of the Serpent
+gow/01/14-gow.cat	Tale of the Sirens
+gow/01/15-gow.cat	The Sins of the Eye and Ear
+gow/01/16-gow.cat	The Seven deadly Sins; Pride; Five Ministers of Pride; i. Hyocrisy; Hypocrisy of Lovers
+gow/01/17-gow.cat	Tale of Mundus and Paulina
+gow/01/18-gow.cat	The Trojan horse
+gow/01/19-gow.cat	Hypocrisy in Love
+gow/01/20-gow.cat	Inobedience
+gow/01/21-gow.cat	Murmur and complaint
+gow/01/22-gow.cat	Tale of Florent
+gow/01/23-gow.cat	Surquidry or Presumption
+gow/01/24-gow.cat	Tale of Capaneus
+gow/01/25-gow.cat	The Trump of Death
+gow/01/26-gow.cat	Tale of Narcissus
+gow/01/27-gow.cat	Presumption of Lovers
+gow/01/28-gow.cat	Avantance or Boasting
+gow/01/29-gow.cat	Tale of Albinus and Rosemund
+gow/01/30-gow.cat	Vain-glory
+gow/01/31-gow.cat	The Lover's Confession
+gow/01/32-gow.cat	Nebuchadnezzar's Punishment
+gow/01/33-gow.cat	Humility
+gow/01/34-gow.cat	Tale of the Three Questions
+gow/01/35-gow.cat	Humility
+gow/02/*-gow.cat	Confessio Amantis - Book II
+gow/02/36-gow.cat	Envy; Sorrow for another man's Joy
+gow/02/37-gow.cat	Tale of Acis and Galatea
+gow/02/38-gow.cat	Joy for another man's Grief
+gow/02/39-gow.cat	The Travellers and the Angel
+gow/02/40-gow.cat	Detraction; Detraction of Lovers
+gow/02/41-gow.cat	Tale of Constance
+gow/02/42-gow.cat	Demetrius and Perseus
+gow/02/43-gow.cat	False-Semblant
+gow/02/44-gow.cat	Deianira and Nessus
+gow/02/45-gow.cat	Supplantation
+gow/02/46-gow.cat	Geta and Amphitrion
+gow/02/47-gow.cat	Tale of the False Bachelor
+gow/02/48-gow.cat	Pope Boniface
+gow/02/49-gow.cat	Nature of Envy; Charity and Pity
+gow/02/50-gow.cat	Tale of Constantine and Silvester
+gow/03/*-gow.cat	Confessio Amantis - Book III
+gow/03/51-gow.cat	Ire or Wrath; Melancholy
+gow/03/52-gow.cat	Tale of Canace and Machaire
+gow/03/53-gow.cat	Tiresias and the Snakes
+gow/03/54-gow.cat	Melancholy
+gow/03/55-gow.cat	Cheste
+gow/03/56-gow.cat	Patience of Socrates
+gow/03/57-gow.cat	Jupiter- Juno- and Tiresias
+gow/03/58-gow.cat	Cheste
+gow/03/59-gow.cat	Phebus and Cornide
+gow/03/60-gow.cat	Jupiter and Laar
+gow/03/61-gow.cat	Hate
+gow/03/62-gow.cat	King Namplus and the Greeks
+gow/03/63-gow.cat	Contek and Homicide; Contek within the Heart
+gow/03/64-gow.cat	Tale of Diogenes and Alexander;
+gow/03/65-gow.cat	Contek
+gow/03/66-gow.cat	Pyramus and Thisbe
+gow/03/67-gow.cat	The Lover's Confession; Danger; More haste worse than speed
+gow/03/68-gow.cat	Tale of Phebus and Daphne
+gow/03/69-gow.cat	Fool-haste
+gow/03/70-gow.cat	Athemas and Demephon
+gow/03/71-gow.cat	Tale of Orestes
+gow/03/72-gow.cat	Lawful Homicide
+gow/03/73-gow.cat	Evil of War
+gow/03/74-gow.cat	Alexander and the Pirate
+gow/03/75-gow.cat	Wars and Death of Alexander
+gow/03/76-gow.cat	Are Crusades Lawful -  Guilt of Homicide;
+gow/03/77-gow.cat	A Strange Bird; Mercy
+gow/03/78-gow.cat	Tale of Telephus and Teucer
+gow/04/*-gow.cat	Confessio Amantis - Book IV
+gow/04/79-gow.cat	Sloth; Lachesse
+gow/04/80-gow.cat	Eneas and Dido
+gow/04/81-gow.cat	Ulysses and Penelope
+gow/04/82-gow.cat	Grosteste; The Foolish Virgins
+gow/04/83-gow.cat	Lachesse
+gow/04/84-gow.cat	Pusillanimity
+gow/04/85-gow.cat	Pygmaleon and the Statue
+gow/04/86-gow.cat	Tale of Iphis
+gow/04/87-gow.cat	Forgetfulness
+gow/04/88-gow.cat	Demephon and Phillis
+gow/04/89-gow.cat	Negligence
+gow/04/90-gow.cat	Tale of Phaeton
+gow/04/91-gow.cat	Tale of Icarus
+gow/04/92-gow.cat	Idleness
+gow/04/93-gow.cat	Tale of Rosiphelee
+gow/04/94-gow.cat	Idleness in Love
+gow/04/95-gow.cat	Tale of Jephtha's Daughter
+gow/04/96-gow.cat	Lovers must approve themselves in arms; Arguments to the Contrary; The Confessor replies
+gow/04/97-gow.cat	Tale of Nauplus and Ulysses
+gow/04/98-gow.cat	Examples of Prowess; Protesilaus;
+gow/04/99-gow.cat	Saul
+gow/04/100-gow.cat	Education of Achilles
+gow/04/101-gow.cat	Prowess
+gow/04/102-gow.cat	Tale of Hercules and Achelons
+gow/04/103-gow.cat	Penthesilea
+gow/04/104-gow.cat	Philemenis; Eneas
+gow/04/105-gow.cat	Gentilesse
+gow/04/106-gow.cat	Effects of Love; Love contrary to Sloth
+gow/04/107-gow.cat	Uses oflabour; discoverers and inventors
+gow/04/108-gow.cat	Alchemy; The Three Stones of the Philosophers; The First Alchemists
+gow/04/109-gow.cat	Letters and Language
+gow/04/110-gow.cat	Somnolence
+gow/04/111-gow.cat	The Lover's Wakefulness
+gow/04/112-gow.cat	Dreams
+gow/04/113-gow.cat	Tale of Ceix and Alceone
+gow/04/114-gow.cat	Sleeping and Waking
+gow/04/115-gow.cat	The Prayer of Cephalus
+gow/04/116-gow.cat	Argus and Mercury
+gow/04/117-gow.cat	Tristesse or Despondency
+gow/04/118-gow.cat	Tale of Iphis and Araxarathen
+gow/05/*-gow.cat	Confessio Amantis - Book V
+gow/05/119-gow.cat	Avarice
+gow/05/120-gow.cat	Tale of Midas
+gow/05/121-gow.cat	The Punishment of Tantalus
+gow/05/122-gow.cat	Avarice; Jealousy of Lovers
+gow/05/123-gow.cat	Tale of Vulcan and Venus
+gow/05/124-gow.cat	Belief of the Chaldeans; Belief of the Egyptians
+gow/05/125-gow.cat	Belief of the Greeks
+gow/05/126-gow.cat	Origin of Idol Worship
+gow/05/127-gow.cat	Belief of the Jews
+gow/05/128-gow.cat	The Christian Faith
+gow/05/129-gow.cat	Coveitise
+gow/05/130-gow.cat	Tale of Virgil's Mirror
+gow/05/131-gow.cat	Coveitise
+gow/05/132-gow.cat	Tale of the Two Coffers
+gow/05/133-gow.cat	Tale of the Beggars and the Pasties
+gow/05/134-gow.cat	Coveitise of Lovers
+gow/05/135-gow.cat	Tale of the King and his Steward's Wife
+gow/05/136-gow.cat	False Witness and Perjury
+gow/05/137-gow.cat	Tale of Achilles and Deidamia
+gow/05/138-gow.cat	Perjury
+gow/05/139-gow.cat	Tale of Jason and Medea
+gow/05/140-gow.cat	Tale of Phrixus and Helle
+gow/05/141-gow.cat	Usury
+gow/05/142-gow.cat	Love Brokerage; Tale of Echo; 
+gow/05/143-gow.cat	Parsimony
+gow/05/144-gow.cat	Tale of Babio and Croceus
+gow/05/145-gow.cat	Ingratitude
+gow/05/146-gow.cat	Tale of Adrian and Bardus
+gow/05/147-gow.cat	Ingratitude
+gow/05/148-gow.cat	Tale of Theseus and Ariadne
+gow/05/149-gow.cat	Ravine
+gow/05/150-gow.cat	Tale of Tereus
+gow/05/151-gow.cat	Robbery
+gow/05/152-gow.cat	Neptune and Cornix
+gow/05/153-gow.cat	Tale of Calistona
+gow/05/154-gow.cat	Virginity
+gow/05/155-gow.cat	Stealth and Michery
+gow/05/156-gow.cat	Stealth of Lovers
+gow/05/157-gow.cat	Tale of Leucothoe
+gow/05/158-gow.cat	Tale of Hercules and Faunus
+gow/05/159-gow.cat	Sacrilege
+gow/05/160-gow.cat	Sacrilege of Lovers
+gow/05/161-gow.cat	Tale of Paris and Helen
+gow/05/162-gow.cat	Sacrilege of Lovers; Divisions of Avarice
+gow/05/163-gow.cat	Prodigality and Largesse
+gow/05/164-gow.cat	Prodigality of Lovers
+gow/06/*-gow.cat	Confessio Amantis - Book VI
+gow/06/165-gow.cat	Gluttony; Drunkenness;
+gow/06/166-gow.cat	Love-Drunkenness
+gow/06/167-gow.cat	Jupiter's Two Tuns
+gow/06/168-gow.cat	Prayer; Bacchus in the Desert
+gow/06/169-gow.cat	Love Drunkenness; Tristram
+gow/06/170-gow.cat	Marriage of Pirithous
+gow/06/171-gow.cat	Galbus and Vitellius
+gow/06/172-gow.cat	Delicacy;
+gow/06/173-gow.cat	Love-Delicacy; Delicacy
+gow/06/174-gow.cat	Dives and Lazarus
+gow/06/175-gow.cat	Delicacy of Nero
+gow/06/176-gow.cat	Love-Delicacy
+gow/06/177-gow.cat	Sorcery and Witchcraft
+gow/06/178-gow.cat	Tale of Ulysses and Telegonus
+gow/06/179-gow.cat	Tale of Nectanabus
+gow/06/180-gow.cat	Zoroaster; Saul and the Witch; Magic to be Eschewed
+gow/07/*-gow.cat	Confessio Amantis - Book VII
+gow/07/181-gow.cat	The Education of Alexander; Three Parts of Philosophy
+gow/07/182-gow.cat	Theoric; Theology
+gow/07/183-gow.cat	Physics
+gow/07/184-gow.cat	Mathematics
+gow/07/185-gow.cat	Creation of the Four Elements
+gow/07/186-gow.cat	The Four Complexions of Man
+gow/07/187-gow.cat	The Soul of Man
+gow/07/188-gow.cat	The Division of the Earth
+gow/07/189-gow.cat	Astronmy
+gow/07/190-gow.cat	Planets and Signs
+gow/07/191-gow.cat	The Planets
+gow/07/192-gow.cat	The Signs
+gow/07/193-gow.cat	The Fifteen Stars
+gow/07/194-gow.cat	Authors of the Science of Astronomy
+gow/07/195-gow.cat	Rhetoric
+gow/07/196-gow.cat	Practic; Five Points of Policy
+gow/07/197-gow.cat	The First Poiont of Policy; Truth
+gow/07/198-gow.cat	King- Wine- Woman- and Truth
+gow/07/199-gow.cat	Tale of Alcestis
+gow/07/200-gow.cat	King- Wine- Woman- and Truth
+gow/07/201-gow.cat	The Second Point of Policy; Liberality
+gow/07/202-gow.cat	Tale of Julius and the Poor Knight
+gow/07/203-gow.cat	Antigonus and Cinichus; Discretion in Giving
+gow/07/204-gow.cat	Prodigality of Kings; Flatterers
+gow/07/205-gow.cat	Tale of Diogenes and Aristippus
+gow/07/206-gow.cat	Flattery
+gow/07/207-gow.cat	The Roman Triumph
+gow/07/208-gow.cat	The Emperor and his Masons
+gow/07/209-gow.cat	Caesar's Answer
+gow/07/210-gow.cat	Flatterers of a King
+gow/07/211-gow.cat	Ahab and Micaiah
+gow/07/212-gow.cat	Justice
+gow/07/213-gow.cat	Justice of Maximin
+gow/07/214-gow.cat	Gaius Fabricius
+gow/07/215-gow.cat	The Emperor Conrad
+gow/07/216-gow.cat	The Consul Carmidotirus
+gow/07/217-gow.cat	Example of Cambyses
+gow/07/218-gow.cat	Lycurgus and his Laws
+gow/07/219-gow.cat	The First Lawgivers; Kings must keep the Laws
+gow/07/220-gow.cat	The Fourth Point pf Policy; Pity
+gow/07/221-gow.cat	The Tale of Codrus
+gow/07/222-gow.cat	Pompeius and the King of Armenia
+gow/07/223-gow.cat	Cruelty
+gow/07/224-gow.cat	Cruelty of Leontius
+gow/07/225-gow.cat	Cruelty of Siculus
+gow/07/226-gow.cat	Dionysius and his Horses
+gow/07/227-gow.cat	Lichaon
+gow/07/228-gow.cat	Nobleness of the Lion
+gow/07/229-gow.cat	Spertachus and Thamaris
+gow/07/230-gow.cat	Mercy must be without Weakness
+gow/07/231-gow.cat	The Mountain and the Mouse
+gow/07/232-gow.cat	There is a time for War
+gow/07/233-gow.cat	Story of Gideon
+gow/07/234-gow.cat	Saul and Agag
+gow/07/235-gow.cat	David and Joab
+gow/07/236-gow.cat	Solomon's Wisdom
+gow/07/237-gow.cat	The Courtiers and the Fool
+gow/07/238-gow.cat	Folly of Rehoboam
+gow/07/239-gow.cat	Wisdom in a King's Council; Mercy and Justice
+gow/07/240-gow.cat	The Fifth Point of Policy; Chastity
+gow/07/241-gow.cat	Evil Example of Sardanapalus
+gow/07/242-gow.cat	David
+gow/07/243-gow.cat	Cyrus and the Lydians
+gow/07/244-gow.cat	The Counsel of Balaam
+gow/07/245-gow.cat	Evil Example of Solomon
+gow/07/246-gow.cat	Division of His Kingdom
+gow/07/247-gow.cat	Antonius
+gow/07/248-gow.cat	Tarquin and his son Aruns
+gow/07/249-gow.cat	The Rape of Lucrece
+gow/07/250-gow.cat	Tale of Virginia
+gow/07/251-gow.cat	Tobias and Sara
+gow/07/252-gow.cat	Chastity
+gow/08/*-gow.cat	Confessio Amantis - Book VIII
+gow/08/253-gow.cat	Lechery; The Origins of Mankind
+gow/08/254-gow.cat	Laws of Marriage
+gow/08/255-gow.cat	Examples of Incest; Caligula; Ammon
+gow/08/256-gow.cat	Lot and his Daughters; Incest
+gow/08/257-gow.cat	Apollonius of Tyre
+gow/08/258-gow.cat	The Lover requires Counsel; The Confessor replies; The Controversy
+gow/08/259-gow.cat	The Supplication
+gow/08/260-gow.cat	Venus replies to the Supplication
+gow/08/261-gow.cat	Venus replies to the Supplication
+gow/08/262-gow.cat	The Companies of Lovers
+gow/08/263-gow.cat	Cupid and the Lover; The Fiery Dart withdrawn
+gow/08/264-gow.cat	The Healing of Love; The Absolution
+gow/08/265-gow.cat	Leave-taking of Venus
+gow/08/266-gow.cat	Author Prays for the State of England; Evil of Division in the Land; the Duty of a King
+gow/08/267-gow.cat	The Book Completed
+gow/08/268-gow.cat	Farewell to Earthly Love; Heavenly Love
+Gow/09/*-gow.cat	Confessio Amantis (variant text) 
+gow/09/269-gow.cat	Design of the Book; Dedication (variant text)
+gow/09/270-gow.cat	Virginity; example of Valentinianus introduced (variant text)
+gow/09/271-gow.cat	Tale of Lucius and the Statue (variant text)
+gow/09/272-gow.cat	Example of Dante (variant text)
+gow/09/273-gow.cat	Pity; example of Alexander (variant text)
+gow/09/274-gow.cat	Tale of the Jew and the Pagan (variant text)
+gow/09/275-gow.cat	Leave-taking of Venus (variant text)
+gow/09/276-gow.cat	Author prays for the King; The King commended (variant text)
+gow/09/277-gow.cat	The Author presents his Book to the King (variant text)
+gow/09/278-gow.cat	Farewell to Earthly Love; Heavenly Love (variant text)
+gow/10/279-gow.cat	In Praise of Peace

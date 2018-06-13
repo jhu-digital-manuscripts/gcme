@@ -1,0 +1,64 @@
+abbrev	abbreviation
+adj	adjective
+adj&adv	adjective & adverb
+adj&advas	adj & adv as
+adjas	adjective as
+adv	adverb
+adv&adj	adverb & adjective
+adv&conj	adverb & conjunction
+advas	adverb as
+conj	conjunction
+def	definite
+ger	gerund
+gram	grammatical
+indef	indefinite
+interj	interjection
+n	noun
+n1	noun
+n2	noun
+n3	noun
+n#propn	proper noun
+n1#propn	proper noun
+n2#propn	proper noun
+n3#propn	proper noun
+num	numeral
+part	verbal participle
+ppl	past participle
+pr	present singular
+prep	preposition
+pron	pronoun
+prp	present participle
+pt	preterite
+v	verb
+v1	verb
+v2	sverb
+v3	verb
+abs	used absolutely
+comp	comparitive degree
+contr	contracted
+gen	genitive
+gen_abs	genitive, absolute
+imp	(used as) imperative
+imp_pron	imperative, w/attached pronoun
+indef	indefinite
+inf	 infinitive
+nom	nominative
+obj	objective
+pl	plural
+obj	objective
+sup	superlative
+comp	comparative
+fem	feminine
+neg	present sing, attached neg particle
+neg_pron	present sing., w/neg part & pron
+lat	Latin
+fr	French
+gr	Greek
+#adj	as adjective
+#adv	as adverb
+#conj	as conjunction
+#interj	as interjection
+#n	as noun
+#n_propn	as proper noun
+#prep	as preposition
+#nonsense	nonsense word

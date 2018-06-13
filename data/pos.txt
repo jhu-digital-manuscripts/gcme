@@ -1,0 +1,137 @@
+##Part of Speech	pos
+abbrev	abbr
+adj	adj
+adj&adv	adj & adv
+adj&advas_n	adj & adv as noun
+adjas_n	adj as noun
+adv	adv
+adv&adj	adv & adj
+adv&conj	adv & conj
+advas_adj	adv as adj
+conj	conj
+def_art	def article
+ger	gerund
+indef_art	indef article
+interj	interjection
+any	any
+n	noun
+num	numeral
+part	verbal part
+ppl	past part
+prep	preposition
+pron	pronoun
+prp	present part
+v	verb
+##Foreign Words	foreignwd
+lat_abbrev	Latin abbr
+lat_adj	Latin adj
+lat_adv	Latin adv
+lat_conj	Latin conj
+lat_n	Latin noun
+lat_n#propn	Latin proper noun
+lat_num	Latin numeral
+lat_prep	Latin prepostion
+lat_pron	Latin pronoun
+lat_v	Latin verb
+any	any
+greek_n	Greek noun
+fr_adj	French adj
+fr_adv	French adv
+fr_art	French art
+fr_conj	French conj
+fr_n	French noun
+fr_ppl	French past part.
+fr_prep	French prep.
+fr_pron	French pronoun
+fr_v	French verb
+##Syntactic Comments	syntactcom
+adj#adv	adj as adv
+adj#interj	adj as interjection
+adj#n	adj as noun
+adj#n_propn	adj as proper noun
+adj#prep	adj as prep
+adv#adj	adv as adj
+adv#conj	adv as conj
+adv#interj	adv as interjection
+adv#n	adv as noun
+adv#prep	adv as prep
+ger#adj	gerund as adj
+interj#n	interjection as noun
+any	any
+n#adj	noun as adj
+n#adv	noun as adv
+n#interj	noun as interject
+n#nonsense	nonsense word
+n#propn	proper noun
+n#propn_adj	proper noun as adj
+n#propn_interj	proper noun as interject
+num#adj	numeral as adj
+num#adv	numeral as adv
+num#conj	numeral as conj
+num#n	numeral as noun
+ppl#adj	past part as adj
+ppl#adj_n	past part as adj as noun
+ppl#conj	past part. as conj
+prep#adv	prep as adv
+prep#conj	prep as conj
+pron_adj	pronoun as adj
+prp#adj	present part as adj
+v#adj	verb (part) as adj
+v#adv	verb (part) as adv
+##Inflections	inflect
+adj%comp	adj, compar degree
+adj%pl	adj, plural
+adj%sup	adj, super degree
+adj&advas_n%comp	adj & adv as noun, comp
+adjas_n%sup	adj as noun, super
+adv%abs	adv used absolutely
+adv%comp	adv, compar degree
+adv%sup	adv, super degree
+any	any
+ger%pl	gerund, plural
+interj%imp	interject as imperative
+n#propn%gen	proper noun, genitive
+n#propn%pl	proper noun, plural
+n%comp	noun, from adj, compar degree
+n%gen	noun, genitive
+n%gen_abs	noun, genitive, absolute
+n%pl	noun, plural
+n%pl_gen	noun, plural genitive
+n%sup	noun, from adj, super deg
+ppl%abs	past part. used absolutely
+pron%contr	pronoun, contracted
+pron%fem_gen	pronoun, fem, genitive
+pron%fem_obj	pronoun, fem, objective
+pron%fem_obj_adj	pronoun, fem, objective as adj
+pron%fem_obj_indef	pronoun, fem, objective, indef
+pron%gen	pronoun, genitive
+pron%gen_abs	pronoun, gentive, absolute
+pron%indef	pronoun, indefinite
+pron%nom	pronoun, nominative
+pron%nom_indef	pronoun, nominative, indef
+pron%obj	pronoun, objective
+pron%pl	pronoun, plural
+pron%pl_gen	pronoun, plural, genitive
+pron%pl_gen_abs	pronoun, plural, genitive, absolute
+pron%pl_nom	pronoun, plural, nominative
+pron%pl_obj	pronoun, plural, objective
+prp%abs	present part, absolute
+v%imp	verb, imperative
+v%imp_pron	verb, imperative, w/attached pronoun
+v%inf	verb, infinitive
+v%ppl	verb, past part.
+v%ppl_abs	verb, past part, absolute
+v%pr	verb, present singular
+v%pr_neg	verb, pres sing, attached neg particle
+v%pr_neg_pron	v, pres.sing., w/neg part & pron
+v%pr_pl	verb, present plural
+v%pr_pl_neg	verb, pres pl, w/attached negative
+v%pr_pron	verb, pres sing, w/attached pron
+v%prp	verb, present part.
+v%prp_abs	verb, present part, absolute
+v%pt	verb, preterite singular
+v%pt_neg	verb, pret sing, attached neg particle
+v%pt_neg_pron	verb, pret sing, attached neg & pron
+v%pt_pl	verb, preterite plural
+v%pt_pl_neg	verb, pret pl, w/attached neg particle
+v%pt_pron	verb, pret sing, w/attached pron

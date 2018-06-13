@@ -1,0 +1,546 @@
+## 0 = Geoffrey Chaucer
+0.0.0.0-CT,The Canterbury Tales
+0.0.01.0-Frag1,Canterbury Tales - Fragment I
+0.0.01.1-GP,General Prologoue 
+0.0.01.2-KnT,Knight's Tale
+0.0.01.3-MilPro,Miller's Prologue
+0.0.01.4-MilT,Miller's Tale
+0.0.01.5-RvPro,Reeve's Prologue
+0.0.01.6-RvT,Reeve's Tale
+0.0.01.7-CkPro,Cook's Prologue
+0.0.01.8-CkT,Cook's Tale
+0.0.02.0-Frag2,Canterbury Tales - Fragment II
+0.0.02.1-IntMLT,Introduction to the Man of Law's Tale
+0.0.02.2-MLT,Man of Law's Tale
+0.0.02.3-EpMLT,Epilogue to the Man of Law's Tale
+0.0.03.0-Frag3,Canterbury Tales - Fragment III
+0.0.03.1-WBPro,Wife of Bath's Prologue
+0.0.03.2-WBT,Wife of Bath's Tale
+0.0.03.3-FrPro,Friar's Prologue
+0.0.03.4-FrT,Friar's Tale
+0.0.03.5-SumPro,Summoner's Prologue
+0.0.03.6-SumT,Summoner's Tale
+0.0.04.0-Frag4,Canterbury Tales - Fragment IV
+0.0.04.1-ClPro,Clerk's Prologue
+0.0.04.2-ClT,Clerk's Tale
+0.0.04.3-MerPro,Merchant's Prologue
+0.0.04.4-MerT,Merchant's Tale
+0.0.04.5-EpMerT,Epilogue to the Merchant's Tale
+0.0.05.0-Frag5,Canterbury Tales - Fragment V
+0.0.05.1-IntSqT,Introduction to the Squire's Tale
+0.0.05.2-SqT,Squire's Tale
+0.0.05.3-FranPro,Prologue to the Franklin's Tale
+0.0.05.4-FranT,Franklin's Tale
+0.0.06.0-Frag6,Canterbury Tales - Fragment VI
+0.0.06.1-PhyT,Physician's Tale
+0.0.06.2-IntPardT,Introduction to the Pardoner's Tale
+0.0.06.3-PardPro,Pardoner's Prologue
+0.0.06.4-PardT,Pardoner's Tale
+0.0.07.0-Frag7,Canterbury Tales - Fragment VII
+0.0.07.1-ShipT,Shipman's Tale
+0.0.07.2-ProPrT,Prologue to the Prioress' Tale 
+0.0.07.3-PrT,Prioress' Tale
+0.0.07.4-ProThop,Prologue to Sir Thopas
+0.0.07.5-Thop,Sir Thopas
+0.0.07.6-Mel,Melibee
+0.0.07.7-ProMkT,Prologue to the Monk's Tale
+0.0.07.8-MkT,Monk's Tale
+0.0.07.9-ProNPT,Prologue to the Nun's Priest's Tale
+0.0.07.10-NPT,Nun's Priest's Tale
+0.0.07.11-EpNPT,Epilogue to the Nun's Priest's Tale
+0.0.08.0-Frag8,Canterbury Tales - Fragment VIII
+0.0.08.1-SNPro,Prologue to the Second Nun's Tale 
+0.0.08.2-SNT,Second Nun's Tale 
+0.0.08.3-CYPro,Prologue to the Canon's Yeoman's Tale
+0.0.08.4-CYT,Canon's Yeoman's Tale
+0.0.09.0-Frag9,Canterbury Tales - Fragment IX
+0.0.09.1-MancPro,Prologue to the Manciple's Tale
+0.0.09.2-MancT,Manciple's Tale
+0.0.10.0-Frag10,Canterbury Tales - Fragment X
+0.0.10.1-ParsPro,Prologue to the Parson's Tale
+0.0.10.2-ParsT,Parson's Tale
+0.1.0.0-Minor,The Minor poems
+0.1.1.1-BD,Book of the Duchess
+0.1.1.2-HF,House of Fame
+0.1.1.3-Anel,Anelida and Arcite
+0.1.1.4-PF,Parliament of Fowls
+0.2.0.0-Bo,Boece
+0.2.1.0-Bo1,Boece - Book I
+0.2.1.01-Bo1.m1,Boece - Book I: Meter 1
+0.2.1.02-Bo1.pr1,Boece - Book I: Prose 1
+0.2.1.03-Bo1.m2,Boece - Book I: Meter 2
+0.2.1.04-Bo1.pr2,Boece - Book I: Prose 2
+0.2.1.05-Bo1.m3,Boece - Book I: Meter 3
+0.2.1.06-Bo1.pr3,Boece - Book I: Prose 3
+0.2.1.07-Bo1.m4,Boece - Book I: Meter 4
+0.2.1.08-Bo1.pr4,Boece - Book I: Prose 4
+0.2.1.09-Bo1.m5,Boece - Book I: Meter 5
+0.2.1.10-Bo1.pr5,Boece - Book I: Prose 5
+0.2.1.11-Bo1.m6,Boece - Book I: Meter 6
+0.2.1.12-Bo1.pr6,Boece - Book I: Prose 6
+0.2.2.0-Bo2,Boece - Book II
+0.2.2.01-Bo2.pr1,Boece - Book II: Prose 1
+0.2.2.02-Bo2.m1,Boece - Book II: Meter 1
+0.2.2.03-Bo2.pr2,Boece - Book II: Prose 2
+0.2.2.04-Bo2.m2,Boece - Book II: Meter 2
+0.2.2.05-Bo2.pr3,Boece - Book II: Prose 3
+0.2.2.06-Bo2.m3,Boece - Book II: Meter 3
+0.2.2.07-Bo2.pr4,Boece - Book II: Prose 4
+0.2.2.08-Bo2.m4,Boece - Book II: Meter 4
+0.2.2.09-Bo2.pr5,Boece - Book II: Prose 5
+0.2.2.10-Bo2.m5,Boece - Book II: Meter 5
+0.2.2.11-Bo2.pr6,Boece - Book II: Prose 6
+0.2.2.12-Bo2.m6,Boece - Book II: Meter 6
+0.2.2.13-Bo2.pr7,Boece - Book II: Prose 7
+0.2.2.14-Bo2.m7,Boece - Book II: Meter 7
+0.2.2.15-Bo2.pr8,Boece - Book II: Prose 8
+0.2.3.0-Bo3,Boece - Book III
+0.2.3.01-Bo3.pr1,Boece - Book III: Prose 1
+0.2.3.02-Bo3.m1,Boece - Book III: Meter 1
+0.2.3.03-Bo3.pr2,Boece - Book III: Prose 2
+0.2.3.04-Bo3.m2,Boece - Book III: Meter 2
+0.2.3.05-Bo3.pr3,Boece - Book III: Prose 3
+0.2.3.06-Bo3.m3,Boece - Book III: Meter 3
+0.2.3.07-Bo3.pr4,Boece - Book III: Prose 4
+0.2.3.08-Bo3.m4,Boece - Book III: Meter 4
+0.2.3.09-Bo3.pr5,Boece - Book III: Prose 5
+0.2.3.10-Bo3.m5,Boece - Book III: Meter 5
+0.2.3.11-Bo3.pr6,Boece - Book III: Prose 6
+0.2.3.12-Bo3.m6,Boece - Book III: Meter 6
+0.2.3.13-Bo3.pr7,Boece - Book III: Prose 7
+0.2.3.14-Bo3.m7,Boece - Book III: Meter 7
+0.2.3.15-Bo3.pr8,Boece - Book III: Prose 8
+0.2.3.16-Bo3.m8,Boece - Book III: Meter 8
+0.2.3.17-Bo3.pr9,Boece - Book III: Prose 9
+0.2.3.18-Bo3.m9,Boece - Book III: Meter 9
+0.2.3.19-Bo3.pr10,Boece - Book III: Prose 10
+0.2.3.20-Bo3.m10,Boece - Book III: Meter 10
+0.2.3.21-Bo3.pr11,Boece - Book III: Prose 11
+0.2.3.22-Bo3.m11,Boece - Book III: Meter 11
+0.2.3.23-Bo3.pr12,Boece - Book III: Prose 12
+0.2.4.0-Bo4,Boece - Book IV
+0.2.4.01-Bo4.pr1,Boece - Book IV, Prose 1
+0.2.4.02-Bo4.m1,Boece - Book IV: Meter 1
+0.2.4.03-Bo4.pr2,Boece - Book IV, Prose 2
+0.2.4.04-Bo4.m2,Boece - Book IV: Meter 2
+0.2.4.05-Bo4.pr3,Boece - Book IV, Prose 3
+0.2.4.06-Bo4.m3,Boece - Book IV: Meter 3
+0.2.4.07-Bo4.pr4,Boece - Book IV, Prose 4
+0.2.4.08-Bo4.m4,Boece - Book IV: Meter 4
+0.2.4.09-Bo4.pr5,Boece - Book IV, Prose 5
+0.2.4.10-Bo4.m5,Boece - Book IV: Meter 5
+0.2.4.11-Bo4.pr6,Boece - Book IV: Prose 6
+0.2.4.12-Bo4.m6,Boece - Book IV: Meter 6
+0.2.4.13-Bo4.pr7,Boece - Book IV: Prose 7
+0.2.4.14-Bo5,Boece - Book V
+0.2.4.15-Bo5.pr1,Boece - Book V: Prose 1
+0.2.4.16-Bo5.m1,Boece - Book V: Meter 1
+0.2.4.17-Bo5.pr2,Boece - Book V: Prose 2
+0.2.4.18-Bo5.m2,Boece - Book V: Meter 2
+0.2.4.19-Bo5.pr3,Boece - Book V: Prose 3
+0.2.4.20-Bo5.m3,Boece - Book V: Meter 3
+0.2.4.21-Bo5.pr4,Boece - Book V: Prose 4
+0.2.4.22-Bo5.m4,Boece - Book V: Meter 4
+0.2.4.23-Bo5.pr5,Boece - Book V: Prose 5
+0.3.0.0-Tr,The Boke of Troilus
+0.3.1.1-Tr1,Troilus Book 1
+0.3.1.2-Tr2,Troilus Book 2
+0.3.1.3-Tr3,Troilus Book 3
+0.3.1.4-Tr4,Troilus Book 4
+0.3.1.5-Tr5,Troilus Book 5
+0.4.0.0-LGW,The Legend of Good Women
+0.4.1.1-LGWProF,The Legend of Good Women- Prologue F
+0.4.1.2-LGWProG,The Legend of Good Women- Prologue G (Not yet ready)
+0.5.0.0-Short,The Short Poems
+0.5.1.01-ABC,An ABC 
+0.5.1.02-Pity,The Complaint unto Pity
+0.5.1.03-Lady,The Complaint to His Lady
+0.5.1.04-Mars,The Complaint of Mars
+0.5.1.05-Venus,The Complaint of Venus
+0.5.1.06-Ros,To Rosemounde
+0.5.1.07-WomNob,Womanly Noblesse
+0.5.1.08-Adam,Adam Scrivener
+0.5.1.09-FormAge,The Former Age
+0.5.1.10-Fort,Fortune
+0.5.1.11-Truth,Truth
+0.5.1.12-Gent,Gentilesse
+0.5.1.13-Sted,Lak of Stedfastnesse
+0.5.1.14-Scog,Lenvoy de Chaucer a Scogan
+0.5.1.15-Buk,Lenvoy de Chuacer a Bukton
+0.5.1.16-Purse,the Complaint of Chaucer to his Purse
+0.6.0.0-Ast,The Treatise on the Astrolabe
+0.6.1.0-AstPro,The Treatise on the Astrolabe - Prologue
+0.6.2.0-Ast1,The Treatise on the Astrolabe - Part I
+0.6.2.01-Ast1.1,Astrolabe - Part I, Section 1
+0.6.2.02-Ast1.2,Astrolabe - Part I, Section 2
+0.6.2.03-Ast1.3,Astrolabe - Part I, Section 3
+0.6.2.04-Ast1.4,Astrolabe - Part I, Section 4
+0.6.2.05-Ast1.5,Astrolabe - Part I, Section 5
+0.6.2.06-Ast1.6,Astrolabe - Part I, Section 6
+0.6.2.07-Ast1.7,Astrolabe - Part I, Section 7
+0.6.2.08-Ast1.8,Astrolabe - Part I, Section 8
+0.6.2.09-Ast1.9,Astrolabe - Part I, Section 9
+0.6.2.10-Ast1.10,Astrolabe - Part I, Section 10
+0.6.2.11-Ast1.11,Astrolabe - Part I, Section 11
+0.6.2.12-Ast1.12,Astrolabe - Part I, Section 12
+0.6.2.13-Ast1.13,Astrolabe - Part I, Section 13
+0.6.2.14-Ast1.14,Astrolabe - Part I, Section 14
+0.6.2.15-Ast1.15,Astrolabe - Part I, Section 15
+0.6.2.16-Ast1.16,Astrolabe - Part I, Section 16
+0.6.2.17-Ast1.17,Astrolabe - Part I, Section 17
+0.6.2.18-Ast1.18,Astrolabe - Part I, Section 18
+0.6.2.19-Ast1.19,Astrolabe - Part I, Section 19
+0.6.2.20-Ast1.20,Astrolabe - Part I, Section 20
+0.6.2.21-Ast1.21,Astrolabe - Part I, Section 21
+0.6.3.0-Ast2,The Treatise on the Astrolabe - Part II
+0.6.3.01-Ast2.1,Astrolabe - To fynde the degre in which the sonne is day by day, after his cours aboute.
+0.6.3.02-Ast2.2,Astrolabe - To knowe the altitude of the sonne or of othre celestial bodies.
+0.6.3.03-Ast2.3,Astrolabe - To knowe every tyme of the day by light of the sonne; and every tyme of the nyght by the sterres fixe; and eke to knowe by nyght or by day the degre of eny signe that ascendith on the est orisonte, which that is clepid comounly the ascendent, or ellis horoscopum.
+0.6.3.04-Ast2.4,Astrolabe - A special declaracioun of the ascendent.
+0.6.3.05-Ast2.5,Astrolabe - To knowe the verrey equacioun of the degre of the sonne yf so be that it falle bitwene two almykanteras.
+0.6.3.06-Ast2.6,Astrolabe - To knowe the spryng of the dawenyng and the ende of the evenyng, the whiche ben called the two crepuscules.
+0.6.3.07-Ast2.7,Astrolabe - To knowe the arch of the day, that sorne folk callen the day artificiall, fro sonne arisyng tyl it go to reste.
+0.6.3.08-Ast2.8,Astrolabe - To turne the houres inequales in houres equales.
+0.6.3.09-Ast2.9,Astrolabe - To knowe the quantite of the day vulgar, that is to seyn fro spryng of the day unto verrey nyght.
+0.6.3.10-Ast2.10,Astrolabe - To knowe the quantite of houres in, equales by day.
+0.6.3.11-Ast2.11,Astrolabe - To knowe the quantite of houres equales.
+0.6.3.12-Ast2.12,Astrolabe - Special declaracioun of the houres of planetes.
+0.6.3.13-Ast2.13,Astrolabe - To knowe the altitude of the sonne in myddes of the day that is clepid the altitude meridian.
+0.6.3.14-Ast2.14,Astrolabe - To knowe the degre of the sonne by thy ryet, for a maner curiosite.
+0.6.3.15-Ast2.15,Astrolabe - To knowe which day is lik to which day as of lengthe.
+0.6.3.16-Ast2.16,Astrolabe - This chapitre is a maner declaracioun to conclusiouns that folewen.
+0.6.3.17-Ast2.17,Astrolabe - To knowe the verrey degre of eny maner sterre, straunge or unstraunge, after his longitude; though he be indetermynat in thin Astralabye, sothly to the trouthe thus he shal be knowe.
+0.6.3.18-Ast2.18,Astrolabe - To knowe the degrees of longitudes of fixe sterres after that they be determynat in thin Astrelabye, yf so be that thei be trewly sette.
+0.6.3.19-Ast2.19,Astrolabe - To knowe with which degre of the zodiak eny sterre fix in thin Astrelabie arisith upon the est orisonte, all though his dwellyng be in another signe.
+0.6.3.20-Ast2.20,Astrolabe - To knowe the declinacioun of eny degre in the zodiak fro the equinoxiall cercle.
+0.6.3.21-Ast2.21,Astrolabe - To knowe for what latitude in eny regioun the almykanteras of eny table ben com powned.
+0.6.3.22-Ast2.22,Astrolabe - To know in speciall the latitude of oure countre, I mene after the latitude of Oxenford, and the height of oure pool.
+0.6.3.23-Ast2.23,Astrolabe - To prove evidently the latitude of eny place in a regioun by the preve of the height of the pool artik in that same place.
+0.6.3.24-Ast2.24,Astrolabe - Another conclusioun to prove the height of the pool artik fro the orisonte.
+0.6.3.25-Ast2.25,Astrolabe - Another conclusioun to prove the latitude of the regioun.
+0.6.3.26-Ast2.26,Astrolabe - Declaracioun of the ascensioun of signes.
+0.6.3.27-Ast2.27,Astrolabe - This is the conclusioun to knowe the ascensions of signes in the right cercle, that is circulus directus.
+0.6.3.28-Ast2.28,Astrolabe - To knowe the ascensions of signes in the embelif cercle in every regioun, I mene, in circulo obliquo.
+0.6.3.29-Ast2.29,Astrolabe - To knowe justly the 4 quarters of the world, as Est, West, North, and South.
+0.6.3.30-Ast2.30,Astrolabe - To knowe the altitude of planetes fro the wey of the sonne, whethir so they be north or south fro the forseide wey.
+0.6.3.31-Ast2.31,Astrolabe - To knowe the cenyth of the arising of the sonne, this is to seyn, the partie of the orisonte in which that the sonne arisith.
+0.6.3.32-Ast2.32,Astrolabe - To knowe in which partie of the firmament is the conjunccyoun.
+0.6.3.33-Ast2.33,Astrolabe - To knowe the cenyth of the altitude of the sonne.
+0.6.3.34-Ast2.34,Astrolabe - To knowe sothly the degre of the longitude of the mone, or of eny planete that hath no latitude for the tyme fro the ecliptik lyne.
+0.6.3.35-Ast2.35,Astrolabe - This is the worchynge of the conclusioun to knowe yf that eny planete be direct or retrograd.
+0.6.3.36-Ast2.36,Astrolabe - The conclusioun of equaciouns of houses after the Astrelabie.
+0.6.3.37-Ast2.37,Astrolabe - Another maner of equaciouns of houses by the Astrelabie.
+0.6.3.38-Ast2.38,Astrolabe - To fynde the lyne meridional to dwelle fix in eny certeyn place.
+0.6.3.39-Ast2.39,Astrolabe - Descripcion of the meridional lyne, of longitudes and latitudes of citees and townes, as wel as of climates.
+0.6.3.40-Ast2.40,Astrolabe - To knowe with which degre of the zodiak that eny planete ascendith on the orisonte, whether so that his latitude be north or south.
+0.6.3.41-AstSup,Supplemental Propositions to the Astrolabe
+0.7.0.0-PNAtCitM,Poems Not Ascribed to Chaucer in the Manuscripts
+0.7.1.01-WomUnc,Against Women Unconstant
+0.7.1.02-ComplAm,Complaynt D'Amours (Complaint)
+0.7.1.03-MercB,Merciles Beaute (Beauty)
+0.7.1.04-BalComp,Balade of Complaint
+0.7.1.10-Cleopatra,The Legend of Cleopatra
+0.7.1.11-Thisbe,The Legend of Thisbe
+0.7.1.12-Dido,The Legend of Dido
+0.7.1.13-HandP,The Legend of Hypsipyle and Medea
+0.7.1.14-Lucrece,The Legend of Lucrece
+0.7.1.15-Ariadne,The Legend of Ariadne
+0.7.1.16-Philomela,The Legend of Philomela
+0.7.1.17-Phyllis,The Legend of Phyllis
+0.7.1.18-Hyper,The Legend of Hypermnestra
+0.8.0.0-WAtC,Works Attributed to Chaucer
+0.8.1.1-RomA,Romaunt of the Rose - Fragment A
+0.8.1.2-RomB,Romaunt of the Rose - Fragment B
+0.8.1.3-RomC,Romaunt of the Rose - Fragment C
+## 1 = Gow,John Gower
+1.0.0.0-CA,Confessio Amantis
+1.0.1.0-CAPro,Confessio Amantis - Prologue
+1.0.1.1-CABk1,Confessio Amantis - Book I
+1.0.1.2-CABk2,Confessio Amantis - Book II
+1.0.1.3-CABk3,Confessio Amantis - Book III
+1.0.1.4-CABk4,Confessio Amantis - Book IV
+1.0.1.5-CABk5,Confessio Amantis - Book V
+1.0.1.6-CABk6,Confessio Amantis - Book VI
+1.0.1.7-CABk7,Confessio Amantis - Book VII
+1.0.1.8-CABk8,Confessio Amantis - Book VIII
+1.0.2.0-CAvar,Confessio Amantis (variant text) 
+1.1.0.0-Peace,In Praise of Peace
+1.1.1.001-001-gow,Design of the Book; Dedication
+1.1.1.002-002-gow,Temporal Rulers
+1.1.1.003-003-gow,The Church
+1.1.1.004-004-gow,The Commons
+1.1.1.005-005-gow,Nebuchadnezzar's Dream; The Empires of the World; The latest Time
+1.1.1.006-006-gow,Division the Cause of Evil
+1.1.1.007-007-gow,Love rules the world; example of the author
+1.1.1.008-008-gow,Author's woful Case; His Complaint to Cupid and Venus; The Fiery Dart;  Venus Queen of Love; Genius- the priest of Love
+1.1.1.009-009-gow,The Lover's Shrift
+1.1.1.010-010-gow,The Five Senses; Seeing
+1.1.1.011-011-gow,Tale of Acteon
+1.1.1.012-012-gow,The Tale of Medusa
+1.1.1.013-013-gow,Hearing; Prudence of the Serpent
+1.1.1.014-014-gow,Tale of the Sirens
+1.1.1.015-015-gow,The Sins of the Eye and Ear
+1.1.1.016-016-gow,The Seven deadly Sins; Pride; Five Ministers of Pride; i. Hyocrisy; Hypocrisy of Lovers
+1.1.1.017-017-gow,Tale of Mundus and Paulina
+1.1.1.018-018-gow,The Trojan horse
+1.1.1.019-019-gow,Hypocrisy in Love
+1.1.1.020-020-gow,Inobedience
+1.1.1.021-021-gow,Murmur and complaint
+1.1.1.022-022-gow,Tale of Florent
+1.1.1.023-023-gow,Surquidry or Presumption
+1.1.1.024-024-gow,Tale of Capaneus
+1.1.1.025-025-gow,The Trump of Death
+1.1.1.026-026-gow,Tale of Narcissus
+1.1.1.027-027-gow,Presumption of Lovers
+1.1.1.028-028-gow,Avantance or Boasting
+1.1.1.029-029-gow,Tale of Albinus and Rosemund
+1.1.1.030-030-gow,Vain-glory
+1.1.1.031-031-gow,The Lover's Confession
+1.1.1.032-032-gow,Nebuchadnezzar's Punishment
+1.1.1.033-033-gow,Humility
+1.1.1.034-034-gow,Tale of the Three Questions
+1.1.1.035-035-gow,Humility
+1.1.1.036-036-gow,Envy; Sorrow for another man's Joy
+1.1.1.037-037-gow,Tale of Acis and Galatea
+1.1.1.038-038-gow,Joy for another man's Grief
+1.1.1.039-039-gow,The Travellers and the Angel
+1.1.1.040-040-gow,Detraction; Detraction of Lovers
+1.1.1.041-041-gow,Tale of Constance
+1.1.1.042-042-gow,Demetrius and Perseus
+1.1.1.043-043-gow,False-Semblant
+1.1.1.044-044-gow,Deianira and Nessus
+1.1.1.045-045-gow,Supplantation
+1.1.1.046-046-gow,Geta and Amphitrion
+1.1.1.047-047-gow,Tale of the False Bachelor
+1.1.1.048-048-gow,Pope Boniface
+1.1.1.049-049-gow,Nature of Envy; Charity and Pity
+1.1.1.050-050-gow,Tale of Constantine and Silvester
+1.1.1.051-051-gow,Ire or Wrath; Melancholy
+1.1.1.052-052-gow,Tale of Canace and Machaire
+1.1.1.053-053-gow,Tiresias and the Snakes
+1.1.1.054-054-gow,Melancholy
+1.1.1.055-055-gow,Cheste
+1.1.1.056-056-gow,Patience of Socrates
+1.1.1.057-057-gow,Jupiter- Juno- and Tiresias
+1.1.1.058-058-gow,Cheste
+1.1.1.059-059-gow,Phebus and Cornide
+1.1.1.060-060-gow,Jupiter and Laar
+1.1.1.061-061-gow,Hate
+1.1.1.062-062-gow,King Namplus and the Greeks
+1.1.1.063-063-gow,Contek and Homicide; Contek within the Heart
+1.1.1.064-064-gow,Tale of Diogenes and Alexander;
+1.1.1.065-065-gow,Contek
+1.1.1.066-066-gow,Pyramus and Thisbe
+1.1.1.067-067-gow,The Lover's Confession; Danger; More haste worse than speed
+1.1.1.068-068-gow,Tale of Phebus and Daphne
+1.1.1.069-069-gow,Fool-haste
+1.1.1.070-070-gow,Athemas and Demephon
+1.1.1.071-071-gow,Tale of Orestes
+1.1.1.072-072-gow,Lawful Homicide
+1.1.1.073-073-gow,Evil of War
+1.1.1.074-074-gow,Alexander and the Pirate
+1.1.1.075-075-gow,Wars and Death of Alexander
+1.1.1.076-076-gow,Are Crusades Lawful -  Guilt of Homicide;
+1.1.1.077-077-gow,A Strange Bird; Mercy
+1.1.1.078-078-gow,Tale of Telephus and Teucer
+1.1.1.079-079-gow,Sloth; Lachesse
+1.1.1.080-080-gow,Eneas and Dido
+1.1.1.081-081-gow,Ulysses and Penelope
+1.1.1.082-082-gow,Grosteste; The Foolish Virgins
+1.1.1.083-083-gow,Lachesse
+1.1.1.084-084-gow,Pusillanimity
+1.1.1.085-085-gow,Pygmaleon and the Statue
+1.1.1.086-086-gow,Tale of Iphis
+1.1.1.087-087-gow,Forgetfulness
+1.1.1.088-088-gow,Demephon and Phillis
+1.1.1.089-089-gow,Negligence
+1.1.1.090-090-gow,Tale of Phaeton
+1.1.1.091-091-gow,Tale of Icarus
+1.1.1.092-092-gow,Idleness
+1.1.1.093-093-gow,Tale of Rosiphelee
+1.1.1.094-094-gow,Idleness in Love
+1.1.1.095-095-gow,Tale of Jephtha's Daughter
+1.1.1.096-096-gow,Lovers must approve themselves in arms; Arguments to the Contrary; The Confessor replies
+1.1.1.097-097-gow,Tale of Nauplus and Ulysses
+1.1.1.098-098-gow,Examples of Prowess; Protesilaus;
+1.1.1.099-099-gow,Saul
+1.1.1.100-100-gow,Education of Achilles
+1.1.1.101-101-gow,Prowess
+1.1.1.102-102-gow,Tale of Hercules and Achelons
+1.1.1.103-103-gow,Penthesilea
+1.1.1.104-104-gow,Philemenis; Eneas
+1.1.1.105-105-gow,Gentilesse
+1.1.1.106-106-gow,Effects of Love; Love contrary to Sloth
+1.1.1.107-107-gow,Uses oflabour; discoverers and inventors
+1.1.1.108-108-gow,Alchemy; The Three Stones of the Philosophers; The First Alchemists
+1.1.1.109-109-gow,Letters and Language
+1.1.1.110-110-gow,Somnolence
+1.1.1.111-111-gow,The Lover's Wakefulness
+1.1.1.112-112-gow,Dreams
+1.1.1.113-113-gow,Tale of Ceix and Alceone
+1.1.1.114-114-gow,Sleeping and Waking
+1.1.1.115-115-gow,The Prayer of Cephalus
+1.1.1.116-116-gow,Argus and Mercury
+1.1.1.117-117-gow,Tristesse or Despondency
+1.1.1.118-118-gow,Tale of Iphis and Araxarathen
+1.1.1.119-119-gow,Avarice
+1.1.1.120-120-gow,Tale of Midas
+1.1.1.121-121-gow,The Punishment of Tantalus
+1.1.1.122-122-gow,Avarice; Jealousy of Lovers
+1.1.1.123-123-gow,Tale of Vulcan and Venus
+1.1.1.124-124-gow,Belief of the Chaldeans; Belief of the Egyptians
+1.1.1.125-125-gow,Belief of the Greeks
+1.1.1.126-126-gow,Origin of Idol Worship
+1.1.1.127-127-gow,Belief of the Jews
+1.1.1.128-128-gow,The Christian Faith
+1.1.1.129-129-gow,Coveitise
+1.1.1.130-130-gow,Tale of Virgil's Mirror
+1.1.1.131-131-gow,Coveitise
+1.1.1.132-132-gow,Tale of the Two Coffers
+1.1.1.133-133-gow,Tale of the Beggars and the Pasties
+1.1.1.134-134-gow,Coveitise of Lovers
+1.1.1.135-135-gow,Tale of the King and his Steward's Wife
+1.1.1.136-136-gow,False Witness and Perjury
+1.1.1.137-137-gow,Tale of Achilles and Deidamia
+1.1.1.138-138-gow,Perjury
+1.1.1.139-139-gow,Tale of Jason and Medea
+1.1.1.140-140-gow,Tale of Phrixus and Helle
+1.1.1.141-141-gow,Usury
+1.1.1.142-142-gow,Love Brokerage; Tale of Echo; 
+1.1.1.143-143-gow,Parsimony
+1.1.1.144-144-gow,Tale of Babio and Croceus
+1.1.1.145-145-gow,Ingratitude
+1.1.1.146-146-gow,Tale of Adrian and Bardus
+1.1.1.147-147-gow,Ingratitude
+1.1.1.148-148-gow,Tale of Theseus and Ariadne
+1.1.1.149-149-gow,Ravine
+1.1.1.150-150-gow,Tale of Tereus
+1.1.1.151-151-gow,Robbery
+1.1.1.152-152-gow,Neptune and Cornix
+1.1.1.153-153-gow,Tale of Calistona
+1.1.1.154-154-gow,Virginity
+1.1.1.155-155-gow,Stealth and Michery
+1.1.1.156-156-gow,Stealth of Lovers
+1.1.1.157-157-gow,Tale of Leucothoe
+1.1.1.158-158-gow,Tale of Hercules and Faunus
+1.1.1.159-159-gow,Sacrilege
+1.1.1.160-160-gow,Sacrilege of Lovers
+1.1.1.161-161-gow,Tale of Paris and Helen
+1.1.1.162-162-gow,Sacrilege of Lovers; Divisions of Avarice
+1.1.1.163-163-gow,Prodigality and Largesse
+1.1.1.164-164-gow,Prodigality of Lovers
+1.1.1.165-165-gow,Gluttony; Drunkenness;
+1.1.1.166-166-gow,Love-Drunkenness
+1.1.1.167-167-gow,Jupiter's Two Tuns
+1.1.1.168-168-gow,Prayer; Bacchus in the Desert
+1.1.1.169-169-gow,Love Drunkenness; Tristram
+1.1.1.170-170-gow,Marriage of Pirithous
+1.1.1.171-171-gow,Galbus and Vitellius
+1.1.1.172-172-gow,Delicacy;
+1.1.1.173-173-gow,Love-Delicacy; Delicacy
+1.1.1.174-174-gow,Dives and Lazarus
+1.1.1.175-175-gow,Delicacy of Nero
+1.1.1.176-176-gow,Love-Delicacy
+1.1.1.177-177-gow,Sorcery and Witchcraft
+1.1.1.178-178-gow,Tale of Ulysses and Telegonus
+1.1.1.179-179-gow,Tale of Nectanabus
+1.1.1.180-180-gow,Zoroaster; Saul and the Witch; Magic to be Eschewed
+1.1.1.181-181-gow,The Education of Alexander; Three Parts of Philosophy
+1.1.1.182-182-gow,Theoric; Theology
+1.1.1.183-183-gow,Physics
+1.1.1.184-184-gow,Mathematics
+1.1.1.185-185-gow,Creation of the Four Elements
+1.1.1.186-186-gow,The Four Complexions of Man
+1.1.1.187-187-gow,The Soul of Man
+1.1.1.188-188-gow,The Division of the Earth
+1.1.1.189-189-gow,Astronmy
+1.1.1.190-190-gow,Planets and Signs
+1.1.1.191-191-gow,The Planets
+1.1.1.192-192-gow,The Signs
+1.1.1.193-193-gow,The Fifteen Stars
+1.1.1.194-194-gow,Authors of the Science of Astronomy
+1.1.1.195-195-gow,Rhetoric
+1.1.1.196-196-gow,Practic; Five Points of Policy
+1.1.1.197-197-gow,The First Poiont of Policy; Truth
+1.1.1.198-198-gow,King- Wine- Woman- and Truth
+1.1.1.199-199-gow,Tale of Alcestis
+1.1.1.200-200-gow,King- Wine- Woman- and Truth
+1.1.1.201-201-gow,The Second Point of Policy; Liberality
+1.1.1.202-202-gow,Tale of Julius and the Poor Knight
+1.1.1.203-203-gow,Antigonus and Cinichus; Discretion in Giving
+1.1.1.204-204-gow,Prodigality of Kings; Flatterers
+1.1.1.205-205-gow,Tale of Diogenes and Aristippus
+1.1.1.206-206-gow,Flattery
+1.1.1.207-207-gow,The Roman Triumph
+1.1.1.208-208-gow,The Emperor and his Masons
+1.1.1.209-209-gow,Caesar's Answer
+1.1.1.210-210-gow,Flatterers of a King
+1.1.1.211-211-gow,Ahab and Micaiah
+1.1.1.212-212-gow,Justice
+1.1.1.213-213-gow,Justice of Maximin
+1.1.1.214-214-gow,Gaius Fabricius
+1.1.1.215-215-gow,The Emperor Conrad
+1.1.1.216-216-gow,The Consul Carmidotirus
+1.1.1.217-217-gow,Example of Cambyses
+1.1.1.218-218-gow,Lycurgus and his Laws
+1.1.1.219-219-gow,The First Lawgivers; Kings must keep the Laws
+1.1.1.220-220-gow,The Fourth Point pf Policy; Pity
+1.1.1.221-221-gow,The Tale of Codrus
+1.1.1.222-222-gow,Pompeius and the King of Armenia
+1.1.1.223-223-gow,Cruelty
+1.1.1.224-224-gow,Cruelty of Leontius
+1.1.1.225-225-gow,Cruelty of Siculus
+1.1.1.226-226-gow,Dionysius and his Horses
+1.1.1.227-227-gow,Lichaon
+1.1.1.228-228-gow,Nobleness of the Lion
+1.1.1.229-229-gow,Spertachus and Thamaris
+1.1.1.230-230-gow,Mercy must be without Weakness
+1.1.1.231-231-gow,The Mountain and the Mouse
+1.1.1.232-232-gow,There is a time for War
+1.1.1.233-233-gow,Story of Gideon
+1.1.1.234-234-gow,Saul and Agag
+1.1.1.235-235-gow,David and Joab
+1.1.1.236-236-gow,Solomon's Wisdom
+1.1.1.237-237-gow,The Courtiers and the Fool
+1.1.1.238-238-gow,Folly of Rehoboam
+1.1.1.239-239-gow,Wisdom in a King's Council; Mercy and Justice
+1.1.1.240-240-gow,The Fifth Point of Policy; Chastity
+1.1.1.241-241-gow,Evil Example of Sardanapalus
+1.1.1.242-242-gow,David
+1.1.1.243-243-gow,Cyrus and the Lydians
+1.1.1.244-244-gow,The Counsel of Balaam
+1.1.1.245-245-gow,Evil Example of Solomon
+1.1.1.246-246-gow,Division of His Kingdom
+1.1.1.247-247-gow,Antonius
+1.1.1.248-248-gow,Tarquin and his son Aruns
+1.1.1.249-249-gow,The Rape of Lucrece
+1.1.1.250-250-gow,Tale of Virginia
+1.1.1.251-251-gow,Tobias and Sara
+1.1.1.252-252-gow,Chastity
+1.1.1.253-253-gow,Lechery; The Origins of Mankind
+1.1.1.254-254-gow,Laws of Marriage
+1.1.1.255-255-gow,Examples of Incest; Caligula; Ammon
+1.1.1.256-256-gow,Lot and his Daughters; Incest
+1.1.1.257-257-gow,Apollonius of Tyre
+1.1.1.258-258-gow,The Lover requires Counsel; The Confessor replies; The Controversy
+1.1.1.259-259-gow,The Supplication
+1.1.1.260-260-gow,Venus replies to the Supplication
+1.1.1.261-261-gow,Venus replies to the Supplication
+1.1.1.262-262-gow,The Companies of Lovers
+1.1.1.263-263-gow,Cupid and the Lover; The Fiery Dart withdrawn
+1.1.1.264-264-gow,The Healing of Love; The Absolution
+1.1.1.265-265-gow,Leave-taking of Venus
+1.1.1.266-266-gow,Author Prays for the State of England; Evil of Division in the Land; the Duty of a King
+1.1.1.267-267-gow,The Book Completed
+1.1.1.268-268-gow,Farewell to Earthly Love; Heavenly Love
+1.1.1.269-269-gow,Design of the Book; Dedication (variant text)
+1.1.1.270-270-gow,Virginity; example of Valentinianus introduced (variant text)
+1.1.1.271-271-gow,Tale of Lucius and the Statue (variant text)
+1.1.1.272-272-gow,Example of Dante (variant text)
+1.1.1.273-273-gow,Pity; example of Alexander (variant text)
+1.1.1.274-274-gow,Tale of the Jew and the Pagan (variant text)
+1.1.1.275-275-gow,Leave-taking of Venus (variant text)
+1.1.1.276-276-gow,Author prays for the King; The King commended (variant text)
+1.1.1.277-277-gow,The Author presents his Book to the King (variant text)
+1.1.1.278-278-gow,Farewell to Earthly Love; Heavenly Love (variant text)
+1.1.2.0-Peace,In Praise of Peace (variant text)

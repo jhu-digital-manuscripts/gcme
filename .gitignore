@@ -1,0 +1,12 @@
+target/
+*~
+
+# IntelliJ stuff
+.idea/
+*.iml
+
+# Eclipse files
+.classpath
+.project
+.settings
+bin
