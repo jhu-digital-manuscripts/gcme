@@ -1,0 +1,37 @@
+{
+  "settings": {
+    "index" : {
+      "refresh_interval" : "10s"
+    },
+    "analysis": {
+      "char_filter" : {
+        "remove_complex_tags" : {
+          "type": "pattern_replace",
+          "pattern": "[%#]\\S+",
+          "replacement": ""
+        }
+      },
+      "analyzer": {
+        "tagged_lemmas": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "char_filter": ["remove_complex_tags"],
+          "filter": ["lowercase", "asciifolding"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "_doc": {
+      "dynamic": false,      
+      "properties": {
+        "id": {"type": "keyword"},
+        "number": {"type": "integer"},
+        "raw_number": {"type": "keyword"},        
+        "words": {"type": "text", "analyzer": "whitespace"},
+        "tagged_lemmas": {"type": "text", "analyzer": "tagged_lemmas"},        
+        "group": {"type": "keyword"}
+      }
+    }
+  }
+}
