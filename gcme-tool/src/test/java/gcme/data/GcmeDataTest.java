@@ -88,4 +88,11 @@ public class GcmeDataTest {
         data.generateElasticsearchBulkLineIngest(Paths.get("/tmp/line.ndjson"));
     }
     
+    @Test
+    public void testLoadDictionaryDefinitions() throws IOException {
+        Map<String, String> defs = data.loadDictionaryDefinitions();
+        
+        assertTrue(defs.size() > 0);
+    }
+    
 }

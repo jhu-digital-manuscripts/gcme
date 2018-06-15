@@ -294,7 +294,7 @@ public class GcmeData {
         Map<String, List<Path>> map = loadTextMap();
         TextGroup root = loadTextStructure();
 
-        try (BufferedWriter out = Files.newBufferedWriter(output)) {
+        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
             generateElasticsearchBulkLineIngest(root, map, out);
         }
     }
@@ -307,17 +307,17 @@ public class GcmeData {
         doc.put("raw_number", line.getRawNumber());
         doc.put("words", line.getWords());
         doc.put("tagged_lemmas", line.getTaggedLemmas());
-        
+
         List<String> groups = new ArrayList<>();
-        
+
         // Add all except root group
         while (group.getParent() != null) {
             groups.add(group.getId());
             group = group.getParent();
         }
-        
+
         doc.put("group", groups);
-        
+
         return doc;
     }
 
@@ -342,37 +342,145 @@ public class GcmeData {
             }
         }
     }
-    
-    
+
     public List<DictEntry> generateDictionary() throws IOException {
         List<DictEntry> result = new ArrayList<>();
-        
-        Map<String, List<Path>> text_map = loadTextMap();
+
+        Map<String, List<Path>> group_text_map = loadTextMap();
         TextGroup root = loadTextStructure();
+
+        // tagged_lemma -> entry
+        Map<String, DictEntry> tagged_lemma_map = new HashMap<>();
+
+        generateDictionary(root, group_text_map, tagged_lemma_map);
+
+        return result;
+    }
+
+    public Map<String, String> loadDictionaryDefinitions() throws IOException {
+        Map<String, String> result = new HashMap<>();
+
+        String[] dicts = new String[] { 
+            "texts/ch/dict/ch-all.lem",
+            "texts/gow/dict/gow-all.lem",
+            "texts/anon/ch/dict/ap-all.lem"
+        };
         
-        // word form -> lemma
-        Map<String,String> word_map = new HashMap<>();
+        for (String s: dicts) {
+            Map<String, String> defs = load_dictionary_definitions(base_path.resolve(s));
+            
+            
+            
+            result.putAll(defs);
+        }
+
+        return result;
+    }
+
+    // Example: 
+    // aforn adv.      "before, previously," s.v. afore adv., prep., and conj. OED.    KEY: aforn@adv
+    // Achitofel n.    "Achitophel, King David's counselor (in the Bible)," proper n.; not in MED.     KEY: achitofel@
+    // n#propn
+    // 
+    // Note the line wrapping. Empty lines separate entries.
+    // May be multiple tagged lemmas separated by spaces after key
+
+    private Map<String, String> load_dictionary_definitions(Path dict_lem_file) throws IOException {
+        Map<String, String> result = new HashMap<>();
+
+        // First undo the line wrapping and then parse the lines
         
-        generateDictionary(root, text_map, result);
+        List<String> lines = new ArrayList<>();
         
+        try (BufferedReader in = Files.newBufferedReader(dict_lem_file, StandardCharsets.UTF_8)) {
+            String line;
+            
+            StringBuilder real_line = new StringBuilder();
+
+            while ((line = in.readLine()) != null) {
+                line = line.trim();
+                
+                if (line.isEmpty()) {
+                    if (real_line.length() > 0) {
+                        lines.add(real_line.toString());
+                        real_line.setLength(0);
+                    }
+                } else {
+                    real_line.append(line);
+                }
+            }
+            
+            if (real_line.length() > 0) {
+                lines.add(real_line.toString());
+            }
+        }
+        
+        // Now parse unwrapped lines
+        
+        final String key = "KEY:";
+
+        for (String line: lines) {
+            int i = line.indexOf(key);
+            
+            if (i == -1) {
+                //throw new IOException("Malformed entry: " + dict_lem_file + " " + line);
+                System.err.println("Warning: Could not find KEY:" + line);
+                continue;
+            }
+                
+            String def = line.substring(0, i).trim();
+            String[] tagged_lemmas = line.substring(i + key.length()).trim().split("\\s+");
+                
+            for (String tagged_lemma: tagged_lemmas) {
+                if (result.containsKey(tagged_lemma)) {
+                    //throw new IOException("Entry already exists: " + line);
+                    System.err.println("Warning: Entry already exists: " + line);
+                }
+                
+                result.put(tagged_lemma, def);
+            }
+        }
         
         return result;
     }
 
-    private void generateDictionary(TextGroup group, Map<String, List<Path>> map, List<DictEntry> result) throws IOException {
+    private void generateDictionary(TextGroup group, Map<String, List<Path>> group_text_map,
+            Map<String, DictEntry> tagged_lemma_map) throws IOException {
         List<TextGroup> children = group.getChildren();
 
         if (children == null) {
-            for (Path file : map.get(group.getId())) {
+            for (Path file : group_text_map.get(group.getId())) {
                 for (Line line : parseText(file)) {
-                    
+                    // Must remove punctuaion
+                    String[] words = line.getWords().replaceAll("\\\\p{Punct}", "").split("\\s+");
+                    String[] tagged_lemmas = line.getTaggedLemmas().split("\\s+");
+
+                    if (words.length != tagged_lemmas.length) {
+                        throw new IOException("Malformed line: " + line);
+                    }
+
+                    for (int i = 0; i < words.length; i++) {
+                        String word = words[i];
+                        String tagged_lemma = tagged_lemmas[i];
+
+                        DictEntry entry = tagged_lemma_map.get(tagged_lemma);
+
+                        if (entry == null) {
+                            entry = new DictEntry(tagged_lemma, null);
+                            tagged_lemma_map.put(tagged_lemma, entry);
+                        }
+
+                        if (!entry.getWords().contains(word)) {
+                            entry.getWords().add(word);
+                        }
+                    }
                 }
             }
         } else {
             for (TextGroup child : children) {
-                generateDictionary(group, map, result);
+                generateDictionary(group, group_text_map, tagged_lemma_map);
             }
         }
-        
+
     }
 }
