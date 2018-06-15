@@ -1,5 +1,24 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-{{welcome-page}}
-{{!-- Feel free to remove this! --}}
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    {{#link-to 'index' class='navbar-brand'}}Glossarial Concordance to Middle English{{/link-to}}
 
-{{outlet}}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        {{#link-to 'about' class='nav-link'}}About{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'contact' class='nav-link borderless'}}Contact{{/link-to}}
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<div class='container-fluid'>
+  {{outlet}}
+</div>
+
+<div class='container mt-4'>
+  <p class='text-center'>
+    <small>rev. {{app-version hideVersion=true}}</small>
+  </p>
+</div>
