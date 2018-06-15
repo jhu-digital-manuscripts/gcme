@@ -12,8 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
+import gcme.model.DictEntry;
 import gcme.model.Line;
 import gcme.model.TextGroup;
 
@@ -25,6 +28,9 @@ public class GcmeDataTest {
         // TODO Make configurable
         data = new GcmeData(Paths.get("/home/msp/prog/gcme/data"));
     }
+    
+    @Rule
+    public TemporaryFolder tmpfolder = new TemporaryFolder();
 
     @Test
     public void testText() throws Exception {
@@ -32,7 +38,7 @@ public class GcmeDataTest {
 
         assertNotNull(root);
 
-        root.print(0, System.out);
+        // root.print(0, System.out);
 
         Map<String, List<Path>> map = data.loadTextMap();
 
@@ -50,8 +56,8 @@ public class GcmeDataTest {
 
         assertEquals("107-gow", line.getId());
         assertEquals(2455, line.getNumber());
-        assertEquals("Ferst forto gete it out of Myne,", line.getWords());
-        assertEquals("first@adv forto@part geten@v1%inf hit@pron oute@adv of@prep mine@n4", line.getTaggedLemmas());
+        assertEquals("Ferst forto gete it out of Myne,", line.getText());
+        assertEquals("first@adv forto@part geten@v1%inf hit@pron oute@adv of@prep mine@n4", line.getTaggedLemmaText());
 
     }
 
@@ -82,10 +88,14 @@ public class GcmeDataTest {
         }
     }
 
-    
     @Test
     public void testGenerateElasticsearchBulkLineIngest() throws IOException {
-        data.generateElasticsearchBulkLineIngest(Paths.get("/tmp/line.ndjson"));
+        data.generateElasticsearchBulkLineIngest(tmpfolder.newFile().toPath());
+    }
+    
+    @Test
+    public void testGenerateElasticsearchBulkDictIngest() throws IOException {
+        data.generateElasticsearchBulkDictIngest(tmpfolder.newFile().toPath());
     }
     
     @Test
@@ -94,5 +104,14 @@ public class GcmeDataTest {
         
         assertTrue(defs.size() > 0);
     }
+    
+    @Test
+    public void testGenerateDictionary() throws IOException {
+        Map<String, DictEntry> dict = data.loadDictionary();
+        
+        assertTrue(dict.size() > 0);
+    }
+    
+    
     
 }

@@ -10,15 +10,15 @@ public class Line {
     private int number;
     private String raw_number;
     
-    private String words;
-    private String tagged_lemmas;
+    private String text;
+    private String tag_lemma_text;
     
-    public Line(String id, int number, String raw_number, String words, String tagged_lemmas) {
+    public Line(String id, int number, String raw_number, String text, String tag_lemma_text) {
         this.id = id;
         this.number = number;
         this.raw_number = raw_number;
-        this.words = words;
-        this.tagged_lemmas = tagged_lemmas;
+        this.text = text;
+        this.tag_lemma_text = tag_lemma_text;
     }
 
     public String getId() {
@@ -34,17 +34,17 @@ public class Line {
     }
     
 
-    public String getWords() {
-        return words;
+    public String getText() {
+        return text;
     }
 
-    public String getTaggedLemmas() {
-        return tagged_lemmas;
+    public String getTaggedLemmaText() {
+        return tag_lemma_text;
     }
 
     @Override
     public String toString() {
-        return id + " " + number + ": " + words + " {" + tagged_lemmas + "}";
+        return id + " " + number + ": " + text + " {" + tag_lemma_text + "}";
     }
 
     @Override
@@ -54,8 +54,8 @@ public class Line {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + number;
         result = prime * result + ((raw_number == null) ? 0 : raw_number.hashCode());
-        result = prime * result + ((tagged_lemmas == null) ? 0 : tagged_lemmas.hashCode());
-        result = prime * result + ((words == null) ? 0 : words.hashCode());
+        result = prime * result + ((tag_lemma_text == null) ? 0 : tag_lemma_text.hashCode());
+        result = prime * result + ((text == null) ? 0 : text.hashCode());
         return result;
     }
 
@@ -80,15 +80,15 @@ public class Line {
                 return false;
         } else if (!raw_number.equals(other.raw_number))
             return false;
-        if (tagged_lemmas == null) {
-            if (other.tagged_lemmas != null)
+        if (tag_lemma_text == null) {
+            if (other.tag_lemma_text != null)
                 return false;
-        } else if (!tagged_lemmas.equals(other.tagged_lemmas))
+        } else if (!tag_lemma_text.equals(other.tag_lemma_text))
             return false;
-        if (words == null) {
-            if (other.words != null)
+        if (text == null) {
+            if (other.text != null)
                 return false;
-        } else if (!words.equals(other.words))
+        } else if (!text.equals(other.text))
             return false;
         return true;
     }

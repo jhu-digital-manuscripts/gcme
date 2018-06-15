@@ -20,6 +20,8 @@ import gcme.model.DictEntry;
 import gcme.model.Line;
 import gcme.model.TextGroup;
 
+// Methods for accessing and normalizing data
+
 public class GcmeData {
     private final Path base_path;
 
@@ -249,6 +251,10 @@ public class GcmeData {
 
         Line result = new Line(id, number, raw_number, words.toString(), tagged_lemmas.toString());
 
+        if (result.getText().split("\\s+").length != result.getTaggedLemmaText().split("\\s+").length) {
+            throw new IOException("Malformed line: " + line);
+        }
+
         return result;
     }
 
@@ -305,17 +311,17 @@ public class GcmeData {
         doc.put("id", line.getId());
         doc.put("number", line.getNumber());
         doc.put("raw_number", line.getRawNumber());
-        doc.put("words", line.getWords());
-        doc.put("tagged_lemmas", line.getTaggedLemmas());
+        doc.put("text", line.getText());
+        doc.put("tag_lemma_text", line.getTaggedLemmaText());
 
         List<String> groups = new ArrayList<>();
 
         // Add all except root group
         while (group.getParent() != null) {
-            groups.add(group.getId());
+            groups.add(0, group.getId());
             group = group.getParent();
         }
-
+        
         doc.put("group", groups);
 
         return doc;
@@ -343,16 +349,11 @@ public class GcmeData {
         }
     }
 
-    public List<DictEntry> generateDictionary() throws IOException {
-        List<DictEntry> result = new ArrayList<>();
+    // Return map of tagged lemma to dictionary entry.
+    public Map<String, DictEntry> loadDictionary() throws IOException {
+        Map<String, DictEntry> result = new HashMap<>();
 
-        Map<String, List<Path>> group_text_map = loadTextMap();
-        TextGroup root = loadTextStructure();
-
-        // tagged_lemma -> entry
-        Map<String, DictEntry> tagged_lemma_map = new HashMap<>();
-
-        generateDictionary(root, group_text_map, tagged_lemma_map);
+        loadDictionary(loadTextStructure(), loadTextMap(), loadDictionaryDefinitions(), result);
 
         return result;
     }
@@ -360,16 +361,16 @@ public class GcmeData {
     public Map<String, String> loadDictionaryDefinitions() throws IOException {
         Map<String, String> result = new HashMap<>();
 
-        String[] dicts = new String[] { 
+        String[] dicts = new String[] {
+            "texts/anon/ch/dict/ap-all.lem",
+            "texts/gow/dict/gow-all.lem",                        
             "texts/ch/dict/ch-all.lem",
-            "texts/gow/dict/gow-all.lem",
-            "texts/anon/ch/dict/ap-all.lem"
         };
         
         for (String s: dicts) {
             Map<String, String> defs = load_dictionary_definitions(base_path.resolve(s));
             
-            
+            // TODO What about if have different definitions?
             
             result.putAll(defs);
         }
@@ -444,21 +445,21 @@ public class GcmeData {
         return result;
     }
 
-    private void generateDictionary(TextGroup group, Map<String, List<Path>> group_text_map,
+    private void loadDictionary(TextGroup group, Map<String, List<Path>> group_text_map, Map<String,String> def_map,
             Map<String, DictEntry> tagged_lemma_map) throws IOException {
         List<TextGroup> children = group.getChildren();
-
+        
         if (children == null) {
             for (Path file : group_text_map.get(group.getId())) {
                 for (Line line : parseText(file)) {
-                    // Must remove punctuaion
-                    String[] words = line.getWords().replaceAll("\\\\p{Punct}", "").split("\\s+");
-                    String[] tagged_lemmas = line.getTaggedLemmas().split("\\s+");
+                    // Must remove punctuation at end of words because it is not tagged
+                    String[] words = line.getText().replaceAll("(\\w+)\\p{Punct}", "$1").split("\\s+");
+                    String[] tagged_lemmas = line.getTaggedLemmaText().split("\\s+");
 
                     if (words.length != tagged_lemmas.length) {
-                        throw new IOException("Malformed line: " + line);
+                        throw new IOException("Malformed line does not having matching words and tags: " + file + line);
                     }
-
+                    
                     for (int i = 0; i < words.length; i++) {
                         String word = words[i];
                         String tagged_lemma = tagged_lemmas[i];
@@ -466,7 +467,31 @@ public class GcmeData {
                         DictEntry entry = tagged_lemma_map.get(tagged_lemma);
 
                         if (entry == null) {
-                            entry = new DictEntry(tagged_lemma, null);
+                            String def = def_map.get(tagged_lemma);
+                            
+                            if (def == null) {
+                                // Try without extra tags
+                                
+                                int inflection = tagged_lemma.indexOf('%');
+                                
+                                if (inflection != -1) {
+                                    def = def_map.get(tagged_lemma.substring(0, inflection));
+                                }
+                                
+                                if (def == null) {
+                                    int syn = tagged_lemma.indexOf('#');
+                                
+                                    if (syn != -1) {
+                                        def = def_map.get(tagged_lemma.substring(0, syn));
+                                    }
+                                }
+
+                                if (def == null) {
+                                    System.err.println("Warning: No definition for " + tagged_lemma);
+                                }
+                            }
+                            
+                            entry = new DictEntry(tagged_lemma, def);
                             tagged_lemma_map.put(tagged_lemma, entry);
                         }
 
@@ -478,9 +503,35 @@ public class GcmeData {
             }
         } else {
             for (TextGroup child : children) {
-                generateDictionary(group, group_text_map, tagged_lemma_map);
+                loadDictionary(child, group_text_map, def_map, tagged_lemma_map);
             }
         }
+        
+        
+    }
+    
+    public void generateElasticsearchBulkDictIngest(Path output) throws IOException {
+        Map<String, DictEntry> dict = loadDictionary();
+        
+        String action = "{ \"index\" : { } }";
 
+        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
+            for (DictEntry entry: dict.values()) {
+                JSONObject source = generateElasticsearchDocument(entry);
+                
+                out.write(action + "\n");
+                out.write(source.toString() + "\n");
+            }
+        }
+    }
+
+    private JSONObject generateElasticsearchDocument(DictEntry entry) {
+        JSONObject doc = new JSONObject();
+
+        doc.put("tag_lemma", entry.getTaggedLemma());
+        doc.put("word", entry.getWords());
+        doc.put("definition", entry.getDefinition());
+
+        return doc;
     }
 }
