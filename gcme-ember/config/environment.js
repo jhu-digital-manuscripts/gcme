@@ -23,6 +23,10 @@ module.exports = function(environment) {
     }
   };
 
+  ENV.gcme = {
+    elasticsearch: 'http://localhost:9200/_search'
+  };
+
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -44,7 +48,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    // here you can enable a production-specific feature
+    elasticsearch: '/es'
   }
 
   return ENV;

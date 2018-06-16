@@ -1,14 +1,44 @@
 
 <div class="container">
 
+<h2>Compose query</h2>
+
 <form>
   <div class="form-group">
-    <label for="query">Query</label>
-    <input type="text" class="form-control" id="query" aria-describedby="queyrHelp" placeholder="Enter query">
-    <small id="emailHelp" class="form-text text-muted">Enter words or lemmas</small>
+    <label for="words">Words</label>
+    {{input value=words key-press="completeWords" id="words" class="form-control" aria-describedby="wordsHelp" placeholder="Enter words"}}
+    <small id="wordsHelp" class="form-text text-muted">Enter words</small>
   </div>
 
-  <button type="submit" class="btn btn-primary">Search</button>
+  <div class="form-group">
+    <label for="lemmas">Lemmas</label>
+   {{input value=lemmas key-press="completeLemmas" id="lemmas" class="form-control" aria-describedby="lemmasHelp" placeholder="Enter lemmas"}}
+    <small id="lemmasHelp" class="form-text text-muted">Enter lemmas</small>
+  </div>
+
+  <button {{action "executeSearch"}} type="submit" class="btn btn-primary">Search</button>
 </form>
+
+
+{{#if result}}
+  <h2>Results</h2>
+
+  <p>
+    Total: {{result.hits.total}}
+  </p>
+
+  <table>
+
+  {{#each result.hits.hits as |hit|}}
+  <tr>
+    <td> {{hit._source.id}}</td>
+    <td> {{hit._source.raw_number}}</td>
+    <td> {{hit._source.text}}</td>
+    <td> {{hit._source.tag_lemma_text}}</td>
+  </tr>
+  {{/each}}
+
+  </table>
+{{/if}}
 
 </div>
