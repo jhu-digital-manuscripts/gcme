@@ -28,8 +28,8 @@
         "id": {"type": "keyword"},
         "number": {"type": "integer"},
         "raw_number": {"type": "keyword"},        
-        "words": {"type": "text", "analyzer": "whitespace"},
-        "tagged_lemmas": {"type": "text", "analyzer": "tagged_lemmas"},        
+        "text": {"type": "text", "analyzer": "whitespace"},
+        "tag_lemma_text": {"type": "text", "analyzer": "tagged_lemmas"},        
         "group": {"type": "keyword"}
       }
     }
