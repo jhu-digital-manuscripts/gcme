@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 export default Controller.extend({
   elasticsearch: service(),
   result: null,
+  restrict: null,
 
   actions: {
     completeWords() {
@@ -22,13 +23,25 @@ export default Controller.extend({
 
       let query = {
         query: {
-          simple_query_string: {
-            query: this.get('words'),
-            fields: ["text"],
-            default_operator: "and"
+          bool: {
+            must: {
+              simple_query_string: {
+                query: this.get('words'),
+                fields: ["text"],
+                default_operator: "and"
+              }
+            }
           }
         }
       };
+
+      if (this.restrict) {
+        query.query.bool.filter = {
+          term: {
+            group: this.restrict.id
+          }
+        };
+      }
 
       this.elasticsearch.executeQuery(query).then(result => this.set('result', result));
     },

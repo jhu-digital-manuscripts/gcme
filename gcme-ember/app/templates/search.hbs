@@ -16,8 +16,28 @@
     <small id="lemmasHelp" class="form-text text-muted">Enter lemmas</small>
   </div>
 
+  <div class="form-group">
+    <label for="restrict">Restrict to text</label>
+    {{#power-select
+      id="restrict"
+      aria-describedby="restrictHelp"
+      options=model.texts
+      selected=restrict
+      onchange=(action (mut restrict))
+      searchField="label"
+      placeholder="Select text"
+      as |entry|
+    }}
+      <span>{{entry.label}}</span>
+    {{/power-select}}
+    <small id="restrictHelp" class="form-text text-muted">Select text</small>
+  </div>
+
+
   <button {{action "executeSearch"}} type="submit" class="btn btn-primary">Search</button>
 </form>
+
+
 
 
 {{#if result}}
@@ -31,6 +51,7 @@
 
   {{#each result.hits.hits as |hit|}}
   <tr>
+    <td> {{hit._source.group}}</td>
     <td> {{hit._source.id}}</td>
     <td> {{hit._source.raw_number}}</td>
     <td> {{hit._source.text}}</td>
