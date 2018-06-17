@@ -6,13 +6,27 @@
 <form>
   <div class="form-group">
     <label for="words">Words</label>
-    {{input value=words key-press="completeWords" id="words" class="form-control" aria-describedby="wordsHelp" placeholder="Enter words"}}
+    {{input value=words key-press="completeWord" id="words" class="form-control" aria-describedby="wordsHelp" placeholder="Enter words"}}
     <small id="wordsHelp" class="form-text text-muted">Enter words</small>
   </div>
 
   <div class="form-group">
     <label for="lemmas">Lemmas</label>
-   {{input value=lemmas key-press="completeLemmas" id="lemmas" class="form-control" aria-describedby="lemmasHelp" placeholder="Enter lemmas"}}
+   <!-- {{input value=lemmas key-press="completeLemmas" id="lemmas" class="form-control" aria-describedby="lemmasHelp" placeholder="Enter lemmas"}}-->
+
+{{#power-select-multiple
+  id="lemmas"
+  aria-describedby="lemmasHelp"
+  placeholder="Enter lemmas"
+  selected=lemmas
+  options=matchingLemmas
+  onchange=(action (mut lemmas))
+  onkeydown=(action "completeLemma")
+  as |name|
+}}
+  {{name}}
+{{/power-select-multiple}}
+
     <small id="lemmasHelp" class="form-text text-muted">Enter lemmas</small>
   </div>
 

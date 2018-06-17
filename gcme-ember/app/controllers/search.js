@@ -5,14 +5,24 @@ export default Controller.extend({
   elasticsearch: service(),
   result: null,
   restrict: null,
+  lemmas: null,
+  matchingLemmas: null,
 
   actions: {
-    completeWords() {
+    completeWord() {
       console.log("complete words");
     },
 
-    completeLemmas() {
+    completeLemma(powerSelect) {
       console.log("complete lemmas");
+
+      let prefix = powerSelect.lastSearchedText;
+
+      console.log(prefix);
+
+      this.set('matchingLemmas',
+        this.elasticsearch.complete('tag_lemma', prefix).then(result => result.map(m => m.tag_lemma)));
+
     },
 
     executeSearch() {

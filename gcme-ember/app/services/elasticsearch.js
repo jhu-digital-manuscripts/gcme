@@ -12,5 +12,24 @@ export default Service.extend({
       data: JSON.stringify(query),
       headers: {'Content-Type': 'application/json; charset=utf-8'},
     });
+  },
+
+  // Return promise that resolves to array of matching source objects with the given term.
+  complete(term, prefix) {
+    let query = {
+      suggest: {
+        term_suggest : {
+          prefix : prefix,
+            completion : {
+              field: term + ".suggest"
+            }
+        }
+      }
+    };
+
+    return this.executeQuery(query).then(result => result.suggest.term_suggest[0].options.map(o => o._source));
   }
+
+
+
 });
