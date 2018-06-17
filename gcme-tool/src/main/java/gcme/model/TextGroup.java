@@ -44,6 +44,10 @@ public class TextGroup {
         return children;
     }
     
+    public boolean hasChildren() {
+        return children != null && children.size() > 0;
+    }
+    
     public void print(final int indent, PrintStream out) {
         for (int i = 0; i < indent; i++ ) {
             out.print(' ');

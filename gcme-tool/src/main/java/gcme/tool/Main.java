@@ -15,14 +15,16 @@ public class Main {
         GcmeData data = new GcmeData(Paths.get(args[0]));
         String cmd = args[1];
         
-        if (cmd.equals("gen-index-data")) {
+        if (cmd.equals("gen-data")) {
             data.generateElasticsearchBulkDictIngest(Paths.get("dict.ndjson"));
             data.generateElasticsearchBulkLineIngest(Paths.get("line.ndjson"));
+            
+            data.generateTextPowerSelectData(Paths.get("text-powersel.json"));
         } else if (cmd.equals("info")) {
             data.loadTextStructure().print(0, System.out);
         } else {
             System.err.println("Unknown command: " + cmd);
-            System.err.println("Expected: info|gen-index-data");
+            System.err.println("Expected: info|gen-data");
         }
     }
 

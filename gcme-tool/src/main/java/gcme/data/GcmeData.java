@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import gcme.model.DictEntry;
@@ -533,5 +534,80 @@ public class GcmeData {
         doc.put("definition", entry.getDefinition());
 
         return doc;
+    }
+
+    // Write out structure of texts for ember
+    //
+    // {label: "Chaucer", id: "Ch", children: []} 
+    public void generateTextStructData(Path output) throws IOException {
+        TextGroup root = loadTextStructure();
+        
+        JSONObject result  = generateTextStructData(root);
+        
+        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
+            out.write(result.toString());
+        }
+    }
+
+    private JSONObject generateTextStructData(TextGroup group) {
+        JSONObject result = new JSONObject();
+
+        result.put("label", group.getName());
+        result.put("id", group.getId());
+        
+        if (group.hasChildren()) {
+            List<JSONObject> children = new ArrayList<>();
+            
+            group.getChildren().forEach(c -> {
+                children.add(generateTextStructData(c));
+            });
+
+            result.put("children", children);
+        } 
+       
+        return result;
+    }
+    
+    // Write out data for power select so user can choose a text
+    public void generateTextPowerSelectData(Path output) throws IOException {
+        TextGroup root = loadTextStructure();
+        
+        JSONObject result = generateTextPowerSelectData(root);
+        
+        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
+            // Unwrap top level element.
+            out.write(result.getJSONArray("options").toString());
+        }
+    }
+
+
+    // Each option is {label: name, id: id}
+    // Each TextGroup with children becomes a group
+    private JSONObject generateTextPowerSelectData(TextGroup group) {
+        JSONObject result = new JSONObject();
+        
+        if (group.hasChildren()) {
+            result.put("groupName", group.getName());
+                        
+            List<JSONObject> children = new ArrayList<>();
+
+            if (group.getParent() != null) {
+                JSONObject option = new JSONObject();
+                option.put("id", group.getId());
+                option.put("label", group.getName());
+                children.add(option);
+            }
+            
+            group.getChildren().forEach(c -> {
+                children.add(generateTextPowerSelectData(c));
+            });
+
+            result.put("options", children);
+        } else {
+            result.put("id", group.getId());            
+            result.put("label", group.getName());
+        }
+       
+        return result;
     }
 }
