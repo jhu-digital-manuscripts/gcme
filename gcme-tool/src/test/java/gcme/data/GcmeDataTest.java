@@ -25,8 +25,13 @@ public class GcmeDataTest {
 
     @Before
     public void setup() throws Exception {
-        // TODO Make configurable
-        data = new GcmeData(Paths.get("/home/msp/work/gcme/data"));
+        String path = System.getenv("GCME_DATA");
+        
+        if (path == null) {
+            path = "/home/msp/prog/gcme/data";
+        }
+        
+        data = new GcmeData(Paths.get(path));
     }
     
     @Rule
