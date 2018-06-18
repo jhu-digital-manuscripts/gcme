@@ -46,14 +46,19 @@ export default Controller.extend({
       let query = {
         query: {
           bool: {
+            must: {
+              bool: {
+                                
+              }
+            }
           }
         }
       };
 
       if (this.get('requireAllWords')) {
-        query.query.bool.must = clause;
+        query.query.bool.must.bool.must = clause;
       } else {
-        query.query.bool.should = clause;
+        query.query.bool.must.bool.should = clause;
       }
 
       if (this.restrict) {
