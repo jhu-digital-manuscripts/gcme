@@ -453,8 +453,7 @@ public class GcmeData {
         if (children == null) {
             for (Path file : group_text_map.get(group.getId())) {
                 for (Line line : parseText(file)) {
-                    // Must remove punctuation at end of words because it is not tagged
-                    String[] words = line.getText().replaceAll("(\\w+)\\p{Punct}", "$1").split("\\s+");
+                    String[] words = line.getText().toLowerCase().split("\\s+");
                     String[] tagged_lemmas = line.getTaggedLemmaText().split("\\s+");
 
                     if (words.length != tagged_lemmas.length) {
@@ -464,7 +463,12 @@ public class GcmeData {
                     for (int i = 0; i < words.length; i++) {
                         String word = words[i];
                         String tagged_lemma = tagged_lemmas[i];
-
+                        
+                        // If token is a word, must remove punctuation
+                        if (word.matches(".*\\w.*")) {
+                            word = word.replaceAll("\\p{Punct}", "");
+                        }
+                        
                         DictEntry entry = tagged_lemma_map.get(tagged_lemma);
 
                         if (entry == null) {
