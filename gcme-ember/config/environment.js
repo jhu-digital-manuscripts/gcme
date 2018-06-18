@@ -48,7 +48,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    elasticsearch: '/es'
+    ENV.gcme.elasticsearch = '/es';
   }
 
   return ENV;
