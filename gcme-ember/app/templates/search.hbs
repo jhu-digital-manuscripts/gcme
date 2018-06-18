@@ -7,7 +7,7 @@
   <div class="form-group">
     <label for="words">Words</label>
     {{input value=words key-press="completeWord" id="words" class="form-control" aria-describedby="wordsHelp" placeholder="Enter words"}}
-    <small id="wordsHelp" class="form-text text-muted">Enter words</small>
+    <small id="wordsHelp" class="form-text text-muted">Match words in the original text.</small>
   </div>
 
   <div class="form-group">
@@ -19,15 +19,15 @@
   aria-describedby="lemmasHelp"
   placeholder="Enter lemmas"
   selected=lemmas
-  options=matchingLemmas
+  selectedItemComponent="selected-item-lemma"
   onchange=(action (mut lemmas))
-  onkeydown=(action "completeLemma")
-  as |name|
+  search=(action "completeLemma")
+  as |entry|
 }}
-  {{name}}
+  <b>{{entry.tag_lemma}}</b> {{entry.definition}}
 {{/power-select-multiple}}
 
-    <small id="lemmasHelp" class="form-text text-muted">Enter lemmas</small>
+    <small id="lemmasHelp" class="form-text text-muted">Match lemmas</small>
   </div>
 
   <div class="form-group">
@@ -42,17 +42,14 @@
       placeholder="Select text"
       as |entry|
     }}
-      <span>{{entry.label}}</span>
+      {{entry.label}} ({{entry.id}})
     {{/power-select}}
-    <small id="restrictHelp" class="form-text text-muted">Select text</small>
+    <small id="restrictHelp" class="form-text text-muted">Only match selected texts.</small>
   </div>
 
 
   <button {{action "executeSearch"}} type="submit" class="btn btn-primary">Search</button>
 </form>
-
-
-
 
 {{#if result}}
   <h2>Results</h2>

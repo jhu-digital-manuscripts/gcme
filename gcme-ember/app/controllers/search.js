@@ -6,23 +6,20 @@ export default Controller.extend({
   result: null,
   restrict: null,
   lemmas: null,
-  matchingLemmas: null,
 
   actions: {
     completeWord() {
       console.log("complete words");
     },
 
-    completeLemma(powerSelect) {
+    completeLemma(prefix) {
       console.log("complete lemmas");
 
-      let prefix = powerSelect.lastSearchedText;
 
       console.log(prefix);
 
-      this.set('matchingLemmas',
-        this.elasticsearch.complete('tag_lemma', prefix).then(result => result.map(m => m.tag_lemma)));
 
+      return this.elasticsearch.complete('tag_lemma', prefix);
     },
 
     executeSearch() {
