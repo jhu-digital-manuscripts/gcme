@@ -4,18 +4,11 @@
       "refresh_interval" : "10s"
     },
     "analysis": {
-      "char_filter" : {
-        "remove_complex_tags" : {
-          "type": "pattern_replace",
-          "pattern": "[%#]\\S+",
-          "replacement": ""
-        }
-      },
       "analyzer": {
         "tagged_lemmas": {
           "type": "custom",
           "tokenizer": "whitespace",
-          "char_filter": ["remove_complex_tags"],
+          "char_filter": [],
           "filter": ["lowercase", "asciifolding"]
         }
       }
