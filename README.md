@@ -40,7 +40,7 @@ word forms.
 | word              | keyword    | 1*          |
 | word.suggest      | completion | 1*          | 
 | tag_lemma         | keyword    | 1           |
-| tag_lemma.suggest | keyword    | 1           |
+| tag_lemma.suggest | completion | 1           |
 | definition        | text       | 1           |
 
 
