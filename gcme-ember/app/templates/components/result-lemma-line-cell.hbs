@@ -1,0 +1,5 @@
+{{#if record.highlight.tag_lemma_text}}
+  {{highlight record.highlight.tag_lemma_text}}
+{{else}}
+  {{record._source.tag_lemma_text}}
+{{/if}}
