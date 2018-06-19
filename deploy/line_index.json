@@ -5,7 +5,7 @@
     },
     "analysis": {
       "analyzer": {
-        "tagged_lemmas": {
+        "whitespace_ignore_case": {
           "type": "custom",
           "tokenizer": "whitespace",
           "char_filter": [],
@@ -21,8 +21,8 @@
         "id": {"type": "keyword"},
         "number": {"type": "integer"},
         "raw_number": {"type": "keyword"},        
-        "text": {"type": "text", "analyzer": "whitespace"},
-        "tag_lemma_text": {"type": "text", "analyzer": "tagged_lemmas"},        
+        "text": {"type": "text", "analyzer": "whitespace_ignore_case"},
+        "tag_lemma_text": {"type": "text", "analyzer": "whitespace_ignore_case"},        
         "group": {"type": "keyword"}
       }
     }
