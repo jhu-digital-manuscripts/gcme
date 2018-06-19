@@ -8,6 +8,7 @@ export default Controller.extend({
   lemmas: null,
   words: null,
   requireAllWords: false,
+  sortLogical: false,
 
   actions: {
     completeWord(prefix) {
@@ -48,9 +49,15 @@ export default Controller.extend({
           bool: {
             must: {
               bool: {
-                                
+
               }
             }
+          }
+        },
+        highlight: {
+          fields : {
+            text: {},
+            tag_lemma_text: {}
           }
         }
       };
@@ -61,12 +68,16 @@ export default Controller.extend({
         query.query.bool.must.bool.should = clause;
       }
 
-      if (this.restrict) {
+      if (this.get('restrict')) {
         query.query.bool.filter = {
           term: {
-            group: this.restrict.id
+            group: this.get('restrict.id')
           }
         };
+      }
+
+      if (this.get('sortLogical')) {
+        query.sort = [{ id : "asc"}, {number: "asc" }, {raw_number: "asc"}];
       }
 
       this.elasticsearch.executeQuery(query).then(result => this.set('result', result));
