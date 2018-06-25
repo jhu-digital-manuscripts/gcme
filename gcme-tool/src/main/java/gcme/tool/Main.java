@@ -20,6 +20,7 @@ public class Main {
             data.generateElasticsearchBulkLineIngest(Paths.get("line.ndjson"));
             
             data.generateTextPowerSelectData(Paths.get("text-powersel.json"));
+            data.generateTagTable(Paths.get("tag-table.json"));
         } else if (cmd.equals("info")) {
             data.loadTextStructure().print(0, System.out);
         } else {

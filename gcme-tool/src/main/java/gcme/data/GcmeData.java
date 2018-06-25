@@ -614,4 +614,56 @@ public class GcmeData {
        
         return result;
     }
+    
+    // Write out tag table in format for ember-models-table
+    // [{group: "group title", tag: "tag", description: "description"}]
+    // Derived from pos.txt which looks like
+    // ##Part of Speech        pos
+    // abbrev  abbr
+    // adj#interj      adj as interjection
+
+    public void generateTagTable(Path output) throws IOException {
+        List<JSONObject> result = new ArrayList<>();
+        
+        try (BufferedReader in = Files.newBufferedReader(base_path.resolve("pos.txt"), StandardCharsets.UTF_8)) {
+            String line;
+            
+            String group = "";
+            
+            while ((line = in.readLine()) != null) {
+                line = line.trim().replaceAll("\\s+", " ");
+                
+                if (line.startsWith("##")) {
+                    int end = line.lastIndexOf(' ');
+                    
+                    if (end == -1) {
+                        throw new IOException("Malformed line: " + line);
+                    }
+                    
+                    group = line.substring(2, end).trim();
+                } else {
+                    int i = line.indexOf(' ');
+                    
+                    if (i == -1) {
+                        throw new IOException("Malformed line: " + line);
+                    }
+                    
+                    String tag = line.substring(0, i);
+                    String description = line.substring(i).trim();
+                    
+                    JSONObject entry = new JSONObject();
+                    
+                    entry.put("group", group);
+                    entry.put("tag", tag);
+                    entry.put("description", description);
+                    
+                    result.add(entry);
+                }
+            }
+        }
+        
+        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
+            out.write(new JSONArray(result).toString());
+        }
+    }
 }
