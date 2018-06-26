@@ -13,7 +13,6 @@ def_art	def article
 ger	gerund
 indef_art	indef article
 interj	interjection
-any	any
 n	noun
 num	numeral
 part	verbal part
@@ -33,7 +32,6 @@ lat_num	Latin numeral
 lat_prep	Latin prepostion
 lat_pron	Latin pronoun
 lat_v	Latin verb
-any	any
 greek_n	Greek noun
 fr_adj	French adj
 fr_adv	French adv
@@ -57,7 +55,6 @@ adv#n	adv as noun
 adv#prep	adv as prep
 ger#adj	gerund as adj
 interj#n	interjection as noun
-any	any
 n#adj	noun as adj
 n#adv	noun as adv
 n#interj	noun as interject
@@ -87,7 +84,6 @@ adjas_n%sup	adj as noun, super
 adv%abs	adv used absolutely
 adv%comp	adv, compar degree
 adv%sup	adv, super degree
-any	any
 ger%pl	gerund, plural
 interj%imp	interject as imperative
 n#propn%gen	proper noun, genitive
