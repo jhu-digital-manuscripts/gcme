@@ -5,12 +5,12 @@
 
 <form>
   <div class="form-group">
-    <label for="words">Words</label>
+    <label for="words">Middle English words</label>
 
     {{#power-select-multiple
       id="words"
       aria-describedby="wordsHelp"
-      placeholder="Enter words"
+      placeholder="Enter words."
       selected=words
       selectedItemComponent="selected-item-word"
       onchange=(action (mut words))
@@ -18,19 +18,19 @@
       searchField="none"
       as |entry|
     }}
-      <strong>{{entry._match}}</strong> [{{entry.word}}] - {{entry.definition}}
+      <strong>{{entry._match}}</strong> {{entry.definition}}
     {{/power-select-multiple}}
 
-    <small id="wordsHelp" class="form-text text-muted">Match words in a line of text.</small>
+    <small id="wordsHelp" class="form-text text-muted">Match words in a line of text. May enter more than one.</small>
   </div>
 
   <div class="form-group">
-    <label for="lemmas">Lemmas</label>
+    <label for="lemmas">Middle English headwords</label>
 
     {{#power-select-multiple
       id="lemmas"
       aria-describedby="lemmasHelp"
-      placeholder="Enter lemmas"
+      placeholder="Enter headwords."
       selected=lemmas
       selectedItemComponent="selected-item-lemma"
       onchange=(action (mut lemmas))
@@ -38,14 +38,14 @@
       searchField="none"
       as |entry|
     }}
-    <strong>{{entry.tag_lemma}}</strong> - {{entry.definition}}
+    <strong>{{entry.tag_lemma}}</strong> [{{entry.word}}] - {{entry.definition}}
   {{/power-select-multiple}}
 
-    <small id="lemmasHelp" class="form-text text-muted">Match lemmas of words in a line of text</small>
+    <small id="lemmasHelp" class="form-text text-muted">Match headwords of a line of text. May enter more than one.</small>
   </div>
 
   <div class="form-group">
-    <label for="restrict">Restrict to text</label>
+    <label for="restrict">Restrict to location</label>
     {{#power-select
       id="restrict"
       aria-describedby="restrictHelp"
@@ -57,22 +57,22 @@
       allowClear=true
       as |entry|
     }}
-      {{entry.label}} ({{entry.id}})
+      {{entry.label}}
     {{/power-select}}
-    <small id="restrictHelp" class="form-text text-muted">Only match selected texts.</small>
+    <small id="restrictHelp" class="form-text text-muted">Only match lines of text in selected locations.</small>
   </div>
 
   <div class="form-check form-check-inline">
     {{input class="form-check-input" type="checkbox" id="allWords" checked=requireAllWords}}
     <label class="form-check-label" for="allWords">
-      All words must be present in a line.
+      All words and headwords must be present in a line.
     </label>
   </div>
 
   <div class="form-check form-check-inline mb-2">
     {{input class="form-check-input" type="checkbox" id="sort" checked=sortLogical}}
     <label class="form-check-label" for="sort">
-      Sort results in logical order, by text and then line number.
+      Sort results by location instead of relevance.
     </label>
   </div>
 
@@ -99,13 +99,13 @@
     <nav aria-label="...">
       <ul class="pagination">
         <li class="page-item">
-          <a {{action "prevPage"}} class="page-link" href="#">Previous</a>
+          <a {{action "prevPage"}} class="page-link">Previous</a>
         </li>
         <li class="page-item active">
-          <a class="page-link" href="#">{{pageNumber}} of {{pageCount}}</a>
+          <a class="page-link">Page {{pageNumber}} of {{pageCount}}</a>
         </li>
         <li class="page-item">
-          <a {{action "nextPage"}} class="page-link" href="#">Next</a>
+          <a {{action "nextPage"}} class="page-link">Next</a>
         </li>
       </ul>
     </nav>

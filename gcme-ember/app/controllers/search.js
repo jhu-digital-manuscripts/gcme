@@ -27,7 +27,7 @@ export default Controller.extend({
         component: 'result-location-cell'
       },
       {
-        title: 'Number',
+        title: 'Line number',
         propertyName: '_source.raw_number',
         disableSorting: true
       },
@@ -38,7 +38,7 @@ export default Controller.extend({
         component: 'result-text-line-cell'
       },
       {
-        title: 'Lemma text)',
+        title: 'Tagged text',
         propertyName: '_source.tag_lemma_text',
         disableSorting: true,
         component: 'result-lemma-line-cell'
