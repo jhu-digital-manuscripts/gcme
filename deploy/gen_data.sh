@@ -8,3 +8,4 @@ cd ../gcme-tool && mvn clean package && java -jar target/*-shaded.jar ../data ge
 mv ../gcme-tool/*.ndjson .
 
 mv ../gcme-tool/text-powersel.json ../gcme-ember/public
+mv ../gcme-tool/tag-table.json ../gcme-ember/public
