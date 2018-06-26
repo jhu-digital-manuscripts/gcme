@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import Bootstrap4Theme from 'ember-models-table/themes/bootstrap4';
+import $ from 'jquery';
 
 export default Controller.extend({
   elasticsearch: service(),
@@ -14,31 +15,38 @@ export default Controller.extend({
   pageSize: 10,
   pageNumber: 1,
   pageCount: 0,
-  resultColumns: [
-    {
-      title: "Location",
-      propertyName: "_source.id",
-      disableSorting: true,
-      component: "result-location-cell"
-    },
-    {
-      title: "Number",
-      propertyName: "_source.raw_number",
-      disableSorting: true
-    },
-    {
-      title: "Text",
-      propertyName: "_source.text",
-      disableSorting: true,
-      component: "result-text-line-cell"
-    },
-    {
-      title: "Lemma text)",
-      propertyName: "_source.tag_lemma_text",
-      disableSorting: true,
-      component: "result-lemma-line-cell"
-    }
-  ],
+
+  init() {
+    this._super(...arguments);
+
+    this.set('resultColumns', [
+      {
+        title: 'Location',
+        propertyName: '_source.id',
+        disableSorting: true,
+        component: 'result-location-cell'
+      },
+      {
+        title: 'Number',
+        propertyName: '_source.raw_number',
+        disableSorting: true
+      },
+      {
+        title: 'Text',
+        propertyName: '_source.text',
+        disableSorting: true,
+        component: 'result-text-line-cell'
+      },
+      {
+        title: 'Lemma text)',
+        propertyName: '_source.tag_lemma_text',
+        disableSorting: true,
+        component: 'result-lemma-line-cell'
+      }
+    ]);
+
+    this.set('restrictData', $.ajax({url: '/text-powersel.json'}));
+  },
 
   executeQuery() {
     let clause = [];
@@ -94,7 +102,7 @@ export default Controller.extend({
     }
 
     if (this.get('sortLogical')) {
-      query.sort = [{ id : "asc"}, {number: "asc" }, {raw_number: "asc"}];
+      query.sort = [{ id : 'asc'}, {number: 'asc' }, {raw_number: 'asc'}];
     }
 
     this.elasticsearch.executeQuery(query).then(result => {
