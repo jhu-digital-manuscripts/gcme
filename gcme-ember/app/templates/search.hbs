@@ -83,33 +83,38 @@
 </form>
 
 {{#if result}}
-  <div class="container mt-2">
-    <h2>Matching lines: {{result.hits.total}}</h2>
+  {{#if result.hits.total}}
+    <h3 class="text-center">Matches {{pageFirstMatchNumber}}-{{pageLastMatchNumber}} of total {{result.hits.total}}</h3>
 
+    <div class="container">
     {{models-table
       data=result.hits.hits
       columns=resultColumns
       showComponentFooter=false
-      showColumnsDropdown=false
+      showColumnsDropdown=true
       useFilteringByColumns=false
       showGlobalFilter=false
       themeInstance=resultTheme
+      pageSize=pageSize
     }}
 
     <nav aria-label="...">
-      <ul class="pagination">
-        <li class="page-item">
+      <ul class="pagination justify-content-center">
+        <li class="page-item active">
           <a {{action "prevPage"}} class="page-link">Previous</a>
         </li>
-        <li class="page-item active">
+        <li class="page-item">
           <a class="page-link">Page {{pageNumber}} of {{pageCount}}</a>
         </li>
-        <li class="page-item">
+        <li class="page-item active">
           <a {{action "nextPage"}} class="page-link">Next</a>
         </li>
       </ul>
     </nav>
   </div>
+  {{else}}
+    <h3 class="text-center">No matches</h3>
+  {{/if}}
 {{/if}}
 
 </div>

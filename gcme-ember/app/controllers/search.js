@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import Bootstrap4Theme from 'ember-models-table/themes/bootstrap4';
 import $ from 'jquery';
+import { computed } from '@ember/object';
 
 export default Controller.extend({
   elasticsearch: service(),
@@ -15,6 +16,23 @@ export default Controller.extend({
   pageSize: 10,
   pageNumber: 1,
   pageCount: 0,
+
+  // Matches numbered starting at 1. Return number of first match on current page.
+  pageFirstMatchNumber: computed('result', 'pageNumber', 'pageSize', function() {
+    return ((this.get('pageNumber') - 1) * this.get('pageSize')) + 1;
+  }),
+
+  // Matches numbered starting at 1. Return number of last match on current page.
+  pageLastMatchNumber: computed('result', 'pageNumber', 'pageSize', function() {
+    let result = this.get('pageNumber') * this.get('pageSize');
+    let total = this.get('result').hits.total;
+
+    if (result > total) {
+      result = total;
+    }
+
+    return result;
+  }),
 
   init() {
     this._super(...arguments);
@@ -33,15 +51,20 @@ export default Controller.extend({
       },
       {
         title: 'Text',
-        propertyName: '_source.text',
         disableSorting: true,
         component: 'result-text-line-cell'
       },
       {
         title: 'Tagged text',
-        propertyName: '_source.tag_lemma_text',
         disableSorting: true,
-        component: 'result-lemma-line-cell'
+        component: 'result-lemma-line-cell',
+        isHidden: true
+      },
+      {
+        title: 'Text and tagged text',
+        disableSorting: true,
+        component: 'result-combined-line-cell',
+        isHidden: true
       }
     ]);
 
