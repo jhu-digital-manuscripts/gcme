@@ -21,7 +21,7 @@
         "id": {"type": "keyword"},
         "number": {"type": "integer"},
         "raw_number": {"type": "keyword"},        
-        "text": {"type": "text", "analyzer": "whitespace_ignore_case"},
+        "text": {"type": "text", "analyzer": "simple"},
         "tag_lemma_text": {"type": "text", "analyzer": "whitespace_ignore_case"},        
         "group": {"type": "keyword"}
       }
