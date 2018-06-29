@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import Bootstrap4Theme from 'ember-models-table/themes/bootstrap4';
-import $ from 'jquery';
 import { computed } from '@ember/object';
 
 export default Controller.extend({
@@ -34,15 +33,15 @@ export default Controller.extend({
     return result;
   }),
 
-  init() {
-    this._super(...arguments);
-
-    this.set('resultColumns', [
+  // Must be computed due to awkwardness of loading groupTitleMap in model
+  resultColumns: computed('model.groupTitleMap', function() {
+    return [
       {
         title: 'Location',
         propertyName: '_source.id',
         disableSorting: true,
-        component: 'result-location-cell'
+        component: 'result-location-cell',
+        groupTitleMap: this.get('model.groupTitleMap')
       },
       {
         title: 'Line number',
@@ -60,10 +59,8 @@ export default Controller.extend({
         component: 'result-lemma-line-cell',
         isHidden: true
       }
-    ]);
-
-    this.set('restrictData', $.ajax({url: '/text-powersel.json'}));
-  },
+    ];
+  }),
 
   executeQuery() {
     let clause = [];

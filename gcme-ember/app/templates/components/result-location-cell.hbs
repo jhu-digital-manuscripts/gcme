@@ -1,1 +1,9 @@
-{{record._source.group}}
+
+{{! Show top group and last group. Should be 3-4 groups.}}
+{{get column.groupTitleMap (get record._source.group "0")}}
+-
+{{#if (get column.groupTitleMap (get record._source.group "3"))}}
+  {{get column.groupTitleMap (get record._source.group "3")}}
+{{else}}
+  {{get column.groupTitleMap (get record._source.group "2")}}
+{{/if}}
