@@ -59,12 +59,6 @@ export default Controller.extend({
         disableSorting: true,
         component: 'result-lemma-line-cell',
         isHidden: true
-      },
-      {
-        title: 'Text and tagged text',
-        disableSorting: true,
-        component: 'result-combined-line-cell',
-        isHidden: true
       }
     ]);
 
