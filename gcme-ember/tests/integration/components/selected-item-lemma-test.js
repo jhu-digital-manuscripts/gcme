@@ -17,10 +17,9 @@ module('Integration | Component | selected-item-lemma', function(hooks) {
     // Template block usage:
     await render(hbs`
       {{#selected-item-lemma}}
-        template block text
       {{/selected-item-lemma}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal(this.element.textContent.trim(), '');
   });
 });

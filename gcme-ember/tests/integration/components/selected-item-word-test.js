@@ -17,10 +17,9 @@ module('Integration | Component | selected-item-word', function(hooks) {
     // Template block usage:
     await render(hbs`
       {{#selected-item-word}}
-        template block text
       {{/selected-item-word}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal(this.element.textContent.trim(), '');
   });
 });

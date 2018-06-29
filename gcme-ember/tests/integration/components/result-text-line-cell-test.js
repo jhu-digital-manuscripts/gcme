@@ -17,10 +17,9 @@ module('Integration | Component | result-text-line-cell', function(hooks) {
     // Template block usage:
     await render(hbs`
       {{#result-text-line-cell}}
-        template block text
       {{/result-text-line-cell}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal(this.element.textContent.trim(), '');
   });
 });

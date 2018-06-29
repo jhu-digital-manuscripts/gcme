@@ -17,10 +17,9 @@ module('Integration | Component | result-lemma-line-cell', function(hooks) {
     // Template block usage:
     await render(hbs`
       {{#result-lemma-line-cell}}
-        template block text
       {{/result-lemma-line-cell}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal(this.element.textContent.trim(), '');
   });
 });
