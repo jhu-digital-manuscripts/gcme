@@ -109,8 +109,8 @@ export default Controller.extend({
 
     if (this.get('restrict')) {
       query.query.bool.filter = {
-        term: {
-          group: this.get('restrict.id')
+        terms: {
+          group: this.get('restrict').map(o => o.id)
         }
       };
     }

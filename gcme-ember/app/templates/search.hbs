@@ -46,19 +46,19 @@
 
   <div class="form-group">
     <label for="restrict">Restrict to location (to author, text, or part of text)</label>
-    {{#power-select
+    {{#power-select-multiple
       id="restrict"
       aria-describedby="restrictHelp"
-      options=restrictData
+      options=model.restrictData
       selected=restrict
       onchange=(action (mut restrict))
       searchField="label"
-      placeholder="Select text"
+      placeholder="Select locations"
       allowClear=true
       as |entry|
     }}
       {{entry.label}}
-    {{/power-select}}
+    {{/power-select-multiple}}
     <small id="restrictHelp" class="form-text text-muted">Only match lines of text in selected locations.</small>
   </div>
 
