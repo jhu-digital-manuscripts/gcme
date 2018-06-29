@@ -21,6 +21,7 @@ public class Main {
             
             data.generateTextPowerSelectData(Paths.get("text-powersel.json"));
             data.generateTagTable(Paths.get("tag-table.json"));
+            data.generateGroupTitleMap(Paths.get("group-title.json"));            
         } else if (cmd.equals("info")) {
             data.loadTextStructure().print(0, System.out);
         } else {

@@ -109,6 +109,11 @@ public class GcmeDataTest {
     }
     
     @Test
+    public void testGenerateGroupTitleMap() throws IOException {
+        data.generateGroupTitleMap(tmpfolder.newFile().toPath());
+    }
+    
+    @Test
     public void testLoadDictionaryDefinitions() throws IOException {
         Map<String, String> defs = data.loadDictionaryDefinitions();
         

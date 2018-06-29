@@ -306,7 +306,7 @@ public class GcmeData {
         }
     }
 
-    private JSONObject generateElasticsearchDocument(TextGroup group, Line line) {
+    private JSONObject generateElasticsearchDocument(TextGroup group, Line line) throws IOException {
         JSONObject doc = new JSONObject();
 
         doc.put("id", line.getId());
@@ -321,6 +321,10 @@ public class GcmeData {
         while (group.getParent() != null) {
             groups.add(0, group.getId());
             group = group.getParent();
+        }
+        
+        if (groups.size() != 3 && groups.size()!= 4) {
+            throw new IOException("Unexpected groupi size: " + line);
         }
         
         doc.put("group", groups);
@@ -665,5 +669,31 @@ public class GcmeData {
         try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
             out.write(new JSONArray(result).toString());
         }
+    }
+    
+    // Write out map from id -> title
+    public void generateGroupTitleMap(Path output) throws IOException {
+        TextGroup root = loadTextStructure();
+        
+        JSONObject result = new JSONObject();
+        generateGroupTitleMap(root, result);
+        
+        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
+            // Unwrap top level element.
+            out.write(result.toString());
+        }
+    }
+
+
+    private JSONObject generateGroupTitleMap(TextGroup group, JSONObject result) {
+        result.put(group.getId(), group.getName());
+        
+        if (group.hasChildren()) {
+            group.getChildren().forEach(c -> {
+                generateGroupTitleMap(c, result);
+            });
+        }
+       
+        return result;
     }
 }
