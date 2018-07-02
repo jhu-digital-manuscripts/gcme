@@ -14,6 +14,7 @@
       selected=words
       selectedItemComponent="selected-item-word"
       onchange=(action (mut words))
+      onkeydown=(action "selectOnSpace")
       search=(action "completeWord")
       searchField="none"
       as |entry|
@@ -34,6 +35,7 @@
       selected=lemmas
       selectedItemComponent="selected-item-lemma"
       onchange=(action (mut lemmas))
+      onkeydown=(action "selectOnSpace")
       search=(action "completeLemma")
       searchField="none"
       as |entry|

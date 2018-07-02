@@ -148,6 +148,12 @@ export default Controller.extend({
       this.executeQuery();
     },
 
+    selectOnSpace(select, e) {
+      if (e.keyCode === 32 && select.isOpen && select.highlighted) {
+        select.actions.choose(select.highlighted);
+      }
+    },
+
     prevPage() {
       let i = this.get('pageNumber');
 
