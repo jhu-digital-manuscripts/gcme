@@ -323,8 +323,8 @@ public class GcmeData {
             group = group.getParent();
         }
         
-        if (groups.size() != 3 && groups.size()!= 4) {
-            throw new IOException("Unexpected groupi size: " + line);
+        if (groups.size() < 2 || groups.size() >  4) {
+            throw new IOException("Unexpected group size: " + line);
         }
         
         doc.put("group", groups);
