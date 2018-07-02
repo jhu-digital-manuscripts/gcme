@@ -107,7 +107,7 @@ export default Controller.extend({
       query.query.bool.must.bool.should = clause;
     }
 
-    if (this.get('restrict')) {
+    if (this.get('restrict.length')) {
       query.query.bool.filter = {
         terms: {
           group: this.get('restrict').map(o => o.id)
