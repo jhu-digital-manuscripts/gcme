@@ -254,293 +254,292 @@
 0.8.1.3-RomC,Romaunt of the Rose - Fragment C
 ## 1 = Gow,John Gower
 1.0.0.0-CA,Confessio Amantis
-1.0.1.0-CAPro,Confessio Amantis - Prologue
-1.0.1.1-CABk1,Confessio Amantis - Book I
-1.0.1.2-CABk2,Confessio Amantis - Book II
-1.0.1.3-CABk3,Confessio Amantis - Book III
-1.0.1.4-CABk4,Confessio Amantis - Book IV
-1.0.1.5-CABk5,Confessio Amantis - Book V
-1.0.1.6-CABk6,Confessio Amantis - Book VI
-1.0.1.7-CABk7,Confessio Amantis - Book VII
-1.0.1.8-CABk8,Confessio Amantis - Book VIII
-1.0.2.0-CAvar,Confessio Amantis (variant text) 
+1.0.01.0-CAPro,Confessio Amantis - Prologue
+1.0.01.001-001-gow,Design of the Book; Dedication
+1.0.01.002-002-gow,Temporal Rulers
+1.0.01.003-003-gow,The Church
+1.0.01.004-004-gow,The Commons
+1.0.01.005-005-gow,Nebuchadnezzar's Dream; The Empires of the World; The latest Time
+1.0.01.006-006-gow,Division the Cause of Evil
+1.0.02.0-CABk1,Confessio Amantis - Book I
+1.0.02.007-007-gow,Love rules the world; example of the author
+1.0.02.008-008-gow,Author's woful Case; His Complaint to Cupid and Venus; The Fiery Dart;  Venus Queen of Love; Genius- the priest of Love
+1.0.02.009-009-gow,The Lover's Shrift
+1.0.02.010-010-gow,The Five Senses; Seeing
+1.0.02.011-011-gow,Tale of Acteon
+1.0.02.012-012-gow,The Tale of Medusa
+1.0.02.013-013-gow,Hearing; Prudence of the Serpent
+1.0.02.014-014-gow,Tale of the Sirens
+1.0.02.015-015-gow,The Sins of the Eye and Ear
+1.0.02.016-016-gow,The Seven deadly Sins; Pride; Five Ministers of Pride; i. Hyocrisy; Hypocrisy of Lovers
+1.0.02.017-017-gow,Tale of Mundus and Paulina
+1.0.02.018-018-gow,The Trojan horse
+1.0.02.019-019-gow,Hypocrisy in Love
+1.0.02.020-020-gow,Inobedience
+1.0.02.021-021-gow,Murmur and complaint
+1.0.02.022-022-gow,Tale of Florent
+1.0.02.023-023-gow,Surquidry or Presumption
+1.0.02.024-024-gow,Tale of Capaneus
+1.0.02.025-025-gow,The Trump of Death
+1.0.02.026-026-gow,Tale of Narcissus
+1.0.02.027-027-gow,Presumption of Lovers
+1.0.02.028-028-gow,Avantance or Boasting
+1.0.02.029-029-gow,Tale of Albinus and Rosemund
+1.0.02.030-030-gow,Vain-glory
+1.0.02.031-031-gow,The Lover's Confession
+1.0.02.032-032-gow,Nebuchadnezzar's Punishment
+1.0.02.033-033-gow,Humility
+1.0.02.034-034-gow,Tale of the Three Questions
+1.0.02.035-035-gow,Humility
+1.0.03.0-CABk2,Confessio Amantis - Book II
+1.0.03.036-036-gow,Envy; Sorrow for another man's Joy
+1.0.03.037-037-gow,Tale of Acis and Galatea
+1.0.03.038-038-gow,Joy for another man's Grief
+1.0.03.039-039-gow,The Travellers and the Angel
+1.0.03.040-040-gow,Detraction; Detraction of Lovers
+1.0.03.041-041-gow,Tale of Constance
+1.0.03.042-042-gow,Demetrius and Perseus
+1.0.03.043-043-gow,False-Semblant
+1.0.03.044-044-gow,Deianira and Nessus
+1.0.03.045-045-gow,Supplantation
+1.0.03.046-046-gow,Geta and Amphitrion
+1.0.03.047-047-gow,Tale of the False Bachelor
+1.0.03.048-048-gow,Pope Boniface
+1.0.03.049-049-gow,Nature of Envy; Charity and Pity
+1.0.03.050-050-gow,Tale of Constantine and Silvester
+1.0.04.0-CABk3,Confessio Amantis - Book III
+1.0.04.051-051-gow,Ire or Wrath; Melancholy
+1.0.04.052-052-gow,Tale of Canace and Machaire
+1.0.04.053-053-gow,Tiresias and the Snakes
+1.0.04.054-054-gow,Melancholy
+1.0.04.055-055-gow,Cheste
+1.0.04.056-056-gow,Patience of Socrates
+1.0.04.057-057-gow,Jupiter- Juno- and Tiresias
+1.0.04.058-058-gow,Cheste
+1.0.04.059-059-gow,Phebus and Cornide
+1.0.04.060-060-gow,Jupiter and Laar
+1.0.04.061-061-gow,Hate
+1.0.04.062-062-gow,King Namplus and the Greeks
+1.0.04.063-063-gow,Contek and Homicide; Contek within the Heart
+1.0.04.064-064-gow,Tale of Diogenes and Alexander;
+1.0.04.065-065-gow,Contek
+1.0.04.066-066-gow,Pyramus and Thisbe
+1.0.04.067-067-gow,The Lover's Confession; Danger; More haste worse than speed
+1.0.04.068-068-gow,Tale of Phebus and Daphne
+1.0.04.069-069-gow,Fool-haste
+1.0.04.070-070-gow,Athemas and Demephon
+1.0.04.071-071-gow,Tale of Orestes
+1.0.04.072-072-gow,Lawful Homicide
+1.0.04.073-073-gow,Evil of War
+1.0.04.074-074-gow,Alexander and the Pirate
+1.0.04.075-075-gow,Wars and Death of Alexander
+1.0.04.076-076-gow,Are Crusades Lawful -  Guilt of Homicide;
+1.0.04.077-077-gow,A Strange Bird; Mercy
+1.0.04.078-078-gow,Tale of Telephus and Teucer
+1.0.05.0-CABk4,Confessio Amantis - Book IV
+1.0.05.079-079-gow,Sloth; Lachesse
+1.0.05.080-080-gow,Eneas and Dido
+1.0.05.081-081-gow,Ulysses and Penelope
+1.0.05.082-082-gow,Grosteste; The Foolish Virgins
+1.0.05.083-083-gow,Lachesse
+1.0.05.084-084-gow,Pusillanimity
+1.0.05.085-085-gow,Pygmaleon and the Statue
+1.0.05.086-086-gow,Tale of Iphis
+1.0.05.087-087-gow,Forgetfulness
+1.0.05.088-088-gow,Demephon and Phillis
+1.0.05.089-089-gow,Negligence
+1.0.05.090-090-gow,Tale of Phaeton
+1.0.05.091-091-gow,Tale of Icarus
+1.0.05.092-092-gow,Idleness
+1.0.05.093-093-gow,Tale of Rosiphelee
+1.0.05.094-094-gow,Idleness in Love
+1.0.05.095-095-gow,Tale of Jephtha's Daughter
+1.0.05.096-096-gow,Lovers must approve themselves in arms; Arguments to the Contrary; The Confessor replies
+1.0.05.097-097-gow,Tale of Nauplus and Ulysses
+1.0.05.098-098-gow,Examples of Prowess; Protesilaus;
+1.0.05.099-099-gow,Saul
+1.0.05.100-100-gow,Education of Achilles
+1.0.05.101-101-gow,Prowess
+1.0.05.102-102-gow,Tale of Hercules and Achelons
+1.0.05.103-103-gow,Penthesilea
+1.0.05.104-104-gow,Philemenis; Eneas
+1.0.05.105-105-gow,Gentilesse
+1.0.05.106-106-gow,Effects of Love; Love contrary to Sloth
+1.0.05.107-107-gow,Uses oflabour; discoverers and inventors
+1.0.05.108-108-gow,Alchemy; The Three Stones of the Philosophers; The First Alchemists
+1.0.05.109-109-gow,Letters and Language
+1.0.05.110-110-gow,Somnolence
+1.0.05.111-111-gow,The Lover's Wakefulness
+1.0.05.112-112-gow,Dreams
+1.0.05.113-113-gow,Tale of Ceix and Alceone
+1.0.05.114-114-gow,Sleeping and Waking
+1.0.05.115-115-gow,The Prayer of Cephalus
+1.0.05.116-116-gow,Argus and Mercury
+1.0.05.117-117-gow,Tristesse or Despondency
+1.0.05.118-118-gow,Tale of Iphis and Araxarathen
+1.0.06.0-CABk5,Confessio Amantis - Book V
+1.0.06.119-119-gow,Avarice
+1.0.06.120-120-gow,Tale of Midas
+1.0.06.121-121-gow,The Punishment of Tantalus
+1.0.06.122-122-gow,Avarice; Jealousy of Lovers
+1.0.06.123-123-gow,Tale of Vulcan and Venus
+1.0.06.124-124-gow,Belief of the Chaldeans; Belief of the Egyptians
+1.0.06.125-125-gow,Belief of the Greeks
+1.0.06.126-126-gow,Origin of Idol Worship
+1.0.06.127-127-gow,Belief of the Jews
+1.0.06.128-128-gow,The Christian Faith
+1.0.06.129-129-gow,Coveitise
+1.0.06.130-130-gow,Tale of Virgil's Mirror
+1.0.06.131-131-gow,Coveitise
+1.0.06.132-132-gow,Tale of the Two Coffers
+1.0.06.133-133-gow,Tale of the Beggars and the Pasties
+1.0.06.134-134-gow,Coveitise of Lovers
+1.0.06.135-135-gow,Tale of the King and his Steward's Wife
+1.0.06.136-136-gow,False Witness and Perjury
+1.0.06.137-137-gow,Tale of Achilles and Deidamia
+1.0.06.138-138-gow,Perjury
+1.0.06.139-139-gow,Tale of Jason and Medea
+1.0.06.140-140-gow,Tale of Phrixus and Helle
+1.0.06.141-141-gow,Usury
+1.0.06.142-142-gow,Love Brokerage; Tale of Echo; 
+1.0.06.143-143-gow,Parsimony
+1.0.06.144-144-gow,Tale of Babio and Croceus
+1.0.06.145-145-gow,Ingratitude
+1.0.06.146-146-gow,Tale of Adrian and Bardus
+1.0.06.147-147-gow,Ingratitude
+1.0.06.148-148-gow,Tale of Theseus and Ariadne
+1.0.06.149-149-gow,Ravine
+1.0.06.150-150-gow,Tale of Tereus
+1.0.06.151-151-gow,Robbery
+1.0.06.152-152-gow,Neptune and Cornix
+1.0.06.153-153-gow,Tale of Calistona
+1.0.06.154-154-gow,Virginity
+1.0.06.155-155-gow,Stealth and Michery
+1.0.06.156-156-gow,Stealth of Lovers
+1.0.06.157-157-gow,Tale of Leucothoe
+1.0.06.158-158-gow,Tale of Hercules and Faunus
+1.0.06.159-159-gow,Sacrilege
+1.0.06.160-160-gow,Sacrilege of Lovers
+1.0.06.161-161-gow,Tale of Paris and Helen
+1.0.06.162-162-gow,Sacrilege of Lovers; Divisions of Avarice
+1.0.06.163-163-gow,Prodigality and Largesse
+1.0.06.164-164-gow,Prodigality of Lovers
+1.0.07.0-CABk6,Confessio Amantis - Book VI
+1.0.07.165-165-gow,Gluttony; Drunkenness;
+1.0.07.166-166-gow,Love-Drunkenness
+1.0.07.167-167-gow,Jupiter's Two Tuns
+1.0.07.168-168-gow,Prayer; Bacchus in the Desert
+1.0.07.169-169-gow,Love Drunkenness; Tristram
+1.0.07.170-170-gow,Marriage of Pirithous
+1.0.07.171-171-gow,Galbus and Vitellius
+1.0.07.172-172-gow,Delicacy;
+1.0.07.173-173-gow,Love-Delicacy; Delicacy
+1.0.07.174-174-gow,Dives and Lazarus
+1.0.07.175-175-gow,Delicacy of Nero
+1.0.07.176-176-gow,Love-Delicacy
+1.0.07.177-177-gow,Sorcery and Witchcraft
+1.0.07.178-178-gow,Tale of Ulysses and Telegonus
+1.0.07.179-179-gow,Tale of Nectanabus
+1.0.07.180-180-gow,Zoroaster; Saul and the Witch; Magic to be Eschewed
+1.0.08.0-CABk7,Confessio Amantis - Book VII
+1.0.08.181-181-gow,The Education of Alexander; Three Parts of Philosophy
+1.0.08.182-182-gow,Theoric; Theology
+1.0.08.183-183-gow,Physics
+1.0.08.184-184-gow,Mathematics
+1.0.08.185-185-gow,Creation of the Four Elements
+1.0.08.186-186-gow,The Four Complexions of Man
+1.0.08.187-187-gow,The Soul of Man
+1.0.08.188-188-gow,The Division of the Earth
+1.0.08.189-189-gow,Astronmy
+1.0.08.190-190-gow,Planets and Signs
+1.0.08.191-191-gow,The Planets
+1.0.08.192-192-gow,The Signs
+1.0.08.193-193-gow,The Fifteen Stars
+1.0.08.194-194-gow,Authors of the Science of Astronomy
+1.0.08.195-195-gow,Rhetoric
+1.0.08.196-196-gow,Practic; Five Points of Policy
+1.0.08.197-197-gow,The First Poiont of Policy; Truth
+1.0.08.198-198-gow,King- Wine- Woman- and Truth
+1.0.08.199-199-gow,Tale of Alcestis
+1.0.08.200-200-gow,King- Wine- Woman- and Truth
+1.0.08.201-201-gow,The Second Point of Policy; Liberality
+1.0.08.202-202-gow,Tale of Julius and the Poor Knight
+1.0.08.203-203-gow,Antigonus and Cinichus; Discretion in Giving
+1.0.08.204-204-gow,Prodigality of Kings; Flatterers
+1.0.08.205-205-gow,Tale of Diogenes and Aristippus
+1.0.08.206-206-gow,Flattery
+1.0.08.207-207-gow,The Roman Triumph
+1.0.08.208-208-gow,The Emperor and his Masons
+1.0.08.209-209-gow,Caesar's Answer
+1.0.08.210-210-gow,Flatterers of a King
+1.0.08.211-211-gow,Ahab and Micaiah
+1.0.08.212-212-gow,Justice
+1.0.08.213-213-gow,Justice of Maximin
+1.0.08.214-214-gow,Gaius Fabricius
+1.0.08.215-215-gow,The Emperor Conrad
+1.0.08.216-216-gow,The Consul Carmidotirus
+1.0.08.217-217-gow,Example of Cambyses
+1.0.08.218-218-gow,Lycurgus and his Laws
+1.0.08.219-219-gow,The First Lawgivers; Kings must keep the Laws
+1.0.08.220-220-gow,The Fourth Point pf Policy; Pity
+1.0.08.221-221-gow,The Tale of Codrus
+1.0.08.222-222-gow,Pompeius and the King of Armenia
+1.0.08.223-223-gow,Cruelty
+1.0.08.224-224-gow,Cruelty of Leontius
+1.0.08.225-225-gow,Cruelty of Siculus
+1.0.08.226-226-gow,Dionysius and his Horses
+1.0.08.227-227-gow,Lichaon
+1.0.08.228-228-gow,Nobleness of the Lion
+1.0.08.229-229-gow,Spertachus and Thamaris
+1.0.08.230-230-gow,Mercy must be without Weakness
+1.0.08.231-231-gow,The Mountain and the Mouse
+1.0.08.232-232-gow,There is a time for War
+1.0.08.233-233-gow,Story of Gideon
+1.0.08.234-234-gow,Saul and Agag
+1.0.08.235-235-gow,David and Joab
+1.0.08.236-236-gow,Solomon's Wisdom
+1.0.08.237-237-gow,The Courtiers and the Fool
+1.0.08.238-238-gow,Folly of Rehoboam
+1.0.08.239-239-gow,Wisdom in a King's Council; Mercy and Justice
+1.0.08.240-240-gow,The Fifth Point of Policy; Chastity
+1.0.08.241-241-gow,Evil Example of Sardanapalus
+1.0.08.242-242-gow,David
+1.0.08.243-243-gow,Cyrus and the Lydians
+1.0.08.244-244-gow,The Counsel of Balaam
+1.0.08.245-245-gow,Evil Example of Solomon
+1.0.08.246-246-gow,Division of His Kingdom
+1.0.08.247-247-gow,Antonius
+1.0.08.248-248-gow,Tarquin and his son Aruns
+1.0.08.249-249-gow,The Rape of Lucrece
+1.0.08.250-250-gow,Tale of Virginia
+1.0.08.251-251-gow,Tobias and Sara
+1.0.08.252-252-gow,Chastity
+1.0.09.0-CABk8,Confessio Amantis - Book VIII
+1.0.09.253-253-gow,Lechery; The Origins of Mankind
+1.0.09.254-254-gow,Laws of Marriage
+1.0.09.255-255-gow,Examples of Incest; Caligula; Ammon
+1.0.09.256-256-gow,Lot and his Daughters; Incest
+1.0.09.257-257-gow,Apollonius of Tyre
+1.0.09.258-258-gow,The Lover requires Counsel; The Confessor replies; The Controversy
+1.0.09.259-259-gow,The Supplication
+1.0.09.260-260-gow,Venus replies to the Supplication
+1.0.09.261-261-gow,Venus replies to the Supplication
+1.0.09.262-262-gow,The Companies of Lovers
+1.0.09.263-263-gow,Cupid and the Lover; The Fiery Dart withdrawn
+1.0.09.264-264-gow,The Healing of Love; The Absolution
+1.0.09.265-265-gow,Leave-taking of Venus
+1.0.09.266-266-gow,Author Prays for the State of England; Evil of Division in the Land; the Duty of a King
+1.0.09.267-267-gow,The Book Completed
+1.0.09.268-268-gow,Farewell to Earthly Love; Heavenly Love
+1.0.10.0-CAvar,Confessio Amantis (variant text) 
+1.0.10.269-269-gow,Design of the Book; Dedication (variant text)
+1.0.10.270-270-gow,Virginity; example of Valentinianus introduced (variant text)
+1.0.10.271-271-gow,Tale of Lucius and the Statue (variant text)
+1.0.10.272-272-gow,Example of Dante (variant text)
+1.0.10.273-273-gow,Pity; example of Alexander (variant text)
+1.0.10.274-274-gow,Tale of the Jew and the Pagan (variant text)
+1.0.10.275-275-gow,Leave-taking of Venus (variant text)
+1.0.10.276-276-gow,Author prays for the King; The King commended (variant text)
+1.0.10.277-277-gow,The Author presents his Book to the King (variant text)
+#1.0.10.278-278-gow,Farewell to Earthly Love; Heavenly Love (variant text)
 1.1.0.0-Peace,In Praise of Peace
-1.1.1.001-001-gow,Design of the Book; Dedication
-1.1.1.002-002-gow,Temporal Rulers
-1.1.1.003-003-gow,The Church
-1.1.1.004-004-gow,The Commons
-1.1.1.005-005-gow,Nebuchadnezzar's Dream; The Empires of the World; The latest Time
-1.1.1.006-006-gow,Division the Cause of Evil
-1.1.1.007-007-gow,Love rules the world; example of the author
-1.1.1.008-008-gow,Author's woful Case; His Complaint to Cupid and Venus; The Fiery Dart;  Venus Queen of Love; Genius- the priest of Love
-1.1.1.009-009-gow,The Lover's Shrift
-1.1.1.010-010-gow,The Five Senses; Seeing
-1.1.1.011-011-gow,Tale of Acteon
-1.1.1.012-012-gow,The Tale of Medusa
-1.1.1.013-013-gow,Hearing; Prudence of the Serpent
-1.1.1.014-014-gow,Tale of the Sirens
-1.1.1.015-015-gow,The Sins of the Eye and Ear
-1.1.1.016-016-gow,The Seven deadly Sins; Pride; Five Ministers of Pride; i. Hyocrisy; Hypocrisy of Lovers
-1.1.1.017-017-gow,Tale of Mundus and Paulina
-1.1.1.018-018-gow,The Trojan horse
-1.1.1.019-019-gow,Hypocrisy in Love
-1.1.1.020-020-gow,Inobedience
-1.1.1.021-021-gow,Murmur and complaint
-1.1.1.022-022-gow,Tale of Florent
-1.1.1.023-023-gow,Surquidry or Presumption
-1.1.1.024-024-gow,Tale of Capaneus
-1.1.1.025-025-gow,The Trump of Death
-1.1.1.026-026-gow,Tale of Narcissus
-1.1.1.027-027-gow,Presumption of Lovers
-1.1.1.028-028-gow,Avantance or Boasting
-1.1.1.029-029-gow,Tale of Albinus and Rosemund
-1.1.1.030-030-gow,Vain-glory
-1.1.1.031-031-gow,The Lover's Confession
-1.1.1.032-032-gow,Nebuchadnezzar's Punishment
-1.1.1.033-033-gow,Humility
-1.1.1.034-034-gow,Tale of the Three Questions
-1.1.1.035-035-gow,Humility
-1.1.1.036-036-gow,Envy; Sorrow for another man's Joy
-1.1.1.037-037-gow,Tale of Acis and Galatea
-1.1.1.038-038-gow,Joy for another man's Grief
-1.1.1.039-039-gow,The Travellers and the Angel
-1.1.1.040-040-gow,Detraction; Detraction of Lovers
-1.1.1.041-041-gow,Tale of Constance
-1.1.1.042-042-gow,Demetrius and Perseus
-1.1.1.043-043-gow,False-Semblant
-1.1.1.044-044-gow,Deianira and Nessus
-1.1.1.045-045-gow,Supplantation
-1.1.1.046-046-gow,Geta and Amphitrion
-1.1.1.047-047-gow,Tale of the False Bachelor
-1.1.1.048-048-gow,Pope Boniface
-1.1.1.049-049-gow,Nature of Envy; Charity and Pity
-1.1.1.050-050-gow,Tale of Constantine and Silvester
-1.1.1.051-051-gow,Ire or Wrath; Melancholy
-1.1.1.052-052-gow,Tale of Canace and Machaire
-1.1.1.053-053-gow,Tiresias and the Snakes
-1.1.1.054-054-gow,Melancholy
-1.1.1.055-055-gow,Cheste
-1.1.1.056-056-gow,Patience of Socrates
-1.1.1.057-057-gow,Jupiter- Juno- and Tiresias
-1.1.1.058-058-gow,Cheste
-1.1.1.059-059-gow,Phebus and Cornide
-1.1.1.060-060-gow,Jupiter and Laar
-1.1.1.061-061-gow,Hate
-1.1.1.062-062-gow,King Namplus and the Greeks
-1.1.1.063-063-gow,Contek and Homicide; Contek within the Heart
-1.1.1.064-064-gow,Tale of Diogenes and Alexander;
-1.1.1.065-065-gow,Contek
-1.1.1.066-066-gow,Pyramus and Thisbe
-1.1.1.067-067-gow,The Lover's Confession; Danger; More haste worse than speed
-1.1.1.068-068-gow,Tale of Phebus and Daphne
-1.1.1.069-069-gow,Fool-haste
-1.1.1.070-070-gow,Athemas and Demephon
-1.1.1.071-071-gow,Tale of Orestes
-1.1.1.072-072-gow,Lawful Homicide
-1.1.1.073-073-gow,Evil of War
-1.1.1.074-074-gow,Alexander and the Pirate
-1.1.1.075-075-gow,Wars and Death of Alexander
-1.1.1.076-076-gow,Are Crusades Lawful -  Guilt of Homicide;
-1.1.1.077-077-gow,A Strange Bird; Mercy
-1.1.1.078-078-gow,Tale of Telephus and Teucer
-1.1.1.079-079-gow,Sloth; Lachesse
-1.1.1.080-080-gow,Eneas and Dido
-1.1.1.081-081-gow,Ulysses and Penelope
-1.1.1.082-082-gow,Grosteste; The Foolish Virgins
-1.1.1.083-083-gow,Lachesse
-1.1.1.084-084-gow,Pusillanimity
-1.1.1.085-085-gow,Pygmaleon and the Statue
-1.1.1.086-086-gow,Tale of Iphis
-1.1.1.087-087-gow,Forgetfulness
-1.1.1.088-088-gow,Demephon and Phillis
-1.1.1.089-089-gow,Negligence
-1.1.1.090-090-gow,Tale of Phaeton
-1.1.1.091-091-gow,Tale of Icarus
-1.1.1.092-092-gow,Idleness
-1.1.1.093-093-gow,Tale of Rosiphelee
-1.1.1.094-094-gow,Idleness in Love
-1.1.1.095-095-gow,Tale of Jephtha's Daughter
-1.1.1.096-096-gow,Lovers must approve themselves in arms; Arguments to the Contrary; The Confessor replies
-1.1.1.097-097-gow,Tale of Nauplus and Ulysses
-1.1.1.098-098-gow,Examples of Prowess; Protesilaus;
-1.1.1.099-099-gow,Saul
-1.1.1.100-100-gow,Education of Achilles
-1.1.1.101-101-gow,Prowess
-1.1.1.102-102-gow,Tale of Hercules and Achelons
-1.1.1.103-103-gow,Penthesilea
-1.1.1.104-104-gow,Philemenis; Eneas
-1.1.1.105-105-gow,Gentilesse
-1.1.1.106-106-gow,Effects of Love; Love contrary to Sloth
-1.1.1.107-107-gow,Uses oflabour; discoverers and inventors
-1.1.1.108-108-gow,Alchemy; The Three Stones of the Philosophers; The First Alchemists
-1.1.1.109-109-gow,Letters and Language
-1.1.1.110-110-gow,Somnolence
-1.1.1.111-111-gow,The Lover's Wakefulness
-1.1.1.112-112-gow,Dreams
-1.1.1.113-113-gow,Tale of Ceix and Alceone
-1.1.1.114-114-gow,Sleeping and Waking
-1.1.1.115-115-gow,The Prayer of Cephalus
-1.1.1.116-116-gow,Argus and Mercury
-1.1.1.117-117-gow,Tristesse or Despondency
-1.1.1.118-118-gow,Tale of Iphis and Araxarathen
-1.1.1.119-119-gow,Avarice
-1.1.1.120-120-gow,Tale of Midas
-1.1.1.121-121-gow,The Punishment of Tantalus
-1.1.1.122-122-gow,Avarice; Jealousy of Lovers
-1.1.1.123-123-gow,Tale of Vulcan and Venus
-1.1.1.124-124-gow,Belief of the Chaldeans; Belief of the Egyptians
-1.1.1.125-125-gow,Belief of the Greeks
-1.1.1.126-126-gow,Origin of Idol Worship
-1.1.1.127-127-gow,Belief of the Jews
-1.1.1.128-128-gow,The Christian Faith
-1.1.1.129-129-gow,Coveitise
-1.1.1.130-130-gow,Tale of Virgil's Mirror
-1.1.1.131-131-gow,Coveitise
-1.1.1.132-132-gow,Tale of the Two Coffers
-1.1.1.133-133-gow,Tale of the Beggars and the Pasties
-1.1.1.134-134-gow,Coveitise of Lovers
-1.1.1.135-135-gow,Tale of the King and his Steward's Wife
-1.1.1.136-136-gow,False Witness and Perjury
-1.1.1.137-137-gow,Tale of Achilles and Deidamia
-1.1.1.138-138-gow,Perjury
-1.1.1.139-139-gow,Tale of Jason and Medea
-1.1.1.140-140-gow,Tale of Phrixus and Helle
-1.1.1.141-141-gow,Usury
-1.1.1.142-142-gow,Love Brokerage; Tale of Echo; 
-1.1.1.143-143-gow,Parsimony
-1.1.1.144-144-gow,Tale of Babio and Croceus
-1.1.1.145-145-gow,Ingratitude
-1.1.1.146-146-gow,Tale of Adrian and Bardus
-1.1.1.147-147-gow,Ingratitude
-1.1.1.148-148-gow,Tale of Theseus and Ariadne
-1.1.1.149-149-gow,Ravine
-1.1.1.150-150-gow,Tale of Tereus
-1.1.1.151-151-gow,Robbery
-1.1.1.152-152-gow,Neptune and Cornix
-1.1.1.153-153-gow,Tale of Calistona
-1.1.1.154-154-gow,Virginity
-1.1.1.155-155-gow,Stealth and Michery
-1.1.1.156-156-gow,Stealth of Lovers
-1.1.1.157-157-gow,Tale of Leucothoe
-1.1.1.158-158-gow,Tale of Hercules and Faunus
-1.1.1.159-159-gow,Sacrilege
-1.1.1.160-160-gow,Sacrilege of Lovers
-1.1.1.161-161-gow,Tale of Paris and Helen
-1.1.1.162-162-gow,Sacrilege of Lovers; Divisions of Avarice
-1.1.1.163-163-gow,Prodigality and Largesse
-1.1.1.164-164-gow,Prodigality of Lovers
-1.1.1.165-165-gow,Gluttony; Drunkenness;
-1.1.1.166-166-gow,Love-Drunkenness
-1.1.1.167-167-gow,Jupiter's Two Tuns
-1.1.1.168-168-gow,Prayer; Bacchus in the Desert
-1.1.1.169-169-gow,Love Drunkenness; Tristram
-1.1.1.170-170-gow,Marriage of Pirithous
-1.1.1.171-171-gow,Galbus and Vitellius
-1.1.1.172-172-gow,Delicacy;
-1.1.1.173-173-gow,Love-Delicacy; Delicacy
-1.1.1.174-174-gow,Dives and Lazarus
-1.1.1.175-175-gow,Delicacy of Nero
-1.1.1.176-176-gow,Love-Delicacy
-1.1.1.177-177-gow,Sorcery and Witchcraft
-1.1.1.178-178-gow,Tale of Ulysses and Telegonus
-1.1.1.179-179-gow,Tale of Nectanabus
-1.1.1.180-180-gow,Zoroaster; Saul and the Witch; Magic to be Eschewed
-1.1.1.181-181-gow,The Education of Alexander; Three Parts of Philosophy
-1.1.1.182-182-gow,Theoric; Theology
-1.1.1.183-183-gow,Physics
-1.1.1.184-184-gow,Mathematics
-1.1.1.185-185-gow,Creation of the Four Elements
-1.1.1.186-186-gow,The Four Complexions of Man
-1.1.1.187-187-gow,The Soul of Man
-1.1.1.188-188-gow,The Division of the Earth
-1.1.1.189-189-gow,Astronmy
-1.1.1.190-190-gow,Planets and Signs
-1.1.1.191-191-gow,The Planets
-1.1.1.192-192-gow,The Signs
-1.1.1.193-193-gow,The Fifteen Stars
-1.1.1.194-194-gow,Authors of the Science of Astronomy
-1.1.1.195-195-gow,Rhetoric
-1.1.1.196-196-gow,Practic; Five Points of Policy
-1.1.1.197-197-gow,The First Poiont of Policy; Truth
-1.1.1.198-198-gow,King- Wine- Woman- and Truth
-1.1.1.199-199-gow,Tale of Alcestis
-1.1.1.200-200-gow,King- Wine- Woman- and Truth
-1.1.1.201-201-gow,The Second Point of Policy; Liberality
-1.1.1.202-202-gow,Tale of Julius and the Poor Knight
-1.1.1.203-203-gow,Antigonus and Cinichus; Discretion in Giving
-1.1.1.204-204-gow,Prodigality of Kings; Flatterers
-1.1.1.205-205-gow,Tale of Diogenes and Aristippus
-1.1.1.206-206-gow,Flattery
-1.1.1.207-207-gow,The Roman Triumph
-1.1.1.208-208-gow,The Emperor and his Masons
-1.1.1.209-209-gow,Caesar's Answer
-1.1.1.210-210-gow,Flatterers of a King
-1.1.1.211-211-gow,Ahab and Micaiah
-1.1.1.212-212-gow,Justice
-1.1.1.213-213-gow,Justice of Maximin
-1.1.1.214-214-gow,Gaius Fabricius
-1.1.1.215-215-gow,The Emperor Conrad
-1.1.1.216-216-gow,The Consul Carmidotirus
-1.1.1.217-217-gow,Example of Cambyses
-1.1.1.218-218-gow,Lycurgus and his Laws
-1.1.1.219-219-gow,The First Lawgivers; Kings must keep the Laws
-1.1.1.220-220-gow,The Fourth Point pf Policy; Pity
-1.1.1.221-221-gow,The Tale of Codrus
-1.1.1.222-222-gow,Pompeius and the King of Armenia
-1.1.1.223-223-gow,Cruelty
-1.1.1.224-224-gow,Cruelty of Leontius
-1.1.1.225-225-gow,Cruelty of Siculus
-1.1.1.226-226-gow,Dionysius and his Horses
-1.1.1.227-227-gow,Lichaon
-1.1.1.228-228-gow,Nobleness of the Lion
-1.1.1.229-229-gow,Spertachus and Thamaris
-1.1.1.230-230-gow,Mercy must be without Weakness
-1.1.1.231-231-gow,The Mountain and the Mouse
-1.1.1.232-232-gow,There is a time for War
-1.1.1.233-233-gow,Story of Gideon
-1.1.1.234-234-gow,Saul and Agag
-1.1.1.235-235-gow,David and Joab
-1.1.1.236-236-gow,Solomon's Wisdom
-1.1.1.237-237-gow,The Courtiers and the Fool
-1.1.1.238-238-gow,Folly of Rehoboam
-1.1.1.239-239-gow,Wisdom in a King's Council; Mercy and Justice
-1.1.1.240-240-gow,The Fifth Point of Policy; Chastity
-1.1.1.241-241-gow,Evil Example of Sardanapalus
-1.1.1.242-242-gow,David
-1.1.1.243-243-gow,Cyrus and the Lydians
-1.1.1.244-244-gow,The Counsel of Balaam
-1.1.1.245-245-gow,Evil Example of Solomon
-1.1.1.246-246-gow,Division of His Kingdom
-1.1.1.247-247-gow,Antonius
-1.1.1.248-248-gow,Tarquin and his son Aruns
-1.1.1.249-249-gow,The Rape of Lucrece
-1.1.1.250-250-gow,Tale of Virginia
-1.1.1.251-251-gow,Tobias and Sara
-1.1.1.252-252-gow,Chastity
-1.1.1.253-253-gow,Lechery; The Origins of Mankind
-1.1.1.254-254-gow,Laws of Marriage
-1.1.1.255-255-gow,Examples of Incest; Caligula; Ammon
-1.1.1.256-256-gow,Lot and his Daughters; Incest
-1.1.1.257-257-gow,Apollonius of Tyre
-1.1.1.258-258-gow,The Lover requires Counsel; The Confessor replies; The Controversy
-1.1.1.259-259-gow,The Supplication
-1.1.1.260-260-gow,Venus replies to the Supplication
-1.1.1.261-261-gow,Venus replies to the Supplication
-1.1.1.262-262-gow,The Companies of Lovers
-1.1.1.263-263-gow,Cupid and the Lover; The Fiery Dart withdrawn
-1.1.1.264-264-gow,The Healing of Love; The Absolution
-1.1.1.265-265-gow,Leave-taking of Venus
-1.1.1.266-266-gow,Author Prays for the State of England; Evil of Division in the Land; the Duty of a King
-1.1.1.267-267-gow,The Book Completed
-1.1.1.268-268-gow,Farewell to Earthly Love; Heavenly Love
-1.1.1.269-269-gow,Design of the Book; Dedication (variant text)
-1.1.1.270-270-gow,Virginity; example of Valentinianus introduced (variant text)
-1.1.1.271-271-gow,Tale of Lucius and the Statue (variant text)
-1.1.1.272-272-gow,Example of Dante (variant text)
-1.1.1.273-273-gow,Pity; example of Alexander (variant text)
-1.1.1.274-274-gow,Tale of the Jew and the Pagan (variant text)
-1.1.1.275-275-gow,Leave-taking of Venus (variant text)
-1.1.1.276-276-gow,Author prays for the King; The King commended (variant text)
-1.1.1.277-277-gow,The Author presents his Book to the King (variant text)
-#1.1.1.278-278-gow,Farewell to Earthly Love; Heavenly Love (variant text)
-1.1.2.0-Peace,In Praise of Peace (variant text)
