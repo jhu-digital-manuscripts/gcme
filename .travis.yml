@@ -25,5 +25,5 @@ before_script:
   - cd gcme-ember
  
 script:
-  - npm run lint:js
-  - npm test
+  - npm install
+  - ember test
