@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jhu-digital-manuscripts/gcme.png?branch=master)](https://travis-ci.org/jhu-digital-manuscripts/gcme)
+
 # Introduction
 
 # Terminology
