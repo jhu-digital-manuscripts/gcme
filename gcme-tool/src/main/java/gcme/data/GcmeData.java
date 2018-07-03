@@ -593,8 +593,14 @@ public class GcmeData {
     // Each TextGroup with children becomes a group
     private JSONObject generateTextPowerSelectData(TextGroup group) {
         JSONObject result = new JSONObject();
+                
+        // As a hack add groupName for depth 3 entry with no children Gower / Praise of Peace so it becomes
+        // Gower / Praise of Peace/ Praise of Peace
+      
+        boolean depth3_nokids = !group.hasChildren() && group.getParent() != null && group.getParent().getParent() != null 
+                && group.getParent().getParent().getParent() == null;
         
-        if (group.hasChildren()) {
+        if (group.hasChildren() || depth3_nokids) {
             result.put("groupName", group.getName());
                         
             List<JSONObject> children = new ArrayList<>();
@@ -606,12 +612,14 @@ public class GcmeData {
                 children.add(option);
             }
             
-            group.getChildren().forEach(c -> {
-                children.add(generateTextPowerSelectData(c));
-            });
-
+            if (group.hasChildren()) {
+                group.getChildren().forEach(c -> {
+                    children.add(generateTextPowerSelectData(c));
+                });
+            }
+            
             result.put("options", children);
-        } else {
+        } else {            
             result.put("id", group.getId());            
             result.put("label", group.getName());
         }
