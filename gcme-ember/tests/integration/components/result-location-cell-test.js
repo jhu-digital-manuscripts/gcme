@@ -12,7 +12,7 @@ module('Integration | Component | result-location-cell', function(hooks) {
 
     await render(hbs`{{result-location-cell}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
+    assert.equal(this.element.textContent.trim(), '-');
 
     // Template block usage:
     await render(hbs`
@@ -20,6 +20,6 @@ module('Integration | Component | result-location-cell', function(hooks) {
       {{/result-location-cell}}
     `);
 
-    assert.equal(this.element.textContent.trim(), '');
+    assert.equal(this.element.textContent.trim(), '-');
   });
 });
