@@ -21,6 +21,9 @@ env:
 before_install:
   - npm config set spin false
 
+before_script:
+  - cd gcme-ember
+ 
 script:
   - npm run lint:js
   - npm test
