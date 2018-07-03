@@ -16,10 +16,9 @@ env:
 
 before_install:
   - nvm install $NODE_VERSION
-  
-before_install:
+  - npm install -g ember-cli
   - npm config set spin false
  
 script:
-  - cd gcme-ember && npm install && ember test && cd -
-  - cd gcme-tool && mvn test && cd -
+  - (cd gcme-ember && npm install && ember test && cd -)
+  - (cd gcme-tool && mvn test && cd -)
