@@ -2,6 +2,8 @@
 
 # Introduction
 
+This project refashions a website which allowed tagged Middle English text to be searched. See https://middleenglish.library.jhu.edu/about for more information.
+
 # Terminology
 
 Consider `may{*mouen@v3%pr_1*}`
