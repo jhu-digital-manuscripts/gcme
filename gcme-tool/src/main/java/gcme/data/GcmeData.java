@@ -10,8 +10,10 @@ import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -187,7 +189,6 @@ public class GcmeData {
                 }
 
                 TextGroup group = new TextGroup(parent, id, name);
-
                 struct_map.put(String.join(".", struct), group);
             }
         }
@@ -302,7 +303,7 @@ public class GcmeData {
         TextGroup root = loadTextStructure();
 
         try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
-            generateElasticsearchBulkLineIngest(root, map, out);
+            generateElasticsearchBulkLineIngest(root, map, null, out);
         }
     }
 
@@ -328,11 +329,11 @@ public class GcmeData {
         }
         
         doc.put("group", groups);
-
+        
         return doc;
     }
 
-    private void generateElasticsearchBulkLineIngest(TextGroup group, Map<String, List<Path>> map, BufferedWriter out)
+    private void generateElasticsearchBulkLineIngest(TextGroup group, Map<String, List<Path>> map, Set<Path> parent_files, BufferedWriter out)
             throws IOException {
         String action = "{ \"index\" : { } }";
 
@@ -340,16 +341,45 @@ public class GcmeData {
 
         if (children == null) {
             for (Path file : map.get(group.getId())) {
+
                 for (Line line : parseText(file)) {
                     JSONObject source = generateElasticsearchDocument(group, line);
 
                     out.write(action + "\n");
                     out.write(source.toString() + "\n");
                 }
-            }
+                
+                if (parent_files != null) {
+                    if (parent_files.contains(file)) {
+                        parent_files.remove(file);
+                    } else {
+                        System.err.println("Group consistency warning: " + group.getParent().getId() + " does not contain file of child " + group.getId() + " " + file);
+                    }
+                }
+            }        
         } else {
+            Set<Path> group_files = null;
+            
+            if (map.containsKey(group.getId())) { 
+                group_files = new HashSet<>(map.get(group.getId()));
+            }
+            
+            if (group_files != null && parent_files != null) {
+                for (Path file: group_files) {
+                    if (parent_files.contains(file)) {
+                        parent_files.remove(file);
+                    } else {
+                        System.err.println("Group consistency warning: " + group.getParent().getId() + " does not contain file of child " + group.getId() + " " + file);
+                    }
+                }
+            }
+            
             for (TextGroup child : children) {
-                generateElasticsearchBulkLineIngest(child, map, out);
+                generateElasticsearchBulkLineIngest(child, map, group_files, out);
+            }
+            
+            if (group_files != null && !group_files.isEmpty()) {
+                System.err.println("Group consistency warning: " +  group.getId() + " files not included in children:" + group_files);
             }
         }
     }
