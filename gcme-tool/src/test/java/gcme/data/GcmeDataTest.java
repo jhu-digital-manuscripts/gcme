@@ -83,8 +83,8 @@ public class GcmeDataTest {
 
                 List<Line> lines = data.parseText(f);
 
-                assertNotNull(lines);
-                assertTrue(lines.size() > 0);
+                assertNotNull("File " + f, lines);
+                assertTrue("File " + f, lines.size() > 0);
             }
         } else {
             for (TextGroup tg : children) {
