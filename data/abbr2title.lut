@@ -78,6 +78,7 @@
 0.2.1.10-Bo1.pr5,Boece - Book I: Prose 5
 0.2.1.11-Bo1.m6,Boece - Book I: Meter 6
 0.2.1.12-Bo1.pr6,Boece - Book I: Prose 6
+0.2.1.13-Bo1.m7,Boece - Book I: Meter 7
 0.2.2.0-Bo2,Boece - Book II
 0.2.2.01-Bo2.pr1,Boece - Book II: Prose 1
 0.2.2.02-Bo2.m1,Boece - Book II: Meter 1
@@ -94,6 +95,7 @@
 0.2.2.13-Bo2.pr7,Boece - Book II: Prose 7
 0.2.2.14-Bo2.m7,Boece - Book II: Meter 7
 0.2.2.15-Bo2.pr8,Boece - Book II: Prose 8
+0.2.2.16-Bo2.m8,Boece - Book II: Meter 8
 0.2.3.0-Bo3,Boece - Book III
 0.2.3.01-Bo3.pr1,Boece - Book III: Prose 1
 0.2.3.02-Bo3.m1,Boece - Book III: Meter 1
@@ -132,6 +134,7 @@
 0.2.4.11-Bo4.pr6,Boece - Book IV: Prose 6
 0.2.4.12-Bo4.m6,Boece - Book IV: Meter 6
 0.2.4.13-Bo4.pr7,Boece - Book IV: Prose 7
+0.2.4.14-Bo4.m7,Boece - Book IV: Meter 7
 0.2.5.0-Bo5,Boece - Book V
 0.2.5.01-Bo5.pr1,Boece - Book V: Prose 1
 0.2.5.02-Bo5.m1,Boece - Book V: Meter 1
@@ -142,6 +145,8 @@
 0.2.5.07-Bo5.pr4,Boece - Book V: Prose 4
 0.2.5.08-Bo5.m4,Boece - Book V: Meter 4
 0.2.5.09-Bo5.pr5,Boece - Book V: Prose 5
+0.2.5.10-Bo5.m5,Boece - Book V: Meter 5
+0.2.5.11-Bo5.pr6,Boece - Book V: Prose 6
 0.3.0.0-Tr,The Boke of Troilus
 0.3.1.1-Tr1,Troilus Book 1
 0.3.1.2-Tr2,Troilus Book 2
@@ -149,8 +154,17 @@
 0.3.1.4-Tr4,Troilus Book 4
 0.3.1.5-Tr5,Troilus Book 5
 0.4.0.0-LGW,The Legend of Good Women
-0.4.1.1-LGWProF,The Legend of Good Women- Prologue F
-0.4.1.2-LGWProG,The Legend of Good Women- Prologue G (Not yet ready)
+0.4.1.01-LGWProF,The Legend of Good Women- Prologue F
+0.4.1.02-LGWProG,The Legend of Good Women- Prologue G (Not yet ready)
+0.4.1.03-Cleopatra,The Legend of Cleopatra
+0.4.1.04-Thisbe,The Legend of Thisbe
+0.4.1.05-Dido,The Legend of Dido
+0.4.1.06-HandP,The Legend of Hypsipyle and Medea
+0.4.1.07-Lucrece,The Legend of Lucrece
+0.4.1.08-Ariadne,The Legend of Ariadne
+0.4.1.09-Philomela,The Legend of Philomela
+0.4.1.10-Phyllis,The Legend of Phyllis
+0.4.1.11-Hyper,The Legend of Hypermnestra
 0.5.0.0-Short,The Short Poems
 0.5.1.01-ABC,An ABC 
 0.5.1.02-Pity,The Complaint unto Pity
@@ -168,6 +182,7 @@
 0.5.1.14-Scog,Lenvoy de Chaucer a Scogan
 0.5.1.15-Buk,Lenvoy de Chuacer a Bukton
 0.5.1.16-Purse,the Complaint of Chaucer to his Purse
+0.5.1.17-Prov,Proverbs
 0.6.0.0-Ast,The Treatise on the Astrolabe
 0.6.1.0-AstPro,The Treatise on the Astrolabe - Prologue
 0.6.2.0-Ast1,The Treatise on the Astrolabe - Part I
@@ -239,15 +254,6 @@
 0.7.1.02-ComplAm,Complaynt D'Amours (Complaint)
 0.7.1.03-MercB,Merciles Beaute (Beauty)
 0.7.1.04-BalComp,Balade of Complaint
-0.7.1.10-Cleopatra,The Legend of Cleopatra
-0.7.1.11-Thisbe,The Legend of Thisbe
-0.7.1.12-Dido,The Legend of Dido
-0.7.1.13-HandP,The Legend of Hypsipyle and Medea
-0.7.1.14-Lucrece,The Legend of Lucrece
-0.7.1.15-Ariadne,The Legend of Ariadne
-0.7.1.16-Philomela,The Legend of Philomela
-0.7.1.17-Phyllis,The Legend of Phyllis
-0.7.1.18-Hyper,The Legend of Hypermnestra
 0.8.0.0-WAtC,Works Attributed to Chaucer
 0.8.1.1-RomA,Romaunt of the Rose - Fragment A
 0.8.1.2-RomB,Romaunt of the Rose - Fragment B
