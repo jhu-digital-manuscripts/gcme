@@ -175,7 +175,7 @@ Bo3.m10,ch/03/3/63-ch.cat
 Bo3.pr11,ch/03/3/64-ch.cat
 Bo3.m11,ch/03/3/65-ch.cat
 Bo3.pr12,ch/03/3/66-ch.cat
-Bo3.m12,ch/03/3/67-ch.cat
+# Empty file: Bo3.m12,ch/03/3/67-ch.cat
 Bo4,ch/03/4/*-ch.cat
 Bo4.pr1,ch/03/4/68-ch.cat
 Bo4.m1,ch/03/4/69-ch.cat
