@@ -8,8 +8,8 @@
     "_doc": {
       "dynamic": false,      
       "properties": {
-        "word": {"type": "keyword", "fields": {"suggest": {"type": "completion"}}},
-        "tag_lemma": {"type": "keyword", "fields": {"suggest": {"type": "completion"}}},
+        "word": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "simple"}}},
+        "tag_lemma": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "keyword"}}},
         "definition": {"type": "text"}
       }
     }
