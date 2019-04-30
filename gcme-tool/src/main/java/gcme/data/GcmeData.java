@@ -734,4 +734,39 @@ public class GcmeData {
        
         return result;
     }
+    
+    /**
+     * Transform each text (.cat) file such that it only contains text and write the files out in a
+     * parallel directory structure.
+     * 
+     * @param output_dir
+     * @throws IOException 
+     */
+    public void exportText(Path output_dir) throws IOException {
+    	exportText(base_path.resolve("texts"), output_dir);
+    }
+    
+    public void exportText(Path input_path, Path output_path) throws IOException {
+    	if (Files.isDirectory(input_path)) {
+        	Files.list(input_path).forEach(path -> {
+        		try {
+					exportText(path, output_path.resolve(path.getFileName()));
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+        	});
+    	} else {
+    		Files.createDirectories(output_path.getParent());
+
+    		if (!input_path.getFileName().toString().endsWith(".cat")) {
+    			return;
+    		}
+
+    		try (BufferedWriter writer = Files.newBufferedWriter(output_path)) {
+    			for (Line line : parseText(input_path)) {
+    				writer.write(line.getText() + "\n");
+    			}
+    		}
+    	}
+    }
 }
