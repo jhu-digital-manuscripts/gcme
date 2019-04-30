@@ -1,0 +1,40 @@
+01-1-ch 1 Whan{*whan@adv&conj*} that{*that@part*} Aprill{*april@n*} with{*with@prep*} his{*his@pron1%gen*} shoures{*shour@n%pl*} soote{*sote@adj*}
+
+01-1-ch 2 The{*the@def_art*} droghte{*droughte@n*} of{*of@prep*} March{*marche@n1*} hath{*haven@v%pr_3*} perced{*percen@v%ppl*} to{*to@prep*} the{*the@def_art*} roote,{*rote@n4*}
+
+01-1-ch 3 And{*and@conj*} bathed{*bathen@v%ppl*} every{*everi@pron_gram_adj*} veyne{*veine@n*} in{*in@prep*} swich{*swich@gram_adj*} licour{*licour@n*}
+
+01-1-ch 4 Of{*of@prep*} which{*which@gram_adj*} vertu{*vertu@n*} engendred{*engendren@v%ppl*} is{*ben@v%pr_3*} the{*the@def_art*} flour;{*flour@n1*}
+
+01-1-ch 5 Whan{*whan@adv&conj*} Zephirus{*zeferus@n*} eek{*ek@adv*} with{*with@prep*} his{*his@pron1%gen*} sweete{*swete@adj*} breeth{*breth@n1*}
+
+01-1-ch 6 Inspired{*enspiren@v2%ppl*} hath{*haven@v%pr_3*} in{*in@prep*} every{*everi@pron_gram_adj*} holt{*holt@n*} and{*and@conj*} heeth{*heth@n*}
+
+01-1-ch 7 The{*the@def_art*} tendre{*tender@adj*} croppes,{*crop@n%pl*} and{*and@conj*} the{*the@def_art*} yonge{*yong@adj*} sonne{*sonne@n*}
+
+01-1-ch 8 Hath{*haven@v%pr_3*} in{*in@prep*} the{*the@def_art*} Ram{*ram@n*} his{*his@pron1%gen*} half{*half@adj*} cours{*cours@n*} yronne,{*irennen@v%ppl*}
+
+01-1-ch 9 And{*and@conj*} smale{*smal@adj*} foweles{*foul@n%pl*} maken{*maken@v1%pr_pl*} melodye,{*melodie@n*}
+
+01-1-ch 10 That{*that@pron*} slepen{*slepen@v%pr_pl*} al{*al@gram_adj*} the{*the@def_art*} nyght{*night@n*} with{*with@prep*} open{*open@adj*} ye{*eie@n1*}
+
+01-1-ch 11 (So{*so@adv*} priketh{*priken@v%pr_3*} hem{*hem@pron%pl_obj*} Nature{*nature@n*} in{*in@prep*} hir{*here@pron%pl_gen*} corages),{*corage@n%pl*}
+
+01-1-ch 12 Thanne{*thanne@adv*} longen{*longen@v1%pr_pl*} folk{*folk@n*} to{*to@part*} goon{*gon@v%inf*} on{*on@prep*} pilgrimages,{*pilgrimage@n%pl*}
+
+01-1-ch 13 And{*and@conj*} palmeres{*palmere@n%pl*} for{*for@prep#adv*} to{*to@part*} seken{*sechen@v%inf*} straunge{*straunge@adj*} strondes,{*stronde@n1%pl*}
+
+01-1-ch 14 To{*to@prep*} ferne{*ferrene@adj*} halwes,{*halwe@n%pl*} kowthe{*couth@adj*} in{*in@prep*} sondry{*sondri@adj*} londes;{*lond@n%pl*}
+
+01-1-ch 15 And{*and@conj*} specially{*specialli@adv*} from{*from@prep*} every{*everi@pron_gram_adj*} shires{*shire@n%gen*} ende{*ende@n1*}
+
+01-1-ch 16 Of{*of@prep*} Engelond{*engelond@n#propn*} to{*to@prep*} Caunterbury{*caunterbury@n#propn*} they{*thei@pron%pl_nom*} wende,{*wenden@v%pr_pl*}
+
+01-1-ch 17 The{*the@def_art*} hooly{*holi@adj2*} blisful{*blisful@adj*} martir{*martir@n*} for{*for@prep#adv*} to{*to@part*} seke,{*sechen@v%inf*}
+
+01-1-ch 18 That{*that@pron*} hem{*hem@pron%pl_obj*} hath{*haven@v%pr_3*} holpen{*helpen@v%ppl*} whan{*whan@adv&conj*} that{*that@part*} they{*thei@pron%pl_nom*} were{*ben@v%pt_pl*} seeke.{*sik@adj*}
+
+01-1-ch 19 Bifil{*bifallen@v%pt_3*} that{*that@conj*} in{*in@prep*} that{*that@art&gram_adj*} seson{*sesoun@n*} on{*on@prep*} a{*a@indef_art*} day,{*dai@n*}
+
+01-1-ch 20 In{*in@prep*} Southwerk{*southwerk@n#propn*} at{*at@prep*} the{*the@def_art*} Tabard{*tabard@n#propn*} as{*as@conj*} I{*ich@pron%nom*} lay{*lien@v1%pt_1*}
+
