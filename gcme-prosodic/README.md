@@ -39,11 +39,12 @@ Example from The Book of the Duchess showing the new tags.
 2	How that I live, for day ne nighte
 	u S u Se u S u Se	
 
-
 3	I may nat slepe wel nigh noght;
 	u S u SE S u S
+	
 4	I have so many an idel thoght
-	u S u Sel elu Su S	
+	u S u Sel elu Su S
+	
 5	Purely for defaulte of slepe,		 
 	Su S uSel u Se
 ```
@@ -52,8 +53,13 @@ Example from The Book of the Duchess showing the new tags.
 # Using Prosodic
 
 As a normal user:
-* pip install --user prosodic
 * dnf install espeak
+* git clone https://github.com/quadrismegistus/prosodic
+* From new prosodic directory:
+  * git submodule update --init --recursive
+  * wget http://people.ds.cam.ac.uk/ssb22/gradint/lexconvert.py
+  * mv lexconvert.py prosodic/
+  * python2 setup.py develop --user
 
 Run prosodic with ./.local/bin/prosodic to start a CLI. See [https://github.com/quadrismegistus/prosodic] for documentation. In order to run Prosidc on the texts, you will need to extract the raw words.
 
