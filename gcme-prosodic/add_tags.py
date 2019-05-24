@@ -7,13 +7,14 @@ import prosodic as pros
 
 # TODO: Check for errors. Deal with sounded/unsounded e and elisions.
 
-debug = True
+debug = False
 
 # Return the bare word from a token such as that{*that@part*}
+# Strip hyphens because prosodic will split token into words.
 def get_word(token):
     start = token.find('{*')
     end = token.find('*}')
-    return token[0:start]
+    return token[0:start].replace('-','')
 
 
 # Example raw text line:
@@ -22,7 +23,7 @@ def get_word(token):
 # Prosodic needs this without tags and other information.
 #
 # Original tags: ich@pron%nom haven@v%pr_1 gret@adj wonder@n bi@prep this@gram_adj light@n
-# New tags: ich@pron%nom#u haven@v%pr_1#S gret@adj#ue wonder@n#Su bi@prep#S this@gram_ad#u light@n#Se
+# New tags: ich@pron%nom$u haven@v%pr_1$S gret@adj$ue wonder@n$Su bi@prep$S this@gram_ad$u light@n$Se
 
 def add_tags(gcme_line, gcme_out):
     if gcme_line.isspace():
@@ -53,14 +54,23 @@ def add_tags(gcme_line, gcme_out):
         pros_words = best_parse.words()
         i = 2
 
+        if (len(gcme_tokens) != len(pros_words) + 2):
+            print('Warning: Tokens do not line up.')
+            print(str(gcme_tokens))
+            print(str(pros_words))
+
         while i < len(gcme_tokens):
+            if (i - 2 >= len(pros_words)):
+                i += 1
+                continue
+
             stress = pros_words[i - 2].getStress()
             stress = stress.replace('P', 'S');
             stress = stress.replace('U', 'u');
             
             token = gcme_tokens[i]
             end = token.find('*}')
-            token = token[0:end] + '#' + stress + '*}'
+            token = token[0:end] + '$' + stress + '*}'
             gcme_tokens[i] = token
 
             i += 1
