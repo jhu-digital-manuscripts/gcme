@@ -3,6 +3,7 @@ package gcme.data;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -743,14 +744,14 @@ public class GcmeData {
      * @throws IOException 
      */
     public void exportText(Path output_dir) throws IOException {
-    	exportText(base_path.resolve("texts"), output_dir);
+    	export_text(base_path.resolve("texts"), output_dir);
     }
     
-    public void exportText(Path input_path, Path output_path) throws IOException {
+    private void export_text(Path input_path, Path output_path) throws IOException {
     	if (Files.isDirectory(input_path)) {
         	Files.list(input_path).forEach(path -> {
         		try {
-					exportText(path, output_path.resolve(path.getFileName()));
+					export_text(path, output_path.resolve(path.getFileName()));
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
@@ -769,4 +770,113 @@ public class GcmeData {
     		}
     	}
     }
+    
+    /**
+     * Transform the hierarchy of text (.cat) files into a spreadsheet and write it to stdout.
+     * 
+     * @throws IOException 
+     */
+    public void exportSpreadsheet() throws IOException {
+    	export_spreadsheet(loadTextStructure(), loadTextMap(), System.out);
+    }
+    
+    private static String escape_csv_value(String val) {
+        val = val.replaceAll("\\\"", "\"\"");
+
+        if (val.contains(",") || val.contains("\"") || val.contains("\n")) {
+        	return "\"" + val + "\"";
+        } else {
+        	return val;
+        }
+    }
+    
+    public void export_spreadsheet(TextGroup group, Map<String, List<Path>> map, PrintStream out) throws IOException {    	
+    	List<TextGroup> children = group.getChildren();
+
+        if (children == null) {
+            for (Path file : map.get(group.getId())) {
+                for (Line line : parseText(file)) {
+                	String filename = file.getFileName().toString();
+                	String loc = group.getId();
+                	
+                	out.println(export_row(filename, loc, line));
+                }
+            }        
+        } else {
+            for (TextGroup child : children) {
+                export_spreadsheet(child, map, out);
+            }
+        }
+    }
+
+	private String export_row(String filename, String loc, Line line) {
+		StringBuilder result = new StringBuilder();
+
+		// Start off with bare words
+
+		result.append(escape_csv_value(filename));
+		result.append(',');
+		
+		result.append(escape_csv_value(loc));
+		result.append(',');
+		
+		result.append(escape_csv_value(line.getId()));
+		result.append(',');
+		
+		result.append(escape_csv_value(line.getRawNumber()));
+		result.append(',');
+		
+		String[] text_tokens = line.getText().split("\\s+");
+		String[] tag_tokens = line.getTaggedLemmaText().split("\\s+");
+		
+		for (int i = 0; i < text_tokens.length; i++) {
+			result.append(escape_csv_value(text_tokens[i]));
+			result.append(',');
+		}
+		
+		// Put the new stress tags in two identical rows
+		
+		for (int count = 0; count < 2; count++) {
+			result.append('\n');
+			result.append(',');
+			result.append(',');
+			result.append(',');
+			result.append(',');		
+		
+			for (int i = 0; i < text_tokens.length; i++) {
+				String newtag = "";
+				int start = tag_tokens[i].indexOf('$');
+
+				if (start != -1) {
+					newtag = tag_tokens[i].substring(start + 1);
+				}
+
+				result.append(escape_csv_value(newtag));
+				result.append(',');
+			}
+		}
+		
+		// Add row with tagged words without new tags.
+		
+		result.append('\n');
+		result.append(',');
+		result.append(',');
+		result.append(',');
+		result.append(',');
+	
+		for (int i = 0; i < text_tokens.length; i++) {
+			String token = tag_tokens[i];
+			
+			int start = tag_tokens[i].indexOf('$');
+
+			if (start != -1) {
+				token = tag_tokens[i].substring(0, start);
+			}
+			
+			result.append(escape_csv_value(token));
+			result.append(',');
+		}
+		
+		return result.toString();
+	}
 }

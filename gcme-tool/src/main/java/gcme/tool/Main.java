@@ -31,9 +31,16 @@ public class Main {
         	}
         	
         	data.exportText(Paths.get(args[2]));
+        } else if (cmd.equals("export-spreadsheet")) {
+        	if (args.length != 2) {
+                System.err.println("Wrong number of arguments, expected: export-spreadsheet");
+                System.exit(1);
+        	}
+        	
+        	data.exportSpreadsheet();
         } else {
             System.err.println("Unknown command: " + cmd);
-            System.err.println("Expected: info|gen-data|export-text");
+            System.err.println("Expected: info|gen-data|export-text|export-spreadsheet");
         }
     }
 
