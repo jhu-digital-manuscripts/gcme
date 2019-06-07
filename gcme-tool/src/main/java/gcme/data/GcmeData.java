@@ -9,6 +9,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -777,6 +778,8 @@ public class GcmeData {
      * @throws IOException 
      */
     public void exportSpreadsheet() throws IOException {
+		System.out.println("Filename,Location,Id,Line");
+		
     	export_spreadsheet(loadTextStructure(), loadTextMap(), System.out);
     }
     
@@ -879,4 +882,108 @@ public class GcmeData {
 		
 		return result.toString();
 	}
+	
+	
+    /**
+     * Transform the hierarchy of text (.cat) files into a set of spreadsheets in the CWD, one per group.
+     * 
+     * @throws IOException 
+     */
+    public void exportSpreadsheetSplitLocation() throws IOException {
+    	export_spreadsheet_split_location(loadTextStructure(), loadTextMap());
+    }
+    
+    public void export_spreadsheet_split_location(TextGroup group, Map<String, List<Path>> map) throws IOException {    	
+    	List<TextGroup> children = group.getChildren();
+
+    	if (children == null) {
+			String output_name = group.getId() + ".csv";
+			Path output_path = FileSystems.getDefault().getPath(output_name);
+			
+    		try (BufferedWriter out = Files.newBufferedWriter(output_path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+    	    	// Header
+    	    	out.write("Filename,Id,Line\n");
+    			
+    			for (Path file : map.get(group.getId())) {
+    				for (Line line : parseText(file)) {
+    					String filename = file.getFileName().toString();
+    					String loc = group.getId();
+
+    					out.write(export_row_split_location(filename, loc, line));
+    					out.write('\n');
+    				}	                
+    			}
+    		}
+    	} else {
+    		for (TextGroup child : children) {
+    			export_spreadsheet_split_location(child, map);
+    		}
+    	}
+    }
+
+    private String export_row_split_location(String filename, String loc, Line line) {
+    	StringBuilder result = new StringBuilder();
+
+    	// Start off with bare words
+
+    	result.append(escape_csv_value(filename));
+    	result.append(',');
+
+    	result.append(escape_csv_value(line.getId()));
+    	result.append(',');
+
+    	result.append(escape_csv_value(line.getRawNumber()));
+    	result.append(',');
+
+    	String[] text_tokens = line.getText().split("\\s+");
+    	String[] tag_tokens = line.getTaggedLemmaText().split("\\s+");
+
+    	for (int i = 0; i < text_tokens.length; i++) {
+    		result.append(escape_csv_value(text_tokens[i]));
+    		result.append(',');
+    	}
+
+    	// Put the new stress tags in two identical rows
+
+    	for (int count = 0; count < 2; count++) {
+    		result.append('\n');
+    		result.append(',');
+    		result.append(',');
+    		result.append(',');
+
+    		for (int i = 0; i < text_tokens.length; i++) {
+    			String newtag = "";
+    			int start = tag_tokens[i].indexOf('$');
+
+    			if (start != -1) {
+    				newtag = tag_tokens[i].substring(start + 1);
+    			}
+
+    			result.append(escape_csv_value(newtag));
+    			result.append(',');
+    		}
+    	}
+
+    	// Add row with tagged words without new tags.
+
+    	result.append('\n');
+    	result.append(',');
+    	result.append(',');
+    	result.append(',');
+
+    	for (int i = 0; i < text_tokens.length; i++) {
+    		String token = tag_tokens[i];
+
+    		int start = tag_tokens[i].indexOf('$');
+
+    		if (start != -1) {
+    			token = tag_tokens[i].substring(0, start);
+    		}
+
+    		result.append(escape_csv_value(token));
+    		result.append(',');
+    	}
+
+    	return result.toString();
+    }
 }
