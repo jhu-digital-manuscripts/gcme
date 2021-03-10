@@ -38,16 +38,30 @@ public class Main {
         	}
         	
         	data.exportSpreadsheet();
+        } else if (cmd.equals("export-turk-spreadsheet")) {
+        	if (args.length != 2) {
+                System.err.println("Wrong number of arguments, expected: export-turk-spreadsheet");
+                System.exit(1);
+        	}
+        	
+        	data.exportTurkSpreadsheet();        	
         } else if (cmd.equals("export-spreadsheet-split-location")) {
-            	if (args.length != 2) {
-                    System.err.println("Wrong number of arguments, expected: export-spreadsheet-split-location");
-                    System.exit(1);
-            	}
-            	
-            	data.exportSpreadsheetSplitLocation();
-            } else {
-            System.err.println("Unknown command: " + cmd);
-            System.err.println("Expected: info|gen-data|export-text|export-spreadsheet|export-spreadsheet-split-location");
+        	if (args.length != 2) {
+                System.err.println("Wrong number of arguments, expected: export-spreadsheet-split-location");
+                System.exit(1);
+        	}
+        	
+        	data.exportSpreadsheetSplitLocation();
+        } else if (cmd.equals("combine-spreadsheets-split-location")) {
+        	if (args.length != 3) {
+                System.err.println("Wrong number of arguments, expected: export-combine-spreadsheets-split-location output_dir");
+                System.exit(1);
+        	}
+        	
+        	data.combineSpreadsheetsSplitLocation(System.in, Paths.get(args[2]));
+        } else {
+        	System.err.println("Unknown command: " + cmd);
+        	System.err.println("Expected: info|gen-data|export-text|export-spreadsheet|export-spreadsheet-split-location");
         }
     }
 

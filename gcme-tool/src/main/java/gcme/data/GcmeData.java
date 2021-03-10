@@ -3,7 +3,10 @@ package gcme.data;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -783,6 +786,79 @@ public class GcmeData {
     	export_spreadsheet(loadTextStructure(), loadTextMap(), System.out);
     }
     
+    /**
+     * Transform the hierarchy of text (.cat) files into a spreadsheet for Mechanical Turk and write it to stdout.
+     * Every cell must be double quoted.
+     * Each row: Unique line id, Line label, Line text
+     * Each row may have multiple columns like the above.
+     * 
+     * @throws IOException 
+     */
+    public void exportTurkSpreadsheet() throws IOException {
+    	int count = 5;
+    	
+    	for (int i = 0; i < count; i++) {
+    		System.out.printf("\"Identifier_%d\",\"Label_%d\",\"Text_%d\",", i, i, i);
+    	}
+    	System.out.println();
+    	
+    	export_turk_spreadsheet(loadTextStructure(), loadTextMap(), System.out);
+    }
+    
+    
+    public void export_turk_spreadsheet(TextGroup group, Map<String, List<Path>> map, PrintStream out) throws IOException {    	
+    	List<TextGroup> children = group.getChildren();
+
+    	int count = 5;
+    	int i = 0;
+    	
+        if (children == null) {
+            for (Path file : map.get(group.getId())) {
+                for (Line line : parseText(file)) {
+                	String filename = file.getFileName().toString();
+                	String group_name = group.getName();
+                	
+                	out.print(export_turk_row(filename, group_name, line));
+                	
+                	if (++i == count) {
+                		out.println();
+                		i = 0;
+                	}
+                }
+            }        
+        } else {
+            for (TextGroup child : children) {
+                export_turk_spreadsheet(child, map, out);
+            }
+        }
+    }
+
+	private String export_turk_row(String filename, String group_name, Line line) {
+		StringBuilder result = new StringBuilder();
+
+		// Start off with bare words
+
+		String id = filename + "_" + line.getId() + "_" +  line.getRawNumber();
+		String label = group_name + ": " + line.getRawNumber();
+		
+		result.append(escape_turk_csv_value(id));
+		result.append(',');
+		
+		result.append(escape_turk_csv_value(label));
+		result.append(',');
+		
+		result.append(escape_turk_csv_value(line.getText()));
+		result.append(',');
+		
+		return result.toString();
+	}
+	
+    private static String escape_turk_csv_value(String val) {
+        val = val.replaceAll("\\\"", "\"\"");
+
+        return "\"" + val + "\"";
+    }
+    
     private static String escape_csv_value(String val) {
         val = val.replaceAll("\\\"", "\"\"");
 
@@ -986,4 +1062,66 @@ public class GcmeData {
 
     	return result.toString();
     }
+
+    /**
+     * Read training data spreadsheet rows from stdin, split on location and write to output dir.
+     * Must not contain title rows.
+     * 
+     * @param is
+     * @param outputdir
+     * @throws IOException 
+     * @throws UnsupportedEncodingException 
+     */
+	public void combineSpreadsheetsSplitLocation(InputStream is, Path outputdir) throws IOException {
+		// Location -> Raw spreadsheet lines for location
+		Map<String,List<String>> output = new HashMap<String, List<String>>();
+		
+		// Four rows at a time
+		// First row, second value is location
+		int count = 0;
+		
+		try (BufferedReader input = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+			String line = null;
+			int subrow = 0;
+			List<String> lines = null;
+			
+			while ((line = input.readLine()) != null) {
+				if (subrow == 0) {
+					String[] parts = line.split(",");
+					String loc = parts[1];
+					
+					lines = output.get(loc);
+					
+					if (lines == null) {
+						lines = new ArrayList<String>();
+						output.put(loc,  lines);
+					}
+				}
+				
+				lines.add(line);
+				count++;
+
+				if (++subrow == 4) {
+					subrow = 0;
+				}
+			}
+			
+			System.out.println(subrow);
+			
+			if (subrow != 0) {
+				System.err.println("Error: Lines not multiple of 4.");
+			}
+		}
+		
+		System.out.println("Lines loaded: " + count);
+		
+		for (String loc: output.keySet()) {
+	        try (BufferedWriter out = Files.newBufferedWriter(outputdir.resolve(loc + ".csv"), StandardCharsets.UTF_8)) {
+				for (String line: output.get(loc)) {
+					out.write(line);
+					out.newLine();
+				}
+	        }
+		}
+	}
 }
