@@ -78,7 +78,7 @@
     </label>
   </div>
 
-  <div>
+  <div id="gcme-search-buttons">
     <button {{action "clearQuery"}} type="submit" class="btn btn-primary">Clear</button>
     <button {{action "executeQuery"}} type="submit" class="btn btn-primary">Search</button>
   </div>
@@ -100,13 +100,13 @@
       pageSize=pageSize
     }}
 
-    <nav aria-label="...">
+    <nav id="gcme-search-pages" aria-label="...">
       <ul class="pagination justify-content-center">
         <li class="page-item active">
           <a {{action "prevPage"}} class="page-link">Previous</a>
         </li>
         <li class="page-item">
-          <a class="page-link">Page {{pageNumber}} of {{pageCount}}</a>
+          <span class="page-link">Page {{pageNumber}} of {{pageCount}}</span>
         </li>
         <li class="page-item active">
           <a {{action "nextPage"}} class="page-link">Next</a>

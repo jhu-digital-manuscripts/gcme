@@ -2,3 +2,46 @@
 @import "ember-cli-bootstrap-4/bootstrap";
 
 @import "ember-power-select";
+
+
+#gcme-header nav {
+    background-color: #002D72;
+}
+
+#gcme-header nav * {
+    color: #FFFFFF;
+}
+
+#gcme-header li.nav-item a:hover {
+    background-color: #68ACE5;
+}
+
+#gcme-search-buttons button {
+    background-color: #0072CE;
+}
+
+#gcme-search-buttons button:hover {
+    background-color: #333333 ;
+}
+
+#gcme-search-pages a {
+    background-color: #0072CE;
+    color: #FFFFFF;
+}
+
+#gcme-search-pages a:hover {
+    background-color: #333333;
+    color: #FFFFFF;
+}
+
+#gcme-search-pages span {
+    color: #000000;
+}
+
+#gcme-search-pages span:hover {
+    background-color: #FFFFFF;
+}
+
+body {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
