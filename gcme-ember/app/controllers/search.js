@@ -9,6 +9,7 @@ export default Controller.extend({
   result: null,
   restrict: null,
   lemmas: null,
+  tagged_lemmas: null,
   words: null,
   requireAllWords: false,
   sortLogical: false,
@@ -73,7 +74,13 @@ export default Controller.extend({
 
     if (this.get('lemmas')) {
       this.get('lemmas').forEach(o => {
-        clause.push({term: {tag_lemma_text: o._match}});
+        clause.push({term: {lemma_text: o._match}});
+      });
+    }
+
+    if (this.get('tagged_lemmas')) {
+      this.get('tagged_lemmas').forEach(o => {
+        clause.push({term: {lemma_tag_text: o._match}});
       });
     }
 
@@ -131,11 +138,16 @@ export default Controller.extend({
     },
 
     completeLemma(prefix) {
-      return this.elasticsearch.complete('tag_lemma', prefix);
+      return this.elasticsearch.complete('lemma', prefix);
+    },
+
+    completeTaggedLemma(prefix) {
+      return this.elasticsearch.complete('lemma_tag', prefix);
     },
 
     clearQuery() {
       this.set('lemmas', null);
+      this.set('tagged_lemmas', null);
       this.set('words', null);
       this.set('restrict', null);
       this.set('result', null);
