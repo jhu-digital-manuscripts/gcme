@@ -39,9 +39,9 @@ to see the structure of the texts printed out.
 
 The line index allows lines of text to be searched for by word or by tagged lemma.
 The text field contains the raw words of the line and uses the simple analyzer
-which ignores case and handles punctuation. The tag_lemma_text field contains
-the tagged lemmas for the words of the line and uses a custom anaylyzer which
-ignores case and tokenizes based on whitespace. The id is the identifier
+which ignores case and handles punctuation. The lemma_text and lemma_tag_text field contain
+the lemmas and tagged lemmas respectively for the words of the line. They both use a custom
+anaylyzer which ignores case and tokenizes based on whitespace. The id is the identifier
 assigned to the line. The raw_number is the number assigned to the line.
 It is either an integer or an integer followed by some letters. The number field
 is the integer extracted from raw_number. The group is an array of 2-4 identifiers
@@ -51,27 +51,29 @@ For example a line in the Knight's tale would have group `["Ch", "CT", "Frag1", 
 
 | Field          | Type    | Cardinality |
 | -------------- | ------- | ----------- |
-| id             | keyword | 1           | 
-| number         | integer | 1           |
-| raw_number     | keyword | 1           |
-| group          | keyword | 2-4         |
-| text           | text    | 1           |
-| tag_lemma_text | text    | 1           |
-
+| id                  | keyword | 1   | 
+| number              | integer | 1   |
+| raw_number          | keyword | 1   |
+| group               | keyword | 2-4 |
+| text                | text    | 1   |
+| lemma_text          | text    | 1   |
+| lemma_tag_text      | text    | 1   |
 
 ## dict
 
 The dict index allows a definition for a tagged lemma to be looked up.
 The tagged lemma is associated with its word forms as well as a dictionary definition.
-Completion can be done on the tagged lemma as well as its word forms using the .suggest
+Completion can be done on the lemma, tagged lemma as well as its word forms using the .suggest
 subfields. The word forms have been normalized to lower case.
 
 | Field             | Type       | Cardinality |
 | ----------------- | ---------- | ----------- |
 | word              | keyword    | 1*          |
-| word.suggest      | completion | 1*          | 
-| tag_lemma         | keyword    | 1           |
-| tag_lemma.suggest | completion | 1           |
+| word.suggest      | completion | 1*          |
+| lemma             | keyword    | 1          |
+| lemma.suggest     | completion | 1          |
+| lemma_tag         | keyword    | 1           |
+| lemma_tag.suggest | completion | 1           |
 | definition        | text       | 1           |
 
 

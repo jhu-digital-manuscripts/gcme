@@ -22,7 +22,8 @@
         "number": {"type": "integer"},
         "raw_number": {"type": "keyword"},        
         "text": {"type": "text", "analyzer": "simple"},
-        "tag_lemma_text": {"type": "text", "analyzer": "whitespace_ignore_case"},        
+        "lemma_text": {"type": "text", "analyzer": "whitespace_ignore_case"},
+        "lemma_tag_text": {"type": "text", "analyzer": "whitespace_ignore_case"},          
         "group": {"type": "keyword"}
       }
     }

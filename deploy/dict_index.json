@@ -9,7 +9,8 @@
       "dynamic": false,      
       "properties": {
         "word": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "simple"}}},
-        "tag_lemma": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "keyword"}}},
+        "lemma": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "keyword"}}},
+        "lemma_tag": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "keyword"}}},
         "definition": {"type": "text"}
       }
     }
