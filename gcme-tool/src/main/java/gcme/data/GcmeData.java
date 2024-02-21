@@ -9,10 +9,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -325,7 +327,7 @@ public class GcmeData {
             group = group.getParent();
         }
 
-        if (groups.size() < 2 || groups.size() >  4) {
+        if (groups.size() < 2 || groups.size() > 4) {
             throw new IOException("Unexpected group size: " + line);
         }
 
@@ -334,8 +336,8 @@ public class GcmeData {
         return doc;
     }
 
-    private void generateElasticsearchBulkLineIngest(TextGroup group, Map<String, List<Path>> map, Set<Path> parent_files, BufferedWriter out)
-            throws IOException {
+    private void generateElasticsearchBulkLineIngest(TextGroup group, Map<String, List<Path>> map,
+            Set<Path> parent_files, BufferedWriter out) throws IOException {
         String action = "{ \"index\" : { } }";
 
         List<TextGroup> children = group.getChildren();
@@ -354,7 +356,8 @@ public class GcmeData {
                     if (parent_files.contains(file)) {
                         parent_files.remove(file);
                     } else {
-                        System.err.println("Group consistency warning: " + group.getParent().getId() + " does not contain file of child " + group.getId() + " " + file);
+                        System.err.println("Group consistency warning: " + group.getParent().getId()
+                                + " does not contain file of child " + group.getId() + " " + file);
                     }
                 }
             }
@@ -366,11 +369,12 @@ public class GcmeData {
             }
 
             if (group_files != null && parent_files != null) {
-                for (Path file: group_files) {
+                for (Path file : group_files) {
                     if (parent_files.contains(file)) {
                         parent_files.remove(file);
                     } else {
-                        System.err.println("Group consistency warning: " + group.getParent().getId() + " does not contain file of child " + group.getId() + " " + file);
+                        System.err.println("Group consistency warning: " + group.getParent().getId()
+                                + " does not contain file of child " + group.getId() + " " + file);
                     }
                 }
             }
@@ -380,7 +384,8 @@ public class GcmeData {
             }
 
             if (group_files != null && !group_files.isEmpty()) {
-                System.err.println("Group consistency warning: " +  group.getId() + " files not included in children:" + group_files);
+                System.err.println("Group consistency warning: " + group.getId() + " files not included in children:"
+                        + group_files);
             }
         }
     }
@@ -389,21 +394,27 @@ public class GcmeData {
     public Map<String, DictEntry> loadDictionary() throws IOException {
         Map<String, DictEntry> result = new HashMap<>();
 
-        loadDictionary(loadTextStructure(), loadTextMap(), loadDictionaryDefinitions(), result);
+        Map<String, String> def_map = loadDictionaryDefinitions();
+
+        // Add in mapping for base lemma tags
+        HashSet<String> keys = new HashSet<>(def_map.keySet());
+        for (String lemma_tag : keys) {
+            def_map.putIfAbsent(get_tagged_lemma_base(lemma_tag), def_map.get(lemma_tag));
+        }
+
+        loadDictionary(loadTextStructure(), loadTextMap(), def_map, result);
 
         return result;
     }
 
+    // Map lemma_tag -> definition
     public Map<String, String> loadDictionaryDefinitions() throws IOException {
         Map<String, String> result = new HashMap<>();
 
-        String[] dicts = new String[] {
-            "texts/anon/ch/dict/ap-all.lem",
-            "texts/gow/dict/gow-all.lem",
-            "texts/ch/dict/ch-all.lem",
-        };
+        String[] dicts = new String[] { "texts/anon/ch/dict/ap-all.lem", "texts/gow/dict/gow-all.lem",
+                "texts/ch/dict/ch-all.lem", };
 
-        for (String s: dicts) {
+        for (String s : dicts) {
             Map<String, String> defs = load_dictionary_definitions(base_path.resolve(s));
 
             // TODO What about if have different definitions?
@@ -415,12 +426,15 @@ public class GcmeData {
     }
 
     // Example:
-    // aforn adv.      "before, previously," s.v. afore adv., prep., and conj. OED.    KEY: aforn@adv
-    // Achitofel n.    "Achitophel, King David's counselor (in the Bible)," proper n.; not in MED.     KEY: achitofel@
+    // aforn adv. "before, previously," s.v. afore adv., prep., and conj. OED. KEY:
+    // aforn@adv
+    // Achitofel n. "Achitophel, King David's counselor (in the Bible)," proper n.;
+    // not in MED. KEY: achitofel@
     // n#propn
     //
     // Note the line wrapping. Empty lines separate entries.
     // May be multiple tagged lemmas separated by spaces after key
+    // May end in a period
 
     private Map<String, String> load_dictionary_definitions(Path dict_lem_file) throws IOException {
         Map<String, String> result = new HashMap<>();
@@ -435,7 +449,9 @@ public class GcmeData {
             StringBuilder real_line = new StringBuilder();
 
             while ((line = in.readLine()) != null) {
-                line = line.trim();
+                if (line.endsWith(".")) {
+                    line = line.substring(0, line.length() - 1);
+                }
 
                 if (line.isEmpty()) {
                     if (real_line.length() > 0) {
@@ -456,11 +472,11 @@ public class GcmeData {
 
         final String key = "KEY:";
 
-        for (String line: lines) {
+        for (String line : lines) {
             int i = line.indexOf(key);
 
             if (i == -1) {
-                //throw new IOException("Malformed entry: " + dict_lem_file + " " + line);
+                // throw new IOException("Malformed entry: " + dict_lem_file + " " + line);
                 System.err.println("Warning: Could not find KEY:" + line);
                 continue;
             }
@@ -468,22 +484,44 @@ public class GcmeData {
             String def = line.substring(0, i).trim();
             String[] tagged_lemmas = line.substring(i + key.length()).trim().split("\\s+");
 
-            for (String tagged_lemma: tagged_lemmas) {
+            for (String tagged_lemma : tagged_lemmas) {
                 if (result.containsKey(tagged_lemma)) {
-                    //throw new IOException("Entry already exists: " + line);
+                    // throw new IOException("Entry already exists: " + line);
                     System.err.println("Warning: Entry already exists: " + line);
-                }
 
-                result.put(tagged_lemma, def);
+                    // Prefer OED definition
+                    if (def.contains("OED")) {
+                        result.put(tagged_lemma, def);
+                    }
+                } else {
+                    result.put(tagged_lemma, def);
+                }
             }
         }
 
         return result;
     }
 
-    private void loadDictionary(TextGroup group, Map<String, List<Path>> group_text_map, Map<String,String> def_map,
+    private void loadDictionary(TextGroup group, Map<String, List<Path>> group_text_map, Map<String, String> def_map,
             Map<String, DictEntry> tagged_lemma_map) throws IOException {
         List<TextGroup> children = group.getChildren();
+
+        // Various permutations to try when mapping a tagged lemma to a dictionary
+        // definition key
+        Map<String, String> perm_map = new HashMap<>();
+
+        // Inconsistency with numeral tagging
+        perm_map.put("@num_", "@num#");
+        perm_map.put("@num_adj", "@num");
+        perm_map.put("@num_n", "@num");
+        perm_map.put("@num_n%pl", "@num");
+        perm_map.put("@num_n%gen", "@num");
+
+        // Dictionary entries don't have the absolute form
+        perm_map.put("_abs", "");
+
+        // Seems to be the same
+        perm_map.put("@pron_adj", "@gram_adj");
 
         if (children == null) {
             for (Path file : group_text_map.get(group.getId())) {
@@ -499,6 +537,11 @@ public class GcmeData {
                         String word = words[i];
                         String tagged_lemma = tagged_lemmas[i];
 
+                        // TODO
+                        // if (tagged_lemma.equals("not-concorded")) {
+                        // continue;
+                        // }
+
                         // If token is a word, must remove punctuation
                         if (word.matches(".*\\w.*")) {
                             word = word.replaceAll("\\p{Punct}", "");
@@ -512,27 +555,33 @@ public class GcmeData {
                             if (def == null) {
                                 // Try without extra tags
 
-                                int inflection = tagged_lemma.indexOf('%');
-
-                                if (inflection != -1) {
-                                    def = def_map.get(tagged_lemma.substring(0, inflection));
-                                }
+                                String base = get_tagged_lemma_base(tagged_lemma);
+                                def = def_map.get(base);
 
                                 if (def == null) {
-                                    int syn = tagged_lemma.indexOf('#');
+                                    // Various replacements to try
 
-                                    if (syn != -1) {
-                                        def = def_map.get(tagged_lemma.substring(0, syn));
+                                    for (String seq : perm_map.keySet()) {
+                                        String s = tagged_lemma.replace(seq, perm_map.get(seq));
+
+                                        def = def_map.get(s);
+
+                                        if (def != null) {
+                                            break;
+                                        }
                                     }
-                                }
 
-                                if (def == null) {
-                                    System.err.println("Warning: No definition for " + tagged_lemma);
+                                    if (def == null) {
+                                        System.err.println(
+                                                "Warning: No definition for " + tagged_lemma);
+                                    }
                                 }
                             }
 
+                            // TODO if (!tagged_lemma.equals("not-concorded")) {
                             entry = new DictEntry(tagged_lemma, def);
                             tagged_lemma_map.put(tagged_lemma, entry);
+                            // }
                         }
 
                         if (!entry.getWords().contains(word)) {
@@ -546,18 +595,99 @@ public class GcmeData {
                 loadDictionary(child, group_text_map, def_map, tagged_lemma_map);
             }
         }
-
-
     }
 
-    public void generateElasticsearchBulkDictIngest(Path output) throws IOException {
+    // seien@v1%imp -> seien@v1
+    private static String get_tagged_lemma_base(String s) {
+        int i = s.indexOf('#');
+
+        if (i != -1) {
+            s = s.substring(0, i);
+        }
+
+        i = s.indexOf('%');
+
+        if (i != -1) {
+            s = s.substring(0, i);
+        }
+
+        return s;
+    }
+
+    private Set<String> to_basic_tagged_lemmas(List<String> tagged_lemmas) {
+        return tagged_lemmas.stream().map(GcmeData::get_tagged_lemma_base).collect(Collectors.toSet());
+    }
+
+    public void generateElasticsearchBulkDictIngest(Path by_word, Path by_lemma, Path by_tag_lemma) throws IOException {
         Map<String, DictEntry> dict = loadDictionary();
+
+        // Remove stuff that is not tagged
+        dict.remove("not-concorded");
+
+        // basic lemma tag -> definition
+        Map<String, String> basic_lemma_tag_def = new HashMap<>();
+
+        dict.forEach((lemma_tag, entry) -> {
+            basic_lemma_tag_def.put(get_tagged_lemma_base(lemma_tag), entry.getDefinition());
+        });
 
         String action = "{ \"index\" : { } }";
 
-        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
-            for (DictEntry entry: dict.values()) {
-                JSONObject source = generateElasticsearchDocument(entry);
+        // By word
+
+        Map<String, List<DictEntry>> dict_by_word = new HashMap<>();
+
+        dict.forEach((lemma_tag, entry) -> {
+            entry.getWords().forEach(word -> {
+                dict_by_word.computeIfAbsent(word, w -> new ArrayList<>()).add(entry);
+            });
+        });
+
+        try (BufferedWriter out = Files.newBufferedWriter(by_word, StandardCharsets.UTF_8)) {
+            for (Entry<String, List<DictEntry>> entry : dict_by_word.entrySet()) {
+                List<String> tagged_lemmas = entry.getValue().stream().map(e -> e.getTaggedLemma()).toList();
+
+                // Crunch down to basic tagged lemmas with definitions
+                tagged_lemmas = new ArrayList<>(to_basic_tagged_lemmas(tagged_lemmas));
+                List<String> defs = tagged_lemmas.stream().map(s -> basic_lemma_tag_def.get(s)).toList();
+
+                JSONObject source = generateElasticsearchDocumentByWord(entry.getKey(), tagged_lemmas, defs);
+
+                out.write(action + "\n");
+                out.write(source.toString() + "\n");
+            }
+        }
+
+        // By lemma
+
+        Map<String, List<DictEntry>> dict_by_lemma = new HashMap<>();
+
+        dict.forEach((lemma_tag, entry) -> {
+            dict_by_lemma.computeIfAbsent(entry.getLemma(), l -> new ArrayList<>()).add(entry);
+        });
+
+        try (BufferedWriter out = Files.newBufferedWriter(by_lemma, StandardCharsets.UTF_8)) {
+            for (Entry<String, List<DictEntry>> entry : dict_by_lemma.entrySet()) {
+                List<String> words = entry.getValue().stream().map(e -> e.getWords()).flatMap(Collection::stream)
+                        .toList();
+                List<String> tagged_lemmas = entry.getValue().stream().map(e -> e.getTaggedLemma()).toList();
+
+                // Crunch down to basic tagged lemmas with definitions
+                tagged_lemmas = new ArrayList<>(to_basic_tagged_lemmas(tagged_lemmas));
+                List<String> defs = tagged_lemmas.stream().map(s -> basic_lemma_tag_def.get(s)).toList();
+
+                JSONObject source = generateElasticsearchDocumentByLemma(entry.getKey(), words, tagged_lemmas, defs);
+
+                out.write(action + "\n");
+                out.write(source.toString() + "\n");
+            }
+        }
+
+        // By tagged lemma
+
+        try (BufferedWriter out = Files.newBufferedWriter(by_tag_lemma, StandardCharsets.UTF_8)) {
+            for (DictEntry entry : dict.values()) {
+                JSONObject source = generateElasticsearchDocumentByLemmaTag(entry);
 
                 out.write(action + "\n");
                 out.write(source.toString() + "\n");
@@ -565,13 +695,34 @@ public class GcmeData {
         }
     }
 
-    private JSONObject generateElasticsearchDocument(DictEntry entry) {
+    private JSONObject generateElasticsearchDocumentByLemmaTag(DictEntry entry) {
         JSONObject doc = new JSONObject();
 
         doc.put("lemma_tag", entry.getTaggedLemma());
-        doc.put("lemma", entry.getLemma());
         doc.put("word", entry.getWords());
         doc.put("definition", entry.getDefinition());
+
+        return doc;
+    }
+
+    private JSONObject generateElasticsearchDocumentByWord(String word, List<String> lemma_tags, List<String> defs) {
+        JSONObject doc = new JSONObject();
+
+        doc.put("word", word);
+        doc.put("lemma_tag", lemma_tags);
+        doc.put("definition", defs);
+
+        return doc;
+    }
+
+    private JSONObject generateElasticsearchDocumentByLemma(String lemma, List<String> word, List<String> lemma_tags,
+            List<String> defs) {
+        JSONObject doc = new JSONObject();
+
+        doc.put("word", word);
+        doc.put("lemma", lemma);
+        doc.put("lemma_tag", lemma_tags);
+        doc.put("definition", defs);
 
         return doc;
     }
@@ -582,7 +733,7 @@ public class GcmeData {
     public void generateTextStructData(Path output) throws IOException {
         TextGroup root = loadTextStructure();
 
-        JSONObject result  = generateTextStructData(root);
+        JSONObject result = generateTextStructData(root);
 
         try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
             out.write(result.toString());
@@ -620,17 +771,17 @@ public class GcmeData {
         }
     }
 
-
     // Each option is {label: name, id: id}
     // Each TextGroup with children becomes a group
     private JSONObject generateTextPowerSelectData(TextGroup group) {
         JSONObject result = new JSONObject();
 
-        // As a hack add groupName for depth 3 entry with no children Gower / Praise of Peace so it becomes
+        // As a hack add groupName for depth 3 entry with no children Gower / Praise of
+        // Peace so it becomes
         // Gower / Praise of Peace/ Praise of Peace
 
-        boolean depth3_nokids = !group.hasChildren() && group.getParent() != null && group.getParent().getParent() != null
-                && group.getParent().getParent().getParent() == null;
+        boolean depth3_nokids = !group.hasChildren() && group.getParent() != null
+                && group.getParent().getParent() != null && group.getParent().getParent().getParent() == null;
 
         if (group.hasChildren() || depth3_nokids) {
             result.put("groupName", group.getName());
@@ -662,9 +813,9 @@ public class GcmeData {
     // Write out tag table in format for ember-models-table
     // [{group: "group title", tag: "tag", description: "description"}]
     // Derived from pos.txt which looks like
-    // ##Part of Speech        pos
-    // abbrev  abbr
-    // adj#interj      adj as interjection
+    // ##Part of Speech pos
+    // abbrev abbr
+    // adj#interj adj as interjection
 
     public void generateTagTable(Path output) throws IOException {
         List<JSONObject> result = new ArrayList<>();
@@ -723,7 +874,6 @@ public class GcmeData {
             out.write(result.toString());
         }
     }
-
 
     private JSONObject generateGroupTitleMap(TextGroup group, JSONObject result) {
         result.put(group.getId(), group.getName());
