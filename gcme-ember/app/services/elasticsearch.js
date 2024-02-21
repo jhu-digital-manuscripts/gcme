@@ -23,7 +23,6 @@ export default Service.extend({
           prefix : prefix,
             completion : {
               field: term + ".suggest",
-              skip_duplicates: true,
               size: 10
             }
         }
