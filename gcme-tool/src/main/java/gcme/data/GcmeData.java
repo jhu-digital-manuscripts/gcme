@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -668,15 +669,14 @@ public class GcmeData {
 
         try (BufferedWriter out = Files.newBufferedWriter(by_lemma, StandardCharsets.UTF_8)) {
             for (Entry<String, List<DictEntry>> entry : dict_by_lemma.entrySet()) {
-                List<String> words = entry.getValue().stream().map(e -> e.getWords()).flatMap(Collection::stream)
-                        .toList();
+                Set<String> words = entry.getValue().stream().map(e -> e.getWords()).flatMap(Collection::stream).collect(Collectors.toSet());
                 List<String> tagged_lemmas = entry.getValue().stream().map(e -> e.getTaggedLemma()).toList();
 
                 // Crunch down to basic tagged lemmas with definitions
                 tagged_lemmas = new ArrayList<>(to_basic_tagged_lemmas(tagged_lemmas));
                 List<String> defs = tagged_lemmas.stream().map(s -> basic_lemma_tag_def.get(s)).toList();
 
-                JSONObject source = generateElasticsearchDocumentByLemma(entry.getKey(), words, tagged_lemmas, defs);
+                JSONObject source = generateElasticsearchDocumentByLemma(entry.getKey(), new ArrayList<>(words), tagged_lemmas, defs);
 
                 out.write(action + "\n");
                 out.write(source.toString() + "\n");
@@ -699,6 +699,7 @@ public class GcmeData {
         JSONObject doc = new JSONObject();
 
         doc.put("lemma_tag", entry.getTaggedLemma());
+        Collections.sort(entry.getWords());
         doc.put("word", entry.getWords());
         doc.put("definition", entry.getDefinition());
 
@@ -719,6 +720,7 @@ public class GcmeData {
             List<String> defs) {
         JSONObject doc = new JSONObject();
 
+        Collections.sort(word);
         doc.put("word", word);
         doc.put("lemma", lemma);
         doc.put("lemma_tag", lemma_tags);
