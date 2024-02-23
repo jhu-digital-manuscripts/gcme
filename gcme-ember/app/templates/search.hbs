@@ -20,10 +20,10 @@
       searchField="none"
       as |entry|
     }}
-      <strong>{{entry.word}}</strong> {{format-definitions entry.definition}}
+      <strong>{{entry.word}}</strong> [{{entry.lemma_tag}}] - {{format-definitions entry.definition}}
     {{/power-select-multiple}}
 
-    <small id="wordsHelp" class="form-text text-muted">Match words in a line of text. May enter more than one.</small>
+    <small id="wordsHelp" class="form-text text-muted">Match words as spelled in a given line of text. May enter more than one.</small>
   </div>
   
   <div class="form-group">
@@ -41,14 +41,14 @@
       searchField="none"
       as |entry|
     }}
-    <strong>{{entry.lemma}}</strong> [{{entry.word}}] - {{format-definitions entry.definition}}
+    <strong>{{entry.lemma}}</strong> [{{entry.word}}] [{{entry.lemma_tag}}] - {{format-definitions entry.definition}}
   {{/power-select-multiple}}
 
     <small id="lemmasHelp" class="form-text text-muted">Finds all words (in all grammatical forms) in the database corresponding to any headword(s) in the MED entered here.</small>
   </div>
 
   <div class="form-group">
-    <label for="tagged_lemmas"><em>Middle English word</em> (by part of speech)</label>
+    <label for="tagged_lemmas">Middle English word (by part of speech)</label>
 
     {{#power-select-multiple
       id="tagged_lemmas"
