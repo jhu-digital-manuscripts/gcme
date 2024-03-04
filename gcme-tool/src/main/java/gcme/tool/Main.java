@@ -7,7 +7,7 @@ import gcme.data.GcmeData;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 2) {
+        if (args.length < 2) {
             System.err.println("Must have path to data argument and command argument");
             System.exit(1);
         }
@@ -24,10 +24,11 @@ public class Main {
             data.generateGroupTitleMap(Paths.get("group-title.json"));
         } else if (cmd.equals("info")) {
             data.loadTextStructure().print(0, System.out);
+        } else if (cmd.equals("transform-spreadsheet")) {
+            data.transformSpreadsheet(Paths.get(args[2]), System.out);
         } else {
             System.err.println("Unknown command: " + cmd);
-            System.err.println("Expected: info|gen-data");
+            System.err.println("Expected: info|gen-data|transform-spreadsheet");
         }
     }
-
 }

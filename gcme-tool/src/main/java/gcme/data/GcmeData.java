@@ -3,6 +3,7 @@ package gcme.data;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -19,6 +20,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -887,5 +891,47 @@ public class GcmeData {
         }
 
         return result;
+    }
+
+    // Transform a spreadsheet into the text format.
+    // Spreadsheet format is four rows to a line of text.
+    // First row: 99-ch.cat, LGWProG, 99-ch, 1, WORD...
+    // Second row: word stresses
+    // Third row: word stresses?
+    // Fourth row: tagged lemma
+    public void transformSpreadsheet(Path spreadsheet, PrintStream out) throws IOException {
+        List<CSVRecord> recs = CSVParser.parse(spreadsheet, StandardCharsets.UTF_8, CSVFormat.DEFAULT).stream().toList();
+
+        for (int row = 0; row < recs.size(); row += 4) {
+            CSVRecord rec = recs.get(row);
+
+            // Skip first values: filename, location
+            // First two will be id, number
+            List<String> words = rec.stream().skip(2).filter(w -> !w.isBlank()).toList();
+
+            rec = recs.get(row + 3);
+            List<String> tagged_lemmas = rec.stream().skip(4).filter(t -> !t.isBlank()).toList();
+
+            if (words.size() - 2 != tagged_lemmas.size()) {
+                throw new IOException("Words do not match lemmas, row " + row);
+            }
+
+            out.print(words.get(0));
+            out.print(' ');
+            out.print(words.get(1));
+            out.print(' ');
+
+            for (int i = 2; i < words.size(); i++) {
+                out.print(words.get(i));
+                out.print("{*" + tagged_lemmas.get(i - 2) + "*}");
+
+                if (i == words.size() - 1) {
+                    out.println();
+                    out.println();
+                } else {
+                    out.print(' ');
+                }
+            }
+        }
     }
 }
