@@ -3,19 +3,26 @@ package gcme.data;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -92,8 +99,8 @@ public class GcmeData {
 
     /**
      * Load structure of texts described in abbr2name.lut.
-     * 
-     * 
+     *
+     *
      * @return TextGroup
      * @throws IOException
      */
@@ -314,7 +321,8 @@ public class GcmeData {
         doc.put("number", line.getNumber());
         doc.put("raw_number", line.getRawNumber());
         doc.put("text", line.getText());
-        doc.put("tag_lemma_text", line.getTaggedLemmaText());
+        doc.put("lemma_tag_text", line.getTaggedLemmaText());
+        doc.put("lemma_text", line.getLemmaText());
 
         List<String> groups = new ArrayList<>();
 
@@ -323,18 +331,18 @@ public class GcmeData {
             groups.add(0, group.getId());
             group = group.getParent();
         }
-        
-        if (groups.size() < 2 || groups.size() >  4) {
+
+        if (groups.size() < 2 || groups.size() > 4) {
             throw new IOException("Unexpected group size: " + line);
         }
-        
+
         doc.put("group", groups);
-        
+
         return doc;
     }
 
-    private void generateElasticsearchBulkLineIngest(TextGroup group, Map<String, List<Path>> map, Set<Path> parent_files, BufferedWriter out)
-            throws IOException {
+    private void generateElasticsearchBulkLineIngest(TextGroup group, Map<String, List<Path>> map,
+            Set<Path> parent_files, BufferedWriter out) throws IOException {
         String action = "{ \"index\" : { } }";
 
         List<TextGroup> children = group.getChildren();
@@ -348,38 +356,41 @@ public class GcmeData {
                     out.write(action + "\n");
                     out.write(source.toString() + "\n");
                 }
-                
+
                 if (parent_files != null) {
                     if (parent_files.contains(file)) {
                         parent_files.remove(file);
                     } else {
-                        System.err.println("Group consistency warning: " + group.getParent().getId() + " does not contain file of child " + group.getId() + " " + file);
+                        System.err.println("Group consistency warning: " + group.getParent().getId()
+                                + " does not contain file of child " + group.getId() + " " + file);
                     }
                 }
-            }        
+            }
         } else {
             Set<Path> group_files = null;
-            
-            if (map.containsKey(group.getId())) { 
+
+            if (map.containsKey(group.getId())) {
                 group_files = new HashSet<>(map.get(group.getId()));
             }
-            
+
             if (group_files != null && parent_files != null) {
-                for (Path file: group_files) {
+                for (Path file : group_files) {
                     if (parent_files.contains(file)) {
                         parent_files.remove(file);
                     } else {
-                        System.err.println("Group consistency warning: " + group.getParent().getId() + " does not contain file of child " + group.getId() + " " + file);
+                        System.err.println("Group consistency warning: " + group.getParent().getId()
+                                + " does not contain file of child " + group.getId() + " " + file);
                     }
                 }
             }
-            
+
             for (TextGroup child : children) {
                 generateElasticsearchBulkLineIngest(child, map, group_files, out);
             }
-            
+
             if (group_files != null && !group_files.isEmpty()) {
-                System.err.println("Group consistency warning: " +  group.getId() + " files not included in children:" + group_files);
+                System.err.println("Group consistency warning: " + group.getId() + " files not included in children:"
+                        + group_files);
             }
         }
     }
@@ -388,54 +399,65 @@ public class GcmeData {
     public Map<String, DictEntry> loadDictionary() throws IOException {
         Map<String, DictEntry> result = new HashMap<>();
 
-        loadDictionary(loadTextStructure(), loadTextMap(), loadDictionaryDefinitions(), result);
+        Map<String, String> def_map = loadDictionaryDefinitions();
+
+        // Add in mapping for base lemma tags
+        HashSet<String> keys = new HashSet<>(def_map.keySet());
+        for (String lemma_tag : keys) {
+            def_map.putIfAbsent(get_tagged_lemma_base(lemma_tag), def_map.get(lemma_tag));
+        }
+
+        loadDictionary(loadTextStructure(), loadTextMap(), def_map, result);
 
         return result;
     }
 
+    // Map lemma_tag -> definition
     public Map<String, String> loadDictionaryDefinitions() throws IOException {
         Map<String, String> result = new HashMap<>();
 
-        String[] dicts = new String[] {
-            "texts/anon/ch/dict/ap-all.lem",
-            "texts/gow/dict/gow-all.lem",                        
-            "texts/ch/dict/ch-all.lem",
-        };
-        
-        for (String s: dicts) {
+        String[] dicts = new String[] { "texts/anon/ch/dict/ap-all.lem", "texts/gow/dict/gow-all.lem",
+                "texts/ch/dict/ch-all.lem", };
+
+        for (String s : dicts) {
             Map<String, String> defs = load_dictionary_definitions(base_path.resolve(s));
-            
+
             // TODO What about if have different definitions?
-            
+
             result.putAll(defs);
         }
 
         return result;
     }
 
-    // Example: 
-    // aforn adv.      "before, previously," s.v. afore adv., prep., and conj. OED.    KEY: aforn@adv
-    // Achitofel n.    "Achitophel, King David's counselor (in the Bible)," proper n.; not in MED.     KEY: achitofel@
+    // Example:
+    // aforn adv. "before, previously," s.v. afore adv., prep., and conj. OED. KEY:
+    // aforn@adv
+    // Achitofel n. "Achitophel, King David's counselor (in the Bible)," proper n.;
+    // not in MED. KEY: achitofel@
     // n#propn
-    // 
+    //
     // Note the line wrapping. Empty lines separate entries.
     // May be multiple tagged lemmas separated by spaces after key
+    // May end in a period
 
     private Map<String, String> load_dictionary_definitions(Path dict_lem_file) throws IOException {
         Map<String, String> result = new HashMap<>();
 
         // First undo the line wrapping and then parse the lines
-        
+
         List<String> lines = new ArrayList<>();
-        
+
         try (BufferedReader in = Files.newBufferedReader(dict_lem_file, StandardCharsets.UTF_8)) {
             String line;
-            
+
             StringBuilder real_line = new StringBuilder();
 
             while ((line = in.readLine()) != null) {
-                line = line.trim();
-                
+                if (line.endsWith(".")) {
+                    line = line.substring(0, line.length() - 1);
+                }
+
                 if (line.isEmpty()) {
                     if (real_line.length() > 0) {
                         lines.add(real_line.toString());
@@ -445,45 +467,67 @@ public class GcmeData {
                     real_line.append(line);
                 }
             }
-            
+
             if (real_line.length() > 0) {
                 lines.add(real_line.toString());
             }
         }
-        
+
         // Now parse unwrapped lines
-        
+
         final String key = "KEY:";
 
-        for (String line: lines) {
+        for (String line : lines) {
             int i = line.indexOf(key);
-            
+
             if (i == -1) {
-                //throw new IOException("Malformed entry: " + dict_lem_file + " " + line);
+                // throw new IOException("Malformed entry: " + dict_lem_file + " " + line);
                 System.err.println("Warning: Could not find KEY:" + line);
                 continue;
             }
-                
+
             String def = line.substring(0, i).trim();
             String[] tagged_lemmas = line.substring(i + key.length()).trim().split("\\s+");
-                
-            for (String tagged_lemma: tagged_lemmas) {
+
+            for (String tagged_lemma : tagged_lemmas) {
                 if (result.containsKey(tagged_lemma)) {
-                    //throw new IOException("Entry already exists: " + line);
+                    // throw new IOException("Entry already exists: " + line);
                     System.err.println("Warning: Entry already exists: " + line);
+
+                    // Prefer OED definition
+                    if (def.contains("OED")) {
+                        result.put(tagged_lemma, def);
+                    }
+                } else {
+                    result.put(tagged_lemma, def);
                 }
-                
-                result.put(tagged_lemma, def);
             }
         }
-        
+
         return result;
     }
 
-    private void loadDictionary(TextGroup group, Map<String, List<Path>> group_text_map, Map<String,String> def_map,
+    private void loadDictionary(TextGroup group, Map<String, List<Path>> group_text_map, Map<String, String> def_map,
             Map<String, DictEntry> tagged_lemma_map) throws IOException {
         List<TextGroup> children = group.getChildren();
-        
+
+        // Various permutations to try when mapping a tagged lemma to a dictionary
+        // definition key
+        Map<String, String> perm_map = new HashMap<>();
+
+        // Inconsistency with numeral tagging
+        perm_map.put("@num_", "@num#");
+        perm_map.put("@num_adj", "@num");
+        perm_map.put("@num_n", "@num");
+        perm_map.put("@num_n%pl", "@num");
+        perm_map.put("@num_n%gen", "@num");
+
+        // Dictionary entries don't have the absolute form
+        perm_map.put("_abs", "");
+
+        // Seems to be the same
+        perm_map.put("@pron_adj", "@gram_adj");
+
         if (children == null) {
             for (Path file : group_text_map.get(group.getId())) {
                 for (Line line : parseText(file)) {
@@ -493,45 +537,56 @@ public class GcmeData {
                     if (words.length != tagged_lemmas.length) {
                         throw new IOException("Malformed line does not having matching words and tags: " + file + line);
                     }
-                    
+
                     for (int i = 0; i < words.length; i++) {
                         String word = words[i];
                         String tagged_lemma = tagged_lemmas[i];
-                        
+
+                        // TODO
+                        // if (tagged_lemma.equals("not-concorded")) {
+                        // continue;
+                        // }
+
                         // If token is a word, must remove punctuation
                         if (word.matches(".*\\w.*")) {
                             word = word.replaceAll("\\p{Punct}", "");
                         }
-                        
+
                         DictEntry entry = tagged_lemma_map.get(tagged_lemma);
 
                         if (entry == null) {
                             String def = def_map.get(tagged_lemma);
-                            
+
                             if (def == null) {
                                 // Try without extra tags
-                                
-                                int inflection = tagged_lemma.indexOf('%');
-                                
-                                if (inflection != -1) {
-                                    def = def_map.get(tagged_lemma.substring(0, inflection));
-                                }
-                                
-                                if (def == null) {
-                                    int syn = tagged_lemma.indexOf('#');
-                                
-                                    if (syn != -1) {
-                                        def = def_map.get(tagged_lemma.substring(0, syn));
-                                    }
-                                }
+
+                                String base = get_tagged_lemma_base(tagged_lemma);
+                                def = def_map.get(base);
 
                                 if (def == null) {
-                                    System.err.println("Warning: No definition for " + tagged_lemma);
+                                    // Various replacements to try
+
+                                    for (String seq : perm_map.keySet()) {
+                                        String s = tagged_lemma.replace(seq, perm_map.get(seq));
+
+                                        def = def_map.get(s);
+
+                                        if (def != null) {
+                                            break;
+                                        }
+                                    }
+
+                                    if (def == null) {
+                                        System.err.println(
+                                                "Warning: No definition for " + tagged_lemma);
+                                    }
                                 }
                             }
-                            
+
+                            // TODO if (!tagged_lemma.equals("not-concorded")) {
                             entry = new DictEntry(tagged_lemma, def);
                             tagged_lemma_map.put(tagged_lemma, entry);
+                            // }
                         }
 
                         if (!entry.getWords().contains(word)) {
@@ -545,43 +600,147 @@ public class GcmeData {
                 loadDictionary(child, group_text_map, def_map, tagged_lemma_map);
             }
         }
-        
-        
     }
-    
-    public void generateElasticsearchBulkDictIngest(Path output) throws IOException {
+
+    // seien@v1%imp -> seien@v1
+    private static String get_tagged_lemma_base(String s) {
+        int i = s.indexOf('#');
+
+        if (i != -1) {
+            s = s.substring(0, i);
+        }
+
+        i = s.indexOf('%');
+
+        if (i != -1) {
+            s = s.substring(0, i);
+        }
+
+        return s;
+    }
+
+    private Set<String> to_basic_tagged_lemmas(List<String> tagged_lemmas) {
+        return tagged_lemmas.stream().map(GcmeData::get_tagged_lemma_base).collect(Collectors.toSet());
+    }
+
+    public void generateElasticsearchBulkDictIngest(Path by_word, Path by_lemma, Path by_tag_lemma) throws IOException {
         Map<String, DictEntry> dict = loadDictionary();
-        
+
+        // Remove stuff that is not tagged
+        dict.remove("not-concorded");
+
+        // basic lemma tag -> definition
+        Map<String, String> basic_lemma_tag_def = new HashMap<>();
+
+        dict.forEach((lemma_tag, entry) -> {
+            basic_lemma_tag_def.put(get_tagged_lemma_base(lemma_tag), entry.getDefinition());
+        });
+
         String action = "{ \"index\" : { } }";
 
-        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
-            for (DictEntry entry: dict.values()) {
-                JSONObject source = generateElasticsearchDocument(entry);
-                
+        // By word
+
+        Map<String, List<DictEntry>> dict_by_word = new HashMap<>();
+
+        dict.forEach((lemma_tag, entry) -> {
+            entry.getWords().forEach(word -> {
+                dict_by_word.computeIfAbsent(word, w -> new ArrayList<>()).add(entry);
+            });
+        });
+
+        try (BufferedWriter out = Files.newBufferedWriter(by_word, StandardCharsets.UTF_8)) {
+            for (Entry<String, List<DictEntry>> entry : dict_by_word.entrySet()) {
+                List<String> tagged_lemmas = entry.getValue().stream().map(e -> e.getTaggedLemma()).toList();
+
+                // Crunch down to basic tagged lemmas with definitions
+                tagged_lemmas = new ArrayList<>(to_basic_tagged_lemmas(tagged_lemmas));
+                List<String> defs = tagged_lemmas.stream().map(s -> basic_lemma_tag_def.get(s)).toList();
+
+                JSONObject source = generateElasticsearchDocumentByWord(entry.getKey(), tagged_lemmas, defs);
+
+                out.write(action + "\n");
+                out.write(source.toString() + "\n");
+            }
+        }
+
+        // By lemma
+
+        Map<String, List<DictEntry>> dict_by_lemma = new HashMap<>();
+
+        dict.forEach((lemma_tag, entry) -> {
+            dict_by_lemma.computeIfAbsent(entry.getLemma(), l -> new ArrayList<>()).add(entry);
+        });
+
+        try (BufferedWriter out = Files.newBufferedWriter(by_lemma, StandardCharsets.UTF_8)) {
+            for (Entry<String, List<DictEntry>> entry : dict_by_lemma.entrySet()) {
+                Set<String> words = entry.getValue().stream().map(e -> e.getWords()).flatMap(Collection::stream).collect(Collectors.toSet());
+                List<String> tagged_lemmas = entry.getValue().stream().map(e -> e.getTaggedLemma()).toList();
+
+                // Crunch down to basic tagged lemmas with definitions
+                tagged_lemmas = new ArrayList<>(to_basic_tagged_lemmas(tagged_lemmas));
+                List<String> defs = tagged_lemmas.stream().map(s -> basic_lemma_tag_def.get(s)).toList();
+
+                JSONObject source = generateElasticsearchDocumentByLemma(entry.getKey(), new ArrayList<>(words), tagged_lemmas, defs);
+
+                out.write(action + "\n");
+                out.write(source.toString() + "\n");
+            }
+        }
+
+        // By tagged lemma
+
+        try (BufferedWriter out = Files.newBufferedWriter(by_tag_lemma, StandardCharsets.UTF_8)) {
+            for (DictEntry entry : dict.values()) {
+                JSONObject source = generateElasticsearchDocumentByLemmaTag(entry);
+
                 out.write(action + "\n");
                 out.write(source.toString() + "\n");
             }
         }
     }
 
-    private JSONObject generateElasticsearchDocument(DictEntry entry) {
+    private JSONObject generateElasticsearchDocumentByLemmaTag(DictEntry entry) {
         JSONObject doc = new JSONObject();
 
-        doc.put("tag_lemma", entry.getTaggedLemma());
+        doc.put("lemma_tag", entry.getTaggedLemma());
+        Collections.sort(entry.getWords());
         doc.put("word", entry.getWords());
         doc.put("definition", entry.getDefinition());
 
         return doc;
     }
 
+    private JSONObject generateElasticsearchDocumentByWord(String word, List<String> lemma_tags, List<String> defs) {
+        JSONObject doc = new JSONObject();
+
+        doc.put("word", word);
+        doc.put("lemma_tag", lemma_tags);
+        doc.put("definition", defs);
+
+        return doc;
+    }
+
+    private JSONObject generateElasticsearchDocumentByLemma(String lemma, List<String> word, List<String> lemma_tags,
+            List<String> defs) {
+        JSONObject doc = new JSONObject();
+
+        Collections.sort(word);
+        doc.put("word", word);
+        doc.put("lemma", lemma);
+        doc.put("lemma_tag", lemma_tags);
+        doc.put("definition", defs);
+
+        return doc;
+    }
+
     // Write out structure of texts for ember
     //
-    // {label: "Chaucer", id: "Ch", children: []} 
+    // {label: "Chaucer", id: "Ch", children: []}
     public void generateTextStructData(Path output) throws IOException {
         TextGroup root = loadTextStructure();
-        
-        JSONObject result  = generateTextStructData(root);
-        
+
+        JSONObject result = generateTextStructData(root);
+
         try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
             out.write(result.toString());
         }
@@ -592,47 +751,47 @@ public class GcmeData {
 
         result.put("label", group.getName());
         result.put("id", group.getId());
-        
+
         if (group.hasChildren()) {
             List<JSONObject> children = new ArrayList<>();
-            
+
             group.getChildren().forEach(c -> {
                 children.add(generateTextStructData(c));
             });
 
             result.put("children", children);
-        } 
-       
+        }
+
         return result;
     }
-    
+
     // Write out data for power select so user can choose a text
     public void generateTextPowerSelectData(Path output) throws IOException {
         TextGroup root = loadTextStructure();
-        
+
         JSONObject result = generateTextPowerSelectData(root);
-        
+
         try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
             // Unwrap top level element.
             out.write(result.getJSONArray("options").toString());
         }
     }
 
-
     // Each option is {label: name, id: id}
     // Each TextGroup with children becomes a group
     private JSONObject generateTextPowerSelectData(TextGroup group) {
         JSONObject result = new JSONObject();
-                
-        // As a hack add groupName for depth 3 entry with no children Gower / Praise of Peace so it becomes
+
+        // As a hack add groupName for depth 3 entry with no children Gower / Praise of
+        // Peace so it becomes
         // Gower / Praise of Peace/ Praise of Peace
-      
-        boolean depth3_nokids = !group.hasChildren() && group.getParent() != null && group.getParent().getParent() != null 
-                && group.getParent().getParent().getParent() == null;
-        
+
+        boolean depth3_nokids = !group.hasChildren() && group.getParent() != null
+                && group.getParent().getParent() != null && group.getParent().getParent().getParent() == null;
+
         if (group.hasChildren() || depth3_nokids) {
             result.put("groupName", group.getName());
-                        
+
             List<JSONObject> children = new ArrayList<>();
 
             if (group.getParent() != null) {
@@ -641,97 +800,138 @@ public class GcmeData {
                 option.put("label", group.getName());
                 children.add(option);
             }
-            
+
             if (group.hasChildren()) {
                 group.getChildren().forEach(c -> {
                     children.add(generateTextPowerSelectData(c));
                 });
             }
-            
+
             result.put("options", children);
-        } else {            
-            result.put("id", group.getId());            
+        } else {
+            result.put("id", group.getId());
             result.put("label", group.getName());
         }
-       
+
         return result;
     }
-    
+
     // Write out tag table in format for ember-models-table
     // [{group: "group title", tag: "tag", description: "description"}]
     // Derived from pos.txt which looks like
-    // ##Part of Speech        pos
-    // abbrev  abbr
-    // adj#interj      adj as interjection
+    // ##Part of Speech pos
+    // abbrev abbr
+    // adj#interj adj as interjection
 
     public void generateTagTable(Path output) throws IOException {
         List<JSONObject> result = new ArrayList<>();
-        
+
         try (BufferedReader in = Files.newBufferedReader(base_path.resolve("pos.txt"), StandardCharsets.UTF_8)) {
             String line;
-            
+
             String group = "";
-            
+
             while ((line = in.readLine()) != null) {
                 line = line.trim().replaceAll("\\s+", " ");
-                
+
                 if (line.startsWith("##")) {
                     int end = line.lastIndexOf(' ');
-                    
+
                     if (end == -1) {
                         throw new IOException("Malformed line: " + line);
                     }
-                    
+
                     group = line.substring(2, end).trim();
                 } else {
                     int i = line.indexOf(' ');
-                    
+
                     if (i == -1) {
                         throw new IOException("Malformed line: " + line);
                     }
-                    
+
                     String tag = line.substring(0, i);
                     String description = line.substring(i).trim();
-                    
+
                     JSONObject entry = new JSONObject();
-                    
+
                     entry.put("group", group);
                     entry.put("tag", tag);
                     entry.put("description", description);
-                    
+
                     result.add(entry);
                 }
             }
         }
-        
+
         try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
             out.write(new JSONArray(result).toString());
         }
     }
-    
+
     // Write out map from id -> title
     public void generateGroupTitleMap(Path output) throws IOException {
         TextGroup root = loadTextStructure();
-        
+
         JSONObject result = new JSONObject();
         generateGroupTitleMap(root, result);
-        
+
         try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
             // Unwrap top level element.
             out.write(result.toString());
         }
     }
 
-
     private JSONObject generateGroupTitleMap(TextGroup group, JSONObject result) {
         result.put(group.getId(), group.getName());
-        
+
         if (group.hasChildren()) {
             group.getChildren().forEach(c -> {
                 generateGroupTitleMap(c, result);
             });
         }
-       
+
         return result;
+    }
+
+    // Transform a spreadsheet into the text format.
+    // Spreadsheet format is four rows to a line of text.
+    // First row: 99-ch.cat, LGWProG, 99-ch, 1, WORD...
+    // Second row: word stresses
+    // Third row: word stresses?
+    // Fourth row: tagged lemma
+    public void transformSpreadsheet(Path spreadsheet, PrintStream out) throws IOException {
+        List<CSVRecord> recs = CSVParser.parse(spreadsheet, StandardCharsets.UTF_8, CSVFormat.DEFAULT).stream().toList();
+
+        for (int row = 0; row < recs.size(); row += 4) {
+            CSVRecord rec = recs.get(row);
+
+            // Skip first values: filename, location
+            // First two will be id, number
+            List<String> words = rec.stream().skip(2).filter(w -> !w.isBlank()).toList();
+
+            rec = recs.get(row + 3);
+            List<String> tagged_lemmas = rec.stream().skip(4).filter(t -> !t.isBlank()).toList();
+
+            if (words.size() - 2 != tagged_lemmas.size()) {
+                throw new IOException("Words do not match lemmas, row " + row);
+            }
+
+            out.print(words.get(0));
+            out.print(' ');
+            out.print(words.get(1));
+            out.print(' ');
+
+            for (int i = 2; i < words.size(); i++) {
+                out.print(words.get(i));
+                out.print("{*" + tagged_lemmas.get(i - 2) + "*}");
+
+                if (i == words.size() - 1) {
+                    out.println();
+                    out.println();
+                } else {
+                    out.print(' ');
+                }
+            }
+        }
     }
 }

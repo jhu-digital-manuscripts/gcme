@@ -2,23 +2,28 @@ package gcme.model;
 
 /**
  * Represents a line of tagged text.
- * 
+ *
  * The specified line number is usually just an integer, but occasionally is something like 1081B or Rub.
  */
 public class Line {
     private String id;
     private int number;
     private String raw_number;
-    
     private String text;
+    private String lemma_text;
     private String tag_lemma_text;
-    
+
     public Line(String id, int number, String raw_number, String text, String tag_lemma_text) {
         this.id = id;
         this.number = number;
         this.raw_number = raw_number;
         this.text = text;
+        this.lemma_text = to_lemma_text(tag_lemma_text);
         this.tag_lemma_text = tag_lemma_text;
+    }
+
+    private String to_lemma_text(String s) {
+        return s.replaceAll("@\\S*", "");
     }
 
     public String getId() {
@@ -28,14 +33,18 @@ public class Line {
     public int getNumber() {
         return number;
     }
-    
+
     public String getRawNumber() {
         return raw_number;
     }
-    
+
 
     public String getText() {
         return text;
+    }
+
+    public String getLemmaText() {
+        return lemma_text;
     }
 
     public String getTaggedLemmaText() {

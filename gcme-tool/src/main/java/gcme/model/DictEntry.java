@@ -7,17 +7,31 @@ import java.util.List;
 
 public class DictEntry {
     private String definition;
+    private String lemma;
     private String tagged_lemma;
     private List<String> words;
-    
+
     public DictEntry(String tagged_lemma, String definition) {
         this.tagged_lemma = tagged_lemma;
         this.definition = definition;
         this.words = new ArrayList<>();
+
+        int i = tagged_lemma.indexOf('@');
+
+        if (i == -1) {
+            System.err.println("Malformed tagged lemma: " + tagged_lemma);
+            this.lemma = tagged_lemma;
+        } else {
+            this.lemma = tagged_lemma.substring(0, i);
+        }
     }
 
     public String getDefinition() {
         return definition;
+    }
+
+    public String getLemma() {
+        return lemma;
     }
 
     public String getTaggedLemma() {

@@ -4,6 +4,7 @@
 <h2>Compose query</h2>
 
 <form>
+
   <div class="form-group">
     <label for="words">Middle English word(s)</label>
 
@@ -19,12 +20,12 @@
       searchField="none"
       as |entry|
     }}
-      <strong>{{entry._match}}</strong> {{entry.definition}}
+      <strong>{{entry.word}}</strong> [{{entry.lemma_tag}}] - {{format-definitions entry.definition}}
     {{/power-select-multiple}}
 
-    <small id="wordsHelp" class="form-text text-muted">Match words in a line of text. May enter more than one.</small>
+    <small id="wordsHelp" class="form-text text-muted">Match words as spelled in a given line of text. May enter more than one.</small>
   </div>
-
+  
   <div class="form-group">
     <label for="lemmas"><em>Middle English Dictionary</em> headword(s)</label>
 
@@ -40,10 +41,31 @@
       searchField="none"
       as |entry|
     }}
-    <strong>{{entry.tag_lemma}}</strong> [{{entry.word}}] - {{entry.definition}}
+    <strong>{{entry.lemma}}</strong> [{{entry.word}}] [{{entry.lemma_tag}}] - {{format-definitions entry.definition}}
   {{/power-select-multiple}}
 
-    <small id="lemmasHelp" class="form-text text-muted">Match headwords of a line of text. May enter more than one.</small>
+    <small id="lemmasHelp" class="form-text text-muted">Finds all words (in all grammatical forms) in the database corresponding to any headword(s) in the MED entered here.</small>
+  </div>
+
+  <div class="form-group">
+    <label for="tagged_lemmas">Middle English word (by part of speech)</label>
+
+    {{#power-select-multiple
+      id="tagged_lemmas"
+      aria-describedby="taggedLemmasHelp"
+      placeholder="Enter headwords with part of speech"
+      selected=tagged_lemmas
+      selectedItemComponent="selected-item-tagged-lemma"
+      onchange=(action (mut tagged_lemmas))
+      onkeydown=(action "selectOnSpace")
+      search=(action "completeTaggedLemma")
+      searchField="none"
+      as |entry|
+    }}
+    <strong>{{entry.lemma_tag}}</strong> [{{entry.word}}] - {{entry.definition}}
+  {{/power-select-multiple}}
+
+    <small id="taggedLemmasHelp" class="form-text text-muted">Finds all words in a particular grammatical form (which can be selected from the grammatically tagged word forms that will auto-fill here) in the database.</small>
   </div>
 
   <div class="form-group">

@@ -26,14 +26,14 @@ public class GcmeDataTest {
     @Before
     public void setup() throws Exception {
         String path = System.getenv("GCME_DATA");
-        
+
         if (path == null) {
             path = "/home/msp/work/gcme/data";
         }
-        
+
         data = new GcmeData(Paths.get(path));
     }
-    
+
     @Rule
     public TemporaryFolder tmpfolder = new TemporaryFolder();
 
@@ -97,36 +97,37 @@ public class GcmeDataTest {
     public void testGenerateElasticsearchBulkLineIngest() throws IOException {
         data.generateElasticsearchBulkLineIngest(tmpfolder.newFile().toPath());
     }
-    
+
     @Test
     public void testGenerateElasticsearchBulkDictIngest() throws IOException {
-        data.generateElasticsearchBulkDictIngest(tmpfolder.newFile().toPath());
+        data.generateElasticsearchBulkDictIngest(tmpfolder.newFile().toPath(),
+                tmpfolder.newFile().toPath(), tmpfolder.newFile().toPath());
     }
-    
+
     @Test
     public void testGenerateTagTable() throws IOException {
         data.generateTagTable(tmpfolder.newFile().toPath());
     }
-    
+
     @Test
     public void testGenerateGroupTitleMap() throws IOException {
         data.generateGroupTitleMap(tmpfolder.newFile().toPath());
     }
-    
+
     @Test
     public void testLoadDictionaryDefinitions() throws IOException {
         Map<String, String> defs = data.loadDictionaryDefinitions();
-        
+
         assertTrue(defs.size() > 0);
     }
-    
+
     @Test
     public void testGenerateDictionary() throws IOException {
         Map<String, DictEntry> dict = data.loadDictionary();
-        
+
         assertTrue(dict.size() > 0);
     }
-    
-    
-    
+
+
+
 }

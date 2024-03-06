@@ -1174,7 +1174,7 @@ corner n.(1)	"corner."	KEY: corner@n1
 
 corn n.	"grain, grain crop; kernel; best part."	KEY: corn@n
 
-Cornwaile n. ("Cornwall," place name.	1: RomB: 1 (cornewaile 1).	
+Cornwaile n. ("Cornwall," place name.	1: RomB: 1 (cornewaile 1).	KEY: cornwaile@n#propn
 
 coroune n.	"crown, garland."	KEY: coroune@n
 
@@ -1374,7 +1374,7 @@ defensable adj.	"fortified, ready for defense," s.v. defensible a. OED.	KEY: def
 
 defense n.	"defense, means of defense."	KEY: defense@n
 
-defensen v. [("ppl.) defended, protected," s.v. defence, defense v. OED.	1: RomB: 1 (defenced 1).	
+defensen v. [("ppl.) defended, protected," s.v. defence, defense v. OED.	1: RomB: 1 (defenced 1).	KEY: defensen@v
 
 defilen v.	"abuse, destroy," s.v. defile v.\1 OED.	KEY: defilen@v
 
@@ -1654,7 +1654,7 @@ domb adj.	"mute."	KEY: domb@adj
 
 dom n.	"judgement, opinion."	KEY: dom@n
 
-don v.(1)	"do, put; act, behave; cause, (with inf.) cause (something to be done; do (as aux. with inf. forming periphrastic or emphatic present and past tenses)."	AstSup: 2 (dide 2) CompAm: 12 (diden 1, do 6, done 1, doon 2, doth 2) RomB: 144 (dide 14, didest 1, didist 2, do 53, doist 2, doith 1, don 17, doo 8, doon 6, dost 1, doth 37, dyd 1, ydoo 1) RomC: 63 (dide 4, diden 1, do 19, don 26, done 1, doth 12).
+don v.(1)	"do, put; act, behave; cause, (with inf.) cause (something to be done; do (as aux. with inf. forming periphrastic or emphatic present and past tenses)."	AstSup: 2 (dide 2) CompAm: 12 (diden 1, do 6, done 1, doon 2, doth 2) RomB: 144 (dide 14, didest 1, didist 2, do 53, doist 2, doith 1, don 17, doo 8, doon 6, dost 1, doth 37, dyd 1, ydoo 1) RomC: 63 (dide 4, diden 1, do 19, don 26, done 1, doth 12).   KEY: don@v1
 
 don v.(2)	"put on, don."	KEY: don@v2
 
@@ -2580,7 +2580,7 @@ gonne n.	"cannon."	KEY: gonne@n
 
 gon v.	"go, walk."	KEY: gon@v
 
-Good-Hope n. " "good hope (as proper n., personified)"; not in MED.	1: RomB: 1 (good-hope 1).	
+Good-Hope n. " "good hope (as proper n., personified)"; not in MED.	1: RomB: 1 (good-hope 1).	KEY:good-hope@n#propn
 
 gos n.	"goose, the bird."	KEY: gos@n
 
@@ -3556,7 +3556,7 @@ louen v.(4)	"praise," s.v. low v.\3 OED.	KEY: louen@v4
 
 louli adv.	"humbly."	KEY: louli@adv
 
-louren v.	"frown." 1: RomC: 1 (loure 1).	
+louren v.	"frown." 1: RomC: 1 (loure 1).	KEY:louren@v
 
 louten v.(1)	"bow, bend."	KEY: louten@v1
 
@@ -4668,7 +4668,7 @@ quarrell n.	"crossbow bolt," s.v. quarrel sb.\1 OED.	KEY: quarrell@n
 
 quarriour n.	"stonecutter," s.v. quarrier\1 OED.	KEY: quarriour@n
 
-quartaine n. "(as adj.) occurring every third day (of a fever)," s.v. quartan adj. and sb. OED.	1: RomB: 1 (quarteyne 1).	
+quartaine n. "(as adj.) occurring every third day (of a fever)," s.v. quartan adj. and sb. OED.	1: RomB: 1 (quarteyne 1). KEY: quartaine@n#adj
 
 quartere n.	"quarter, fourth part; (as adj.) quarter."	KEY: quartere@n quarter@n#adj
 
@@ -5140,7 +5140,7 @@ senden v.(2)	"send."	KEY: senden@v2
 
 sentence n.	"speech, maxim; opinion."	KEY: sentence@n
 
-sen v.(1)	"see; look upon; understand, realize."	say 1, sayn 1, se 23, see 42, seen 6, seest 2, sen 19, sene 3, sey 1, seyn 2, sigh 1) RomC: 36 (saugh 1, saw 3, se 9, see 11, seen 4, sen 3, sene 3, seth 1, seyn 1).
+sen v.(1)	"see; look upon; understand, realize."	say 1, sayn 1, se 23, see 42, seen 6, seest 2, sen 19, sene 3, sey 1, seyn 2, sigh 1) RomC: 36 (saugh 1, saw 3, se 9, see 11, seen 4, sen 3, sene 3, seth 1, seyn 1). KEY: sen@v1
 
 serchen v.	"search; analyze."	KEY: serchen@v
 
@@ -5732,7 +5732,7 @@ Swete-Speche n.	"sweet talk (as proper n., personified)"; s.v. swete adj. MED.	K
 
 Swete-Speking n.	"sweet speaking (as proper n., personified)"; s.v. swete adj. MED.	KEY: swete-speking@n#propn
 
-Swete-Thenking n. "sweet thinking (as proper n., personified)"; s.v. swete adj. MED.	1: RomB: 1 (swete-thenkyng 1).	
+Swete-Thenking n. "sweet thinking (as proper n., personified)"; s.v. swete adj. MED.	1: RomB: 1 (swete-thenkyng 1).	KEY: swete-thenking@n#propn
 
 Swete-Thought n.	"sweet thought (as proper n., personified)"; s.v. swete adj. MED.	KEY: swete-thought@n#propn
 
@@ -5818,7 +5818,7 @@ testament n.	"(Old) Testament (in the Bible); last testament, will."	KEY: testam
 
 texte n.	"text."	KEY: texte@n
 
-than conj.	"than."	
+than conj.	"than."	KEY: than@conj
 
 thank n.	"thanks, expression of thanks; gratitude, good will."	KEY: thank@n
 
@@ -5826,9 +5826,9 @@ thanken v.	"thank."	KEY: thanken@v
 
 thankinge ger.	"expression of gratitude."	KEY: thankinge@ger
 
-thanne adv.	"then."	
+thanne adv.	"then."	 KEY:thanne@adv
 
-that def. art. & adj.	"that." 	that@art&gram_adj
+that def. art. & adj.	"that." 	KEY: that@art&gram_adj
 
 that pron.	"that." 	KEY:that@pron
 
@@ -5838,21 +5838,21 @@ that particle	"that."	KEY:that@part
 
 the adv.	"the, by so much, so much."	KEY: the@adv
 
-the def. art.	"the."	
+the def. art.	"the."	  KEY:the@def_art
 
-the pron.(2)	"thee."	
+the pron.(2)	"thee."	  KEY: the@pron2
 
 thef n.(2)	"thief, scoundrel; (as adj.) thieving."	KEY: thef@n2#adj thef@n2
 
 thefte n.	"theft (as proper n., personified."	KEY: thefte@n#propn
 
-thei pron.	"they."	
+thei pron.	"they."	  KEY: thei@pron
 
 then v.	"succeed, thrive, prosper."	KEY: then@v
 
 thennes adv.	"thence."	KEY: thennes@adv
 
-ther adv.	"there."	
+ther adv.	"there."	KEY: ther@adv
 
 theire pron.	"their," s.v. their poss. pron. OED.	KEY: theire@pron
 
@@ -5896,7 +5896,7 @@ thikkenesse n.	"thickness," s.v. thickness OED.	KEY: thikkenesse@n
 
 thilke pron.	"that," s.v. thilk demon. adj. pron. OED.	KEY: thilke@pron
 
-thin pron.	"thy, thine."	
+thin pron.	"thy, thine."	KEY: thin@pron
 
 thing n.	"thing; person, creature; possession; business, matter; event, circumstance."	KEY: thing@n
 
@@ -5910,9 +5910,9 @@ thirlen v.	"pierce, stab."	KEY: thirlen@v
 
 thirst n.	"thirst."	KEY: thirst@n
 
-this adj.	"this."	
+this adj.	"this."	   KEY: this@gram_adj
 
-this pron.	"this; (abs. or contracted) this is."	
+this pron.	"this; (abs. or contracted) this is."	KEY: this@pron
 
 thi-self pron.	"thyself."	KEY: thi-self@pron
 
@@ -5926,9 +5926,9 @@ tho pron.(2)	"those."	KEY: tho@pron2
 
 thorn n.	"thorn; thorn tree."	KEY: thorn@n
 
-thou pron.	"thou."	
+thou pron.	"thou."	  KEY: thou@pron
 
-though conj.	"though."	
+though conj.	"though."	KEY: though@conj
 
 thought n.	"thought, mind, comprehension (also as proper n., personified); anxiety, care."	KEY: thought@n#propn thought@n
 
@@ -5966,7 +5966,7 @@ throu n.(1)	"short space of time, instant."	KEY: throu@n1
 
 throuen v.(1)	"(ppl.) thrown, cast."	KEY: throuen@v1
 
-thurgh prep.	"through, throughout; by means of, because of."	
+thurgh prep.	"through, throughout; by means of, because of."	  KEY: thurgh@prep
 
 thurgh-oute prep.	"throughout, through."	KEY: thurgh-oute@prep
 
@@ -5974,7 +5974,7 @@ thurgh-sechen v.	"seek out," s.v. throughseek v. OED.	KEY: thurgh-sechen@v
 
 thurven v.	"must, need."	KEY: thurven@v
 
-thus adv.	"thus."	
+thus adv.	"thus."	 KEY: thus@adv
 
 tide n.	"time, hour."	KEY: tide@n
 
@@ -5994,9 +5994,9 @@ to adv.(1)	"to, toward."	KEY: to@adv1
 
 to adv.(2)	"too."	KEY: to@adv2
 
-to prep.	"to, toward; until."	
+to prep.	"to, toward; until."	KEY: to@prep
 
-to vbl. particle	"to (with infinitive)."	
+to vbl. particle	"to (with infinitive)."	 KEY: to@part
 
 tobeten v.	"(ppl.) beaten to pieces," s.v. to-beat v. OED.	KEY: tobeten@v
 
