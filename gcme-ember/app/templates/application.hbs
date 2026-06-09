@@ -1,32 +1,34 @@
 <div id="gcme-header" class="container-fluid">
   <nav class="navbar navbar-expand-lg navbar-light">
-    <img src="/sheridan-libraries.logo.large.horizontal.white.png">
-    {{#link-to 'index' class='navbar-brand'}}Glossarial Concordance to Middle English<br>
-    <small>The Works of Geoffrey Chaucer and the English Works of John Gower</small>{{/link-to}}
+    <img src="/sheridan-libraries.logo.large.horizontal.white.png" alt="">
+    <LinkTo @route="index" class="navbar-brand">
+      Glossarial Concordance to Middle English<br>
+      <small>The Works of Geoffrey Chaucer and the English Works of John Gower</small>
+    </LinkTo>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarToggler">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          {{#link-to 'about' class='nav-link'}}About{{/link-to}}
+          <LinkTo @route="about" class="nav-link">About</LinkTo>
         </li>
         <li class="nav-item">
-          {{#link-to 'search' class='nav-link'}}Search{{/link-to}}
+          <LinkTo @route="search" class="nav-link">Search</LinkTo>
         </li>
         <li class="nav-item">
-          {{#link-to 'tags' class='nav-link'}}Tags{{/link-to}}
+          <LinkTo @route="tags" class="nav-link">Tags</LinkTo>
         </li>
         <li class="nav-item">
-          {{#link-to 'help' class='nav-link'}}How To Guide{{/link-to}}
+          <LinkTo @route="help" class="nav-link">How To Guide</LinkTo>
         </li>
         <li class="nav-item">
-          {{#link-to 'contact' class='nav-link'}}Contact{{/link-to}}
+          <LinkTo @route="contact" class="nav-link">Contact</LinkTo>
         </li>
       </ul>
-  </div>
+    </div>
   </nav>
 </div>
 

@@ -1,144 +1,191 @@
-
 <div class="container">
 
-<h2>Compose query</h2>
+  <h2>Compose query</h2>
 
-<form>
-
-  <div class="form-group">
-    <label for="words">Middle English word(s)</label>
-
-    {{#power-select-multiple
-      id="words"
-      aria-describedby="wordsHelp"
-      placeholder="Enter words."
-      selected=words
-      selectedItemComponent="selected-item-word"
-      onchange=(action (mut words))
-      onkeydown=(action "selectOnSpace")
-      search=(action "completeWord")
-      searchField="none"
-      as |entry|
-    }}
-      <strong>{{entry.word}}</strong> [{{entry.lemma_tag}}] - {{format-definitions entry.definition}}
-    {{/power-select-multiple}}
-
-    <small id="wordsHelp" class="form-text text-muted">Match words as spelled in a given line of text. May enter more than one.</small>
-  </div>
-  
-  <div class="form-group">
-    <label for="lemmas"><em>Middle English Dictionary</em> headword(s)</label>
-
-    {{#power-select-multiple
-      id="lemmas"
-      aria-describedby="lemmasHelp"
-      placeholder="Enter headwords."
-      selected=lemmas
-      selectedItemComponent="selected-item-lemma"
-      onchange=(action (mut lemmas))
-      onkeydown=(action "selectOnSpace")
-      search=(action "completeLemma")
-      searchField="none"
-      as |entry|
-    }}
-    <strong>{{entry.lemma}}</strong> [{{entry.word}}] [{{entry.lemma_tag}}] - {{format-definitions entry.definition}}
-  {{/power-select-multiple}}
-
-    <small id="lemmasHelp" class="form-text text-muted">Finds all words (in all grammatical forms) in the database corresponding to any headword(s) in the MED entered here.</small>
-  </div>
-
-  <div class="form-group">
-    <label for="tagged_lemmas">Middle English word (by part of speech)</label>
-
-    {{#power-select-multiple
-      id="tagged_lemmas"
-      aria-describedby="taggedLemmasHelp"
-      placeholder="Enter headwords with part of speech"
-      selected=tagged_lemmas
-      selectedItemComponent="selected-item-tagged-lemma"
-      onchange=(action (mut tagged_lemmas))
-      onkeydown=(action "selectOnSpace")
-      search=(action "completeTaggedLemma")
-      searchField="none"
-      as |entry|
-    }}
-    <strong>{{entry.lemma_tag}}</strong> [{{entry.word}}] - {{entry.definition}}
-  {{/power-select-multiple}}
-
-    <small id="taggedLemmasHelp" class="form-text text-muted">Finds all words in a particular grammatical form (which can be selected from the grammatically tagged word forms that will auto-fill here) in the database.</small>
-  </div>
-
-  <div class="form-group">
-    <label for="restrict">Restrict to location (to author, text, or part of text)</label>
-    {{#power-select-multiple
-      id="restrict"
-      aria-describedby="restrictHelp"
-      options=model.restrictData
-      selected=restrict
-      onchange=(action (mut restrict))
-      searchField="label"
-      placeholder="Select locations"
-      allowClear=true
-      as |entry|
-    }}
-      {{entry.label}}
-    {{/power-select-multiple}}
-    <small id="restrictHelp" class="form-text text-muted">Only match lines of text in selected locations.</small>
-  </div>
-
-  <div class="form-check form-check-inline">
-    {{input class="form-check-input" type="checkbox" id="allWords" checked=requireAllWords}}
-    <label class="form-check-label" for="allWords">
-      All words and headwords must be present in a line.
-    </label>
-  </div>
-
-  <div class="form-check form-check-inline mb-2">
-    {{input class="form-check-input" type="checkbox" id="sort" checked=sortLogical}}
-    <label class="form-check-label" for="sort">
-      Sort results by location instead of relevance.
-    </label>
-  </div>
-
-  <div id="gcme-search-buttons">
-    <button {{action "clearQuery"}} type="submit" class="btn btn-primary">Clear</button>
-    <button {{action "executeQuery"}} type="submit" class="btn btn-primary">Search</button>
-  </div>
-</form>
-
-{{#if result}}
-  {{#if result.hits.total}}
-    <h3 class="text-center">Matches {{pageFirstMatchNumber}}-{{pageLastMatchNumber}} of total {{result.hits.total}}</h3>
-
-    <div class="container">
-    {{models-table
-      data=result.hits.hits
-      columns=resultColumns
-      showComponentFooter=false
-      showColumnsDropdown=true
-      useFilteringByColumns=false
-      showGlobalFilter=false
-      themeInstance=resultTheme
-      pageSize=pageSize
-    }}
-
-    <nav id="gcme-search-pages" aria-label="...">
-      <ul class="pagination justify-content-center">
-        <li class="page-item active">
-          <a {{action "prevPage"}} class="page-link">Previous</a>
-        </li>
-        <li class="page-item">
-          <span class="page-link">Page {{pageNumber}} of {{pageCount}}</span>
-        </li>
-        <li class="page-item active">
-          <a {{action "nextPage"}} class="page-link">Next</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-  {{else}}
-    <h3 class="text-center">No matches</h3>
+  {{#if this.searchError}}
+    <div class="alert alert-warning" role="alert">{{this.searchError}}</div>
   {{/if}}
-{{/if}}
+
+  <form>
+
+    <div class="mb-3">
+      <label for="words" class="form-label">Middle English word(s)</label>
+
+      <PowerSelect
+        @multiple={{true}}
+        @searchEnabled={{true}}
+        id="words"
+        aria-describedby="wordsHelp"
+        @placeholder="Enter words."
+        @selected={{this.words}}
+        @selectedItemComponent={{component "selected-item-word"}}
+        @onChange={{fn (mut this.words)}}
+        @onKeydown={{this.selectOnSpace}}
+        @search={{this.completeWord}}
+        @searchField="none"
+        @renderInPlace={{true}}
+        as |entry|
+      >
+        <strong>{{entry.word}}</strong>
+        [{{entry.lemma_tag}}]
+        -
+        {{format-definitions entry.definition}}
+      </PowerSelect>
+
+      <small id="wordsHelp" class="form-text text-muted">Match words as spelled in a given line of text. May enter more than one.</small>
+    </div>
+
+    <div class="mb-3">
+      <label for="lemmas" class="form-label"><em>Middle English Dictionary</em> headword(s)</label>
+
+      <PowerSelect
+        @multiple={{true}}
+        @searchEnabled={{true}}
+        id="lemmas"
+        aria-describedby="lemmasHelp"
+        @placeholder="Enter headwords."
+        @selected={{this.lemmas}}
+        @selectedItemComponent={{component "selected-item-lemma"}}
+        @onChange={{fn (mut this.lemmas)}}
+        @onKeydown={{this.selectOnSpace}}
+        @search={{this.completeLemma}}
+        @searchField="none"
+        @renderInPlace={{true}}
+        as |entry|
+      >
+        <strong>{{entry.lemma}}</strong>
+        [{{entry.word}}]
+        [{{entry.lemma_tag}}]
+        -
+        {{format-definitions entry.definition}}
+      </PowerSelect>
+
+      <small id="lemmasHelp" class="form-text text-muted">Finds all words (in all grammatical forms) in the database corresponding to any headword(s) in the MED entered here.</small>
+    </div>
+
+    <div class="mb-3">
+      <label for="tagged_lemmas" class="form-label">Middle English word (by part of speech)</label>
+
+      <PowerSelect
+        @multiple={{true}}
+        @searchEnabled={{true}}
+        id="tagged_lemmas"
+        aria-describedby="taggedLemmasHelp"
+        @placeholder="Enter headwords with part of speech"
+        @selected={{this.tagged_lemmas}}
+        @selectedItemComponent={{component "selected-item-tagged-lemma"}}
+        @onChange={{fn (mut this.tagged_lemmas)}}
+        @onKeydown={{this.selectOnSpace}}
+        @search={{this.completeTaggedLemma}}
+        @searchField="none"
+        @renderInPlace={{true}}
+        as |entry|
+      >
+        <strong>{{entry.lemma_tag}}</strong>
+        [{{entry.word}}]
+        -
+        {{entry.definition}}
+      </PowerSelect>
+
+      <small id="taggedLemmasHelp" class="form-text text-muted">Finds all words in a particular grammatical form (which can be selected from the grammatically tagged word forms that will auto-fill here) in the database.</small>
+    </div>
+
+    <div class="mb-3">
+      <label for="restrict" class="form-label">Restrict to location (to author, text, or part of text)</label>
+
+      <PowerSelect
+        @multiple={{true}}
+        @searchFieldPosition="before-options"
+        id="restrict"
+        aria-describedby="restrictHelp"
+        @options={{this.model.restrictData}}
+        @selected={{this.restrict}}
+        @onChange={{fn (mut this.restrict)}}
+        @searchField="label"
+        @placeholder="Select locations"
+        @allowClear={{true}}
+        @renderInPlace={{true}}
+        as |entry|
+      >
+        {{entry.label}}
+      </PowerSelect>
+
+      <small id="restrictHelp" class="form-text text-muted">Only match lines of text in selected locations.</small>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <Input
+        id="allWords"
+        class="form-check-input"
+        @type="checkbox"
+        @checked={{this.requireAllWords}}
+      />
+      <label class="form-check-label" for="allWords">
+        All words and headwords must be present in a line.
+      </label>
+    </div>
+
+    <div class="form-check form-check-inline mb-2">
+      <Input
+        id="sort"
+        class="form-check-input"
+        @type="checkbox"
+        @checked={{this.sortLogical}}
+      />
+      <label class="form-check-label" for="sort">
+        Sort results by location instead of relevance.
+      </label>
+    </div>
+
+    <div id="gcme-search-buttons">
+      <button type="button" class="btn btn-secondary" {{on "click" this.clearQuery}}>Clear</button>
+      <button type="button" class="btn btn-primary" {{on "click" this.submitSearch}}>Search</button>
+    </div>
+  </form>
+
+  {{#if this.result}}
+    {{#if this.result.hits.total}}
+      <h3 class="text-center">Matches {{this.pageFirstMatchNumber}}-{{this.pageLastMatchNumber}} of total {{this.result.hits.total}}</h3>
+
+      <div class="container">
+        <ModelsTable
+          @themeInstance={{this.themeInstance}}
+          @data={{this.result.hits.hits}}
+          @columns={{this.resultColumns}}
+          @showComponentFooter={{false}}
+          @showColumnsDropdown={{true}}
+          @useFilteringByColumns={{false}}
+          @showGlobalFilter={{false}}
+          @pageSize={{this.pageSize}}
+        />
+
+        <nav id="gcme-search-pages" aria-label="Search result pages">
+          <ul class="pagination justify-content-center">
+            <li class="page-item {{if this.isFirstPage 'disabled'}}">
+              <button
+                type="button"
+                class="page-link"
+                disabled={{this.isFirstPage}}
+                {{on "click" this.prevPage}}
+              >Previous</button>
+            </li>
+            <li class="page-item disabled">
+              <span class="page-link">Page {{this.pageNumber}} of {{this.pageCount}}</span>
+            </li>
+            <li class="page-item {{if this.isLastPage 'disabled'}}">
+              <button
+                type="button"
+                class="page-link"
+                disabled={{this.isLastPage}}
+                {{on "click" this.nextPage}}
+              >Next</button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    {{else}}
+      <h3 class="text-center">No matches</h3>
+    {{/if}}
+  {{/if}}
 
 </div>

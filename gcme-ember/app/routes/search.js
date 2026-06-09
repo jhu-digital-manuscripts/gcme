@@ -1,15 +1,12 @@
 import Route from '@ember/routing/route';
-import $ from 'jquery';
-import RSVP from 'rsvp';
+import fetchJson from 'gcme-ember/utils/fetch-json';
 
-export default Route.extend({
-  restrictData: $.ajax({url: '/text-powersel.json'}),
-  groupTitleMap: $.ajax({url: '/group-title.json'}),
-
-  model() {
-    return RSVP.hash({
-      restrictData: this.get('restrictData'),
-      groupTitleMap: this.get('groupTitleMap')
-    });
+export default class SearchRoute extends Route {
+  async model() {
+    const [restrictData, groupTitleMap] = await Promise.all([
+      fetchJson('/text-powersel.json'),
+      fetchJson('/group-title.json'),
+    ]);
+    return { restrictData, groupTitleMap };
   }
-});
+}

@@ -90,8 +90,11 @@ In order to generate data for Elasticsearch and Ember, from the deploy directory
 ndjson files for Elasticsearch. If that is successful, run `./update_indicies.sh`
 which will delete, create, and then update the dict and line indicies in Elasticsearch.
 
-Install Node 10 and run `npm install` in gcme-ember.
-Then in gcme-ember, run `./node_modules/ember-cli/bin/ember build --environment=production`.
-To deploy ember, ensure that elasticsearch at http://localhost:9200/_search is available as `/es`/
-and copy dist/* to an appropriately configured web server.
+Install Node.js 20.x (the engines range is `>= 20.0.0 < 21.0.0`) and, from `gcme-ember/`,
+run `npm install` to install dependencies. Then run `npm run lint` and `npm test` to verify
+the working tree, and `npm run build` to produce a production bundle in `gcme-ember/dist/`.
+See `gcme-ember/README.md` for the full set of npm scripts.
+
+To deploy ember, ensure that Elasticsearch at http://localhost:9200/_search is available as `/es`,
+and copy `gcme-ember/dist/*` to an appropriately configured web server.
 
