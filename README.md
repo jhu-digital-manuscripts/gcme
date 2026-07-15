@@ -115,7 +115,7 @@ and only needs to be updated if the underlying raw data or processing has change
 
 Run `./update_indicies.sh` to delete, create, and then update the dict and line indicies in Elasticsearch.
 
-Note that at gcme-ember build time the environment variable gcme.elasticsearch is used must specify the
+Note that at gcme-ember build time the environment variable `GCME_OPENSEARCH` must specify the
 opensearch _search endpoint.
 
 Copy `gcme-ember/dist/*` to an appropriately configured web server.

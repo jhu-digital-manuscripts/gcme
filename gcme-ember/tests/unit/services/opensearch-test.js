@@ -3,12 +3,12 @@ import { setupTest } from 'ember-qunit';
 import ENV from 'gcme-ember/config/environment';
 import { setupStubbedFetch } from '../../helpers/stub-fetch';
 
-// Unit tests for Elasticsearch_Service.
+// Unit tests for OpenSearch service.
 //
 // Validates: Requirements 9.4, 9.5
 //   (which in turn cover Requirements 4.1, 4.2, 4.3, 4.4, 4.7, 4.9, 8.4)
 
-module('Unit | Service | elasticsearch', function (hooks) {
+module('Unit | Service | opensearch', function (hooks) {
   setupTest(hooks);
   setupStubbedFetch(hooks);
 
@@ -18,7 +18,7 @@ module('Unit | Service | elasticsearch', function (hooks) {
     };
     const stub = this.stubFetch({ status: 200, body: responseBody });
 
-    const service = this.owner.lookup('service:elasticsearch');
+    const service = this.owner.lookup('service:opensearch');
     const query = { query: { match_all: {} }, from: 0, size: 25 };
 
     const result = await service.executeQuery(query);
@@ -27,7 +27,7 @@ module('Unit | Service | elasticsearch', function (hooks) {
     assert.strictEqual(stub.calls.length, 1, 'fetch is called exactly once');
     assert.strictEqual(
       stub.lastCall.url,
-      ENV.gcme.elasticsearch,
+      ENV.gcme.opensearch,
       'POSTs to the configured search_uri',
     );
     assert.strictEqual(stub.lastCall.method, 'POST', 'uses POST');
@@ -46,7 +46,7 @@ module('Unit | Service | elasticsearch', function (hooks) {
   test('executeQuery rejects with status and statusText when the response is 5xx', async function (assert) {
     this.stubFetch({ status: 503, statusText: 'Service Unavailable', body: {} });
 
-    const service = this.owner.lookup('service:elasticsearch');
+    const service = this.owner.lookup('service:opensearch');
 
     try {
       await service.executeQuery({ q: 1 });
@@ -68,7 +68,7 @@ module('Unit | Service | elasticsearch', function (hooks) {
     const networkError = new TypeError('Failed to fetch');
     this.stubFetch({ networkError });
 
-    const service = this.owner.lookup('service:elasticsearch');
+    const service = this.owner.lookup('service:opensearch');
 
     try {
       await service.executeQuery({ q: 1 });
@@ -85,7 +85,7 @@ module('Unit | Service | elasticsearch', function (hooks) {
   test('executeQuery rejects when the response body cannot be parsed as JSON', async function (assert) {
     this.stubFetch({ status: 200, parseFails: true });
 
-    const service = this.owner.lookup('service:elasticsearch');
+    const service = this.owner.lookup('service:opensearch');
 
     try {
       await service.executeQuery({ q: 1 });
@@ -102,7 +102,7 @@ module('Unit | Service | elasticsearch', function (hooks) {
   test('executeQuery rejects without issuing a fetch when search_uri is missing', async function (assert) {
     const stub = this.stubFetch({ status: 200, body: {} });
 
-    const service = this.owner.lookup('service:elasticsearch');
+    const service = this.owner.lookup('service:opensearch');
     // Override the `search_uri` getter on this instance so the service
     // sees a missing endpoint while the rest of ENV is untouched.
     Object.defineProperty(service, 'search_uri', {
@@ -134,7 +134,7 @@ module('Unit | Service | elasticsearch', function (hooks) {
       body: { suggest: { term_suggest: [{ options: [] }] } },
     });
 
-    const service = this.owner.lookup('service:elasticsearch');
+    const service = this.owner.lookup('service:opensearch');
     await service.complete('word', 'lo');
 
     assert.strictEqual(stub.calls.length, 1, 'fetch is called exactly once');
@@ -157,7 +157,7 @@ module('Unit | Service | elasticsearch', function (hooks) {
       body: { suggest: { term_suggest: [{ options: [] }] } },
     });
 
-    const service = this.owner.lookup('service:elasticsearch');
+    const service = this.owner.lookup('service:opensearch');
     await service.complete('lemma', 'kn');
 
     assert.strictEqual(stub.calls.length, 1, 'fetch is called exactly once');
@@ -180,7 +180,7 @@ module('Unit | Service | elasticsearch', function (hooks) {
       body: { suggest: { term_suggest: [{ options: [] }] } },
     });
 
-    const service = this.owner.lookup('service:elasticsearch');
+    const service = this.owner.lookup('service:opensearch');
     await service.complete('lemma_tag', 'tr');
 
     assert.strictEqual(stub.calls.length, 1, 'fetch is called exactly once');

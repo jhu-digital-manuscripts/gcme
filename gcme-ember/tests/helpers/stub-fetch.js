@@ -1,5 +1,5 @@
 /**
- * Stubs `window.fetch` for unit tests of `Elasticsearch_Service` and any
+ * Stubs `window.fetch` for unit tests of `OpensearchService` and any
  * other code that performs HTTP through the native Fetch API.
  *
  * Usage (manual teardown):

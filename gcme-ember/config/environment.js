@@ -24,7 +24,7 @@ module.exports = function (environment) {
   };
 
   ENV.gcme = {
-    elasticsearch: 'http://localhost:9200/_search',
+    opensearch: process.env.GCME_OPENSEARCH || 'http://localhost:9200/_search',
   };
 
   if (environment === 'test') {
@@ -37,10 +37,6 @@ module.exports = function (environment) {
 
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
-  }
-
-  if (environment === 'production') {
-    ENV.gcme.elasticsearch = '/es';
   }
 
   return ENV;

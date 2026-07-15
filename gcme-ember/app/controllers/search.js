@@ -11,7 +11,7 @@ const MIN_PAGE_SIZE = 1;
 const MAX_PAGE_SIZE = 100;
 
 export default class SearchController extends Controller {
-  @service elasticsearch;
+  @service opensearch;
   @service('emt-themes/ember-bootstrap-v5') themeInstance;
 
   // Selected power-select options (PowerSelectOption[] | null).
@@ -31,7 +31,7 @@ export default class SearchController extends Controller {
   @tracked pageNumber = 1;
   @tracked pageCount = 0;
 
-  // Latest result payload from Elasticsearch (or null when never fetched
+  // Latest result payload from OpenSearch (or null when never fetched
   // or after clear).
   @tracked result = null;
 
@@ -130,8 +130,8 @@ export default class SearchController extends Controller {
     return total > 0;
   }
 
-  // Pure query builder. Mirrors the Elasticsearch query shape documented
-  // in design.md (Data Models / Elasticsearch query shape).
+  // Pure query builder. Mirrors the OpenSearch query shape documented
+  // in design.md (Data Models / OpenSearch query shape).
   buildQuery() {
     const clauses = [];
 
@@ -182,7 +182,7 @@ export default class SearchController extends Controller {
     return query;
   }
 
-  // Issue the current query against Elasticsearch and update result
+  // Issue the current query against OpenSearch and update result
   // state. On rejection, set `searchError` and intentionally preserve
   // `result`, `pageNumber`, and the selection state (Req 7.18).
   async runQuery() {
@@ -197,7 +197,7 @@ export default class SearchController extends Controller {
     const query = this.buildQuery();
 
     try {
-      const result = await this.elasticsearch.executeQuery(query);
+      const result = await this.opensearch.executeQuery(query);
       this.result = result;
       const total = result?.hits?.total ?? 0;
       this.pageCount = Math.max(1, Math.ceil(total / this.pageSize));
@@ -248,17 +248,17 @@ export default class SearchController extends Controller {
 
   @action
   completeWord(prefix) {
-    return this.elasticsearch.complete('word', prefix);
+    return this.opensearch.complete('word', prefix);
   }
 
   @action
   completeLemma(prefix) {
-    return this.elasticsearch.complete('lemma', prefix);
+    return this.opensearch.complete('lemma', prefix);
   }
 
   @action
   completeTaggedLemma(prefix) {
-    return this.elasticsearch.complete('lemma_tag', prefix);
+    return this.opensearch.complete('lemma_tag', prefix);
   }
 
   // Power-select keydown handler: pressing space while the dropdown is
