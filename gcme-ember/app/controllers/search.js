@@ -61,11 +61,11 @@ export default class SearchController extends Controller {
 
   // Native getters replace classic computed properties (Req 6.7).
   get hasResults() {
-    return (this.result?.hits?.total ?? 0) > 0;
+    return this.totalHits > 0;
   }
 
   get hasNoMatches() {
-    return this.result != null && (this.result.hits?.total ?? 0) === 0;
+    return this.result != null && this.totalHits === 0;
   }
 
   get isFirstPage() {
@@ -86,8 +86,17 @@ export default class SearchController extends Controller {
   // the total number of hits.
   get pageLastMatchNumber() {
     const lastInPage = this.pageNumber * this.pageSize;
-    const total = this.result?.hits?.total ?? 0;
+    const total = this.totalHits;
     return Math.min(lastInPage, total);
+  }
+
+  // Normalize hits.total which may be a plain number (ES 6) or an object
+  // like { value: N, relation: "eq" } (ES 7+ / OpenSearch).
+  get totalHits() {
+    const raw = this.result?.hits?.total;
+    if (raw == null) return 0;
+    if (typeof raw === 'number') return raw;
+    return raw.value ?? 0;
   }
 
   // Column configuration for the results models-table. Reads
@@ -199,8 +208,8 @@ export default class SearchController extends Controller {
     try {
       const result = await this.opensearch.executeQuery(query);
       this.result = result;
-      const total = result?.hits?.total ?? 0;
-      this.pageCount = Math.max(1, Math.ceil(total / this.pageSize));
+      // totalHits getter normalizes hits.total (object vs number).
+      this.pageCount = Math.max(1, Math.ceil(this.totalHits / this.pageSize));
     } catch (err) {
       // Req 7.18: surface the error and preserve prior state.
       this.searchError = `Search service unavailable: ${err.message}`;

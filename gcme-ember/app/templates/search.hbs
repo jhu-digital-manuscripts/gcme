@@ -144,8 +144,8 @@
   </form>
 
   {{#if this.result}}
-    {{#if this.result.hits.total}}
-      <h3 class="text-center">Matches {{this.pageFirstMatchNumber}}-{{this.pageLastMatchNumber}} of total {{this.result.hits.total}}</h3>
+    {{#if this.totalHits}}
+      <h3 class="text-center">Matches {{this.pageFirstMatchNumber}}-{{this.pageLastMatchNumber}} of total {{this.totalHits}}</h3>
 
       <div class="container">
         <ModelsTable
