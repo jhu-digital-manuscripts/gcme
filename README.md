@@ -11,7 +11,7 @@ Consider `may{*mouen@v3%pr_1*}`
 * Word: `may`
 * Lemma or headword: `mouen` 
 * Tagged lemma: `mouen@v3%pr_1`
-* Tag: v3%pr_1
+* Tag: `v3%pr_1`
 
 # Data
 
@@ -33,7 +33,7 @@ and executable jar in target.
 To test it out try running something like `java -jar target/gcme-tool-0.0.1-SNAPSHOT-shaded.jar ../data/ info`
 to see the structure of the texts printed out.
 
-# Elasticsearch indices
+# Opensearch indices
 
 ## line
 
@@ -51,27 +51,51 @@ For example a line in the Knight's tale would have group `["Ch", "CT", "Frag1", 
 
 | Field          | Type    | Cardinality |
 | -------------- | ------- | ----------- |
-| id                  | keyword | 1   | 
-| number              | integer | 1   |
-| raw_number          | keyword | 1   |
-| group               | keyword | 2-4 |
-| text                | text    | 1   |
-| lemma_text          | text    | 1   |
-| lemma_tag_text      | text    | 1   |
+| id             | keyword | 1   | 
+| number         | integer | 1   |
+| raw_number     | keyword | 1   |
+| group          | keyword | 2-4 |
+| text           | text    | 1   |
+| lemma_text     | whitespace_ignore_case | 1   |
+| lemma_tag_text | whitespace_ignore_case | 1   |
 
-## dict
+## word_dict
 
-The dict index allows a definition for a tagged lemma to be looked up.
-The tagged lemma is associated with its word forms as well as a dictionary definition.
-Completion can be done on the lemma, tagged lemma as well as its word forms using the .suggest
-subfields. The word forms have been normalized to lower case.
+The word_dict index allows the definitions for a word to be looked up. A word may have
+multiple tagged lemmas, each with a definition. Completion can be done on the
+word by using the .suggest subfield. The words have been normalized to lower case.
+
+| Field             | Type       | Cardinality |
+| ----------------- | ---------- | ----------- |
+| word              | keyword    | 1           |
+| word.suggest      | completion | 1           |
+| lemma_tag         | keyword    | 1*          |
+| definition        | text       | 1*          |
+
+
+## lemma_dict
+
+The lemma_dict index allows the definitions for a lemma to be looked up.
+A lemma is associated with its word forms, tagged lemmas, and dictionary definitions.
+Completion can be done on the lemma by using the .suggest subfield.
 
 | Field             | Type       | Cardinality |
 | ----------------- | ---------- | ----------- |
 | word              | keyword    | 1*          |
-| word.suggest      | completion | 1*          |
-| lemma             | keyword    | 1          |
-| lemma.suggest     | completion | 1          |
+| lemma             | keyword    | 1           |
+| lemma.suggest     | completion | 1           |
+| lemma_tag         | keyword    | 1*          |
+| definition        | text       | 1*          |
+
+## lemma_tag_dict
+
+The lemma_dict index allows a definition for a tagged lemma to be looked up.
+The tagged lemma is associated with its word forms as well as a dictionary definition.
+Completion can be done on the tagged lemma by using the suggest subfield.
+
+| Field             | Type       | Cardinality |
+| ----------------- | ---------- | ----------- |
+| word              | keyword    | 1*          |
 | lemma_tag         | keyword    | 1           |
 | lemma_tag.suggest | completion | 1           |
 | definition        | text       | 1           |
