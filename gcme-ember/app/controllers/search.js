@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import ENV from 'gcme-ember/config/environment';
 import ResultLocationCell from '../components/result-location-cell';
 import ResultTextLineCell from '../components/result-text-line-cell';
 import ResultLemmaLineCell from '../components/result-lemma-line-cell';
@@ -12,7 +13,16 @@ const MAX_PAGE_SIZE = 100;
 
 export default class SearchController extends Controller {
   @service opensearch;
+  @service localsearch;
   @service('emt-themes/ember-bootstrap-v5') themeInstance;
+
+  get searchService() {
+    const backend = ENV.gcme.searchBackend || 'opensearch';
+    if (backend !== 'opensearch' && backend !== 'localsearch') {
+      throw new Error(`Invalid search backend: '${backend}'. Must be 'opensearch' or 'localsearch'.`);
+    }
+    return this[backend];
+  }
 
   // Selected power-select options (PowerSelectOption[] | null).
   @tracked words = null;
@@ -206,7 +216,7 @@ export default class SearchController extends Controller {
     const query = this.buildQuery();
 
     try {
-      const result = await this.opensearch.executeQuery(query);
+      const result = await this.searchService.executeQuery(query);
       this.result = result;
       // totalHits getter normalizes hits.total (object vs number).
       this.pageCount = Math.max(1, Math.ceil(this.totalHits / this.pageSize));
@@ -257,17 +267,17 @@ export default class SearchController extends Controller {
 
   @action
   completeWord(prefix) {
-    return this.opensearch.complete('word', prefix);
+    return this.searchService.complete('word', prefix);
   }
 
   @action
   completeLemma(prefix) {
-    return this.opensearch.complete('lemma', prefix);
+    return this.searchService.complete('lemma', prefix);
   }
 
   @action
   completeTaggedLemma(prefix) {
-    return this.opensearch.complete('lemma_tag', prefix);
+    return this.searchService.complete('lemma_tag', prefix);
   }
 
   // Power-select keydown handler: pressing space while the dropdown is

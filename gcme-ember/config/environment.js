@@ -25,6 +25,7 @@ module.exports = function (environment) {
 
   ENV.gcme = {
     opensearch: process.env.GCME_OPENSEARCH || 'http://localhost:9200/_search',
+    searchBackend: process.env.GCME_SEARCH_BACKEND || 'opensearch',
   };
 
   if (environment === 'test') {
