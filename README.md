@@ -199,3 +199,7 @@ This keeps the corpus on the server and requires OpenSearch 2.
 
 Both variables are read at build time and baked into `dist/`, so switching backends means
 rebuilding.
+
+## Production deployment
+
+The application is deployed using GitHub pages on the gh-pages branch. The release action also deploys.
