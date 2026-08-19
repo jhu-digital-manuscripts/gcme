@@ -18,6 +18,25 @@
   <body>
     {{content-for "body"}}
 
+    <script>
+      // GitHub Pages SPA redirect restoration.
+      // If we arrived here via the 404.html redirect, restore the original URL
+      // in the address bar before Ember boots. This makes the router see the
+      // correct path and the URL stays clean for the user.
+      (function() {
+        var redirectPath = sessionStorage.getItem('spa-redirect-path');
+        if (redirectPath) {
+          sessionStorage.removeItem('spa-redirect-path');
+          // Only restore if we're at the app root (the redirect destination).
+          // This prevents issues if someone manually navigates to index.html.
+          if (window.location.pathname === '{{rootURL}}' || 
+              window.location.pathname === '{{rootURL}}index.html') {
+            window.history.replaceState(null, '', redirectPath);
+          }
+        }
+      })();
+    </script>
+
     <script src="{{rootURL}}assets/vendor.js"></script>
     <script src="{{rootURL}}assets/gcme-ember.js"></script>
 

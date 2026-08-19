@@ -12,4 +12,7 @@ Router.map(function() {
   this.route('search');
   this.route('tags');
   this.route('help');
+
+  // Catch-all route for unknown URLs - must be last
+  this.route('not-found', { path: '/*path' });
 });
