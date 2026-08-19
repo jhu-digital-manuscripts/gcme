@@ -17,7 +17,7 @@ export default class SearchController extends Controller {
   @service('emt-themes/ember-bootstrap-v5') themeInstance;
 
   get searchService() {
-    const backend = ENV.gcme.searchBackend || 'opensearch';
+    const backend = ENV.gcme.searchBackend || 'localsearch';
     if (backend !== 'opensearch' && backend !== 'localsearch') {
       throw new Error(`Invalid search backend: '${backend}'. Must be 'opensearch' or 'localsearch'.`);
     }

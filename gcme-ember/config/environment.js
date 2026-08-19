@@ -23,9 +23,12 @@ module.exports = function (environment) {
     },
   };
 
+  // searchBackend selects how searches are answered: 'localsearch' answers them
+  // in the browser from the static JSON data files, 'opensearch' queries the
+  // endpoint configured above.
   ENV.gcme = {
     opensearch: process.env.GCME_OPENSEARCH || 'http://localhost:9200/_search',
-    searchBackend: process.env.GCME_SEARCH_BACKEND || 'opensearch',
+    searchBackend: process.env.GCME_SEARCH_BACKEND || 'localsearch',
   };
 
   if (environment === 'test') {

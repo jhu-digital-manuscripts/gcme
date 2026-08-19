@@ -136,7 +136,7 @@ export default class DataLoader {
 
     try {
       return await response.json();
-    } catch (error) {
+    } catch {
       throw new Error(`Failed to parse ${filename}`);
     }
   }

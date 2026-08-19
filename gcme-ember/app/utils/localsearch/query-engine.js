@@ -49,10 +49,10 @@ export function execute(query, indexes, lines) {
 
   if (innerBool?.must) {
     // AND: intersection of all clause results
-    matchedIndices = evaluateMust(innerBool.must, indexes, lines);
+    matchedIndices = evaluateMust(innerBool.must, indexes);
   } else if (innerBool?.should) {
     // OR: union of all clause results
-    matchedIndices = evaluateShould(innerBool.should, indexes, lines);
+    matchedIndices = evaluateShould(innerBool.should, indexes);
   } else {
     // No clauses — match nothing
     matchedIndices = new Set();
@@ -136,10 +136,9 @@ export function execute(query, indexes, lines) {
  *
  * @param {{ term: { [field: string]: string } }} clause
  * @param {Object} indexes
- * @param {Array<Object>} lines
  * @returns {Set<number>}
  */
-function evaluateTermClause(clause, indexes, lines) {
+function evaluateTermClause(clause, indexes) {
   const termObj = clause.term;
   const field = Object.keys(termObj)[0];
   const value = termObj[field];
@@ -183,15 +182,14 @@ function evaluateTermClause(clause, indexes, lines) {
  *
  * @param {Array<Object>} clauses Array of term clauses.
  * @param {Object} indexes
- * @param {Array<Object>} lines
  * @returns {Set<number>}
  */
-function evaluateMust(clauses, indexes, lines) {
+function evaluateMust(clauses, indexes) {
   if (clauses.length === 0) return new Set();
 
   let result = null;
   for (const clause of clauses) {
-    const clauseResult = evaluateTermClause(clause, indexes, lines);
+    const clauseResult = evaluateTermClause(clause, indexes);
     if (result === null) {
       result = clauseResult;
     } else {
@@ -208,13 +206,12 @@ function evaluateMust(clauses, indexes, lines) {
  *
  * @param {Array<Object>} clauses Array of term clauses.
  * @param {Object} indexes
- * @param {Array<Object>} lines
  * @returns {Set<number>}
  */
-function evaluateShould(clauses, indexes, lines) {
+function evaluateShould(clauses, indexes) {
   const result = new Set();
   for (const clause of clauses) {
-    const clauseResult = evaluateTermClause(clause, indexes, lines);
+    const clauseResult = evaluateTermClause(clause, indexes);
     for (const idx of clauseResult) {
       result.add(idx);
     }
