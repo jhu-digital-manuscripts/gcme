@@ -36,7 +36,7 @@ jobs:
         run: npm run build
 
   java:
-    name: gcme-tool (Java 17 / Maven)
+    name: gcme-tool (Java 25 / Maven)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -45,14 +45,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17 (Temurin)
+      - name: Set up JDK 25 (Temurin)
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '25'
           cache: maven
 
-      - name: Maven test
+      - name: Maven verify
         env:
           GCME_DATA: ../data
-        run: mvn -B test
+        run: mvn -B verify

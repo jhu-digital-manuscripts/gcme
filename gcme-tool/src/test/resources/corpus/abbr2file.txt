@@ -1,0 +1,10 @@
+# Group id,glob of text files relative to the texts directory
+Ch,ch/gp/*-ch.cat
+Ch,ch/anel/*-ch.cat
+CT,ch/gp/*-ch.cat
+Frag1,ch/gp/*-ch.cat
+GP,ch/gp/*-ch.cat
+Anel,ch/anel/*-ch.cat
+Gow,gow/*-gow.cat
+CA,gow/*-gow.cat
+Bk1,gow/*-gow.cat
