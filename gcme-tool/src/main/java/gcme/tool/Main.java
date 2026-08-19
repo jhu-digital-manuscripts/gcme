@@ -1,34 +1,47 @@
 package gcme.tool;
 
-import java.nio.file.Paths;
+import java.util.concurrent.Callable;
 
-import gcme.data.GcmeData;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.ExitCode;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Spec;
 
-public class Main {
+/**
+ * Command line entry point of the tool.
+ *
+ * <p>The tool reads the raw GCME data and either describes it or transforms it into the files the
+ * application is deployed with. Run it without arguments to see the available commands.
+ */
+@Command(name = "gcme-tool", mixinStandardHelpOptions = true, version = "gcme-tool 0.0.1",
+        synopsisSubcommandLabel = "COMMAND",
+        description = "Transforms the GCME data into static files for the Ember UI and "
+                + "bulk ingest documents for OpenSearch.",
+        subcommands = {InfoCommand.class, GenDataCommand.class})
+public final class Main implements Callable<Integer> {
+    @Spec
+    private CommandSpec spec;
 
-    public static void main(String[] args) throws Exception {
-        if (args.length < 2) {
-            System.err.println("Must have path to data argument and command argument");
-            System.exit(1);
-        }
+    /**
+     * Runs the tool.
+     *
+     * @param args command line arguments
+     */
+    public static void main(String[] args) {
+        System.exit(new CommandLine(new Main())
+                .setExecutionExceptionHandler((exception, commandLine, parseResult) -> {
+                    commandLine.getErr().println(exception.toString());
 
-        GcmeData data = new GcmeData(Paths.get(args[0]));
-        String cmd = args[1];
+                    return ExitCode.SOFTWARE;
+                }).execute(args));
+    }
 
-        if (cmd.equals("gen-data")) {
-            data.generateElasticsearchBulkDictIngest(Paths.get("word_dict.ndjson"), Paths.get("lemma_dict.ndjson"), Paths.get("lemma_tag_dict.ndjson"));
-            data.generateElasticsearchBulkLineIngest(Paths.get("line.ndjson"));
+    /** Prints the usage help because a command is required. */
+    @Override
+    public Integer call() {
+        spec.commandLine().usage(System.err);
 
-            data.generateTextPowerSelectData(Paths.get("text-powersel.json"));
-            data.generateTagTable(Paths.get("tag-table.json"));
-            data.generateGroupTitleMap(Paths.get("group-title.json"));
-        } else if (cmd.equals("info")) {
-            data.loadTextStructure().print(0, System.out);
-        } else if (cmd.equals("transform-spreadsheet")) {
-            data.transformSpreadsheet(Paths.get(args[2]), System.out);
-        } else {
-            System.err.println("Unknown command: " + cmd);
-            System.err.println("Expected: info|gen-data|transform-spreadsheet");
-        }
+        return ExitCode.USAGE;
     }
 }

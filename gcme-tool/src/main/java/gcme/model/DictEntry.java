@@ -1,86 +1,76 @@
 package gcme.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.SequencedSet;
 
-// Entry in a dictionary
+/**
+ * Dictionary entry for a tagged lemma such as {@code mouen@v3%pr_1}.
+ *
+ * <p>The entry holds the dictionary definition of the tagged lemma, if the data has one, and the
+ * distinct word forms which occur in the corpus for it. Word forms are kept in the order they are
+ * first encountered.
+ */
+public final class DictEntry {
+    private final String taggedLemma;
+    private final String lemma;
+    private final String definition;
+    private final SequencedSet<String> words = new LinkedHashSet<>();
 
-public class DictEntry {
-    private String definition;
-    private String lemma;
-    private String tagged_lemma;
-    private List<String> words;
-
-    public DictEntry(String tagged_lemma, String definition) {
-        this.tagged_lemma = tagged_lemma;
+    /**
+     * @param taggedLemma the tagged lemma, for example {@code mouen@v3%pr_1}
+     * @param definition dictionary definition of the tagged lemma or {@code null} if there is none
+     */
+    public DictEntry(String taggedLemma, String definition) {
+        this.taggedLemma = Objects.requireNonNull(taggedLemma, "taggedLemma");
         this.definition = definition;
-        this.words = new ArrayList<>();
+        this.lemma = lemmaOf(taggedLemma);
+    }
 
-        int i = tagged_lemma.indexOf('@');
+    private static String lemmaOf(String taggedLemma) {
+        int i = taggedLemma.indexOf('@');
 
         if (i == -1) {
-            System.err.println("Malformed tagged lemma: " + tagged_lemma);
-            this.lemma = tagged_lemma;
-        } else {
-            this.lemma = tagged_lemma.substring(0, i);
+            System.err.println("Malformed tagged lemma: " + taggedLemma);
+            return taggedLemma;
         }
+
+        return taggedLemma.substring(0, i);
     }
 
-    public String getDefinition() {
-        return definition;
+    /** @return the tagged lemma, for example {@code mouen@v3%pr_1} */
+    public String taggedLemma() {
+        return taggedLemma;
     }
 
-    public String getLemma() {
+    /** @return the lemma of the tagged lemma, for example {@code mouen} */
+    public String lemma() {
         return lemma;
     }
 
-    public String getTaggedLemma() {
-        return tagged_lemma;
+    /** @return the dictionary definition or {@code null} if the data does not have one */
+    public String definition() {
+        return definition;
     }
 
-    public List<String> getWords() {
-        return words;
+    /** @return the distinct word forms of this entry in the order they were added */
+    public SequencedSet<String> words() {
+        return Collections.unmodifiableSequencedSet(words);
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((definition == null) ? 0 : definition.hashCode());
-        result = prime * result + ((tagged_lemma == null) ? 0 : tagged_lemma.hashCode());
-        result = prime * result + ((words == null) ? 0 : words.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        DictEntry other = (DictEntry) obj;
-        if (definition == null) {
-            if (other.definition != null)
-                return false;
-        } else if (!definition.equals(other.definition))
-            return false;
-        if (tagged_lemma == null) {
-            if (other.tagged_lemma != null)
-                return false;
-        } else if (!tagged_lemma.equals(other.tagged_lemma))
-            return false;
-        if (words == null) {
-            if (other.words != null)
-                return false;
-        } else if (!words.equals(other.words))
-            return false;
-        return true;
+    /**
+     * Records a word form of this tagged lemma. Duplicates are ignored.
+     *
+     * @param word word form as it occurs in the corpus
+     */
+    public void addWord(String word) {
+        words.add(Objects.requireNonNull(word, "word"));
     }
 
     @Override
     public String toString() {
-        return "DictEntry [definition=" + definition + ", tagged_lemma=" + tagged_lemma + ", words=" + words + "]";
+        return "DictEntry[taggedLemma=" + taggedLemma + ", definition=" + definition + ", words="
+                + words + "]";
     }
 }

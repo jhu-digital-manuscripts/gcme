@@ -1,96 +1,255 @@
 package gcme.data;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import gcme.model.DictEntry;
 import gcme.model.Line;
+import gcme.model.TagTableEntry;
 import gcme.model.TextGroup;
 
-// Methods for accessing and normalizing data
+/**
+ * Reads and normalizes the raw GCME data found in a data directory.
+ *
+ * <p>The data is lines of tagged text organized in a hierarchy of groups. The hierarchy, the group
+ * identifiers, and the group titles are described by {@code abbr2title.lut}. The mapping from group
+ * identifiers to the {@code .cat} files holding the text is described by {@code abbr2file.txt}.
+ * Dictionary definitions live in {@code .lem} files below the {@code texts} directory.
+ *
+ * <p>Data problems which the original data is known to contain, such as missing definitions and
+ * duplicate dictionary entries, are reported as warnings on {@link System#err} instead of failing.
+ */
+public final class GcmeData {
+    /** Dictionary files holding definitions, ordered so that later files win on conflict. */
+    private static final List<String> DICTIONARY_FILES = List.of("texts/anon/ch/dict/ap-all.lem",
+            "texts/gow/dict/gow-all.lem", "texts/ch/dict/ch-all.lem");
 
-public class GcmeData {
-    private final Path base_path;
+    /** Marks the start of the tagged lemmas an entry in a {@code .lem} file defines. */
+    private static final String DEFINITION_KEY = "KEY:";
 
-    public GcmeData(Path path) {
-        this.base_path = path;
+    /**
+     * Replacements to try when a tagged lemma does not directly match a dictionary definition key.
+     * The order is significant because the first replacement which yields a definition wins.
+     */
+    private static final Map<String, String> DEFINITION_KEY_PERMUTATIONS = permutations();
+
+    private static final Pattern WHITESPACE = Pattern.compile("\\s+");
+    private static final Pattern NON_DIGITS = Pattern.compile("\\D+");
+    private static final Pattern PUNCTUATION = Pattern.compile("\\p{Punct}");
+    private static final Pattern CONTAINS_WORD_CHARACTER = Pattern.compile(".*\\w.*");
+    private static final Pattern LEADING_DIGITS = Pattern.compile("^(\\d+)");
+
+    /**
+     * Orders text files by directory and then by the number their file name starts with so that
+     * generated output is deterministic and follows the order of the text.
+     */
+    private static final Comparator<Path> TEXT_FILE_ORDER =
+            Comparator.comparing((Path path) -> String.valueOf(path.getParent()))
+                    .thenComparingLong(GcmeData::leadingNumber).thenComparing(Path::toString);
+
+    private final Path basePath;
+
+    /**
+     * @param basePath directory holding the raw data
+     */
+    public GcmeData(Path basePath) {
+        this.basePath = Objects.requireNonNull(basePath, "basePath");
     }
 
-    // Map identifiers to the actual files containing the text
+    private static Map<String, String> permutations() {
+        Map<String, String> permutations = new LinkedHashMap<>();
 
+        // Inconsistency with numeral tagging. Mapping the underscore to a hash keeps the
+        // distinction, so it is tried before falling back on the bare numeral entry.
+        permutations.put("@num_", "@num#");
+        permutations.put("@num_adj", "@num");
+        permutations.put("@num_n", "@num");
+        permutations.put("@num_n%pl", "@num");
+        permutations.put("@num_n%gen", "@num");
+
+        // Dictionary entries don't have the absolute form
+        permutations.put("_abs", "");
+
+        // Seems to be the same
+        permutations.put("@pron_adj", "@gram_adj");
+
+        return Collections.unmodifiableMap(permutations);
+    }
+
+    /**
+     * Maps group identifiers to the text files containing their lines.
+     *
+     * <p>Each line of {@code abbr2file.txt} maps a group identifier to a glob pattern matching text
+     * files relative to the {@code texts} directory. A group may be mapped by several lines and a
+     * text file belongs to the 2-4 groups which contain it. For example:
+     *
+     * <pre>
+     * Ch,ch/07/1/*-ch.cat
+     * Ch,ch/07/2/*-ch.cat
+     * Bo3.m4,ch/03/3/51-ch.cat
+     * </pre>
+     *
+     * @return map of group identifier to text files in text order
+     * @throws IOException if the mapping cannot be read or a pattern matches no files
+     */
     public Map<String, List<Path>> loadTextMap() throws IOException {
+        Path mapFile = basePath.resolve("abbr2file.txt");
+        Path textsPath = basePath.resolve("texts");
+
+        List<Path> textFiles;
+
+        try (Stream<Path> files = Files.walk(textsPath)) {
+            textFiles = files.filter(Files::isRegularFile).toList();
+        }
+
         Map<String, List<Path>> result = new HashMap<>();
 
-        // Maps text identifiers to glob patterns for matching text files.
-        //
-        // Example:
-        // Ch,ch/07/1/*-ch.cat
-        // Ch,ch/07/2/*-ch.cat
-        // Bo3.m4,ch/03/3/51-ch.cat
+        for (String line : readLines(mapFile)) {
+            if (line.isEmpty() || line.startsWith("#")) {
+                continue;
+            }
 
-        Path map_file = base_path.resolve("abbr2file.txt");
-        List<Path> text_files = Files.walk(base_path.resolve("texts")).collect(Collectors.toList());
+            int comma = line.indexOf(',');
 
-        try (BufferedReader input = Files.newBufferedReader(map_file, StandardCharsets.UTF_8)) {
-            String line;
+            if (comma == -1) {
+                throw new IOException("Unable to parse: " + line);
+            }
 
-            while ((line = input.readLine()) != null) {
-                line = line.trim();
+            String id = line.substring(0, comma);
+            String glob = line.substring(comma + 1).trim();
 
-                if (line.startsWith("#")) {
-                    continue;
-                }
+            String pathGlob = textsPath.resolve(glob).toString();
+            PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + pathGlob);
 
-                int glob_offset = line.indexOf(',');
+            List<Path> matched =
+                    textFiles.stream().filter(matcher::matches).sorted(TEXT_FILE_ORDER).toList();
 
-                if (glob_offset == -1) {
-                    throw new IOException("Unable to parse: " + line);
-                }
+            if (matched.isEmpty()) {
+                throw new IOException(
+                        "Pattern " + pathGlob + " did not match any files for " + id);
+            }
 
-                String glob = line.substring(glob_offset + 1).trim();
-                String id = line.substring(0, glob_offset);
+            result.computeIfAbsent(id, unused -> new ArrayList<>()).addAll(matched);
+        }
 
-                String path_glob = base_path.resolve("texts").resolve(glob).toString();
-                PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + path_glob);
+        return Map.copyOf(result);
+    }
 
-                List<Path> matched = result.get(id);
+    /**
+     * Loads the hierarchy of texts described by {@code abbr2title.lut}.
+     *
+     * <p>Each line of the file defines a group using a location in the tree, the group identifier, and
+     * the group title. For example {@code 0.2.3.13-Bo3.pr7,Boece - Book III: Prose 7}. The first
+     * component of the location is {@code 0} for Chaucer and {@code 1} for Gower. The parent of a
+     * group is found by changing its right most non zero component to zero.
+     *
+     * @return the root of the hierarchy
+     * @throws IOException if the structure cannot be read or a parent cannot be found
+     */
+    public TextGroup loadTextStructure() throws IOException {
+        TextGroup root = new TextGroup("root", "Corpus");
+        TextGroup chaucer = root.addChild("Ch", "Geoffrey Chaucer");
+        TextGroup gower = root.addChild("Gow", "John Gower");
 
-                if (matched == null) {
-                    matched = new ArrayList<>();
-                }
+        // Location in the tree as it appears in the file -> group at that location
+        Map<String, TextGroup> groups = new HashMap<>();
 
-                List<Path> more = text_files.stream().filter(f -> matcher.matches(f)).collect(Collectors.toList());
+        for (String line : readLines(basePath.resolve("abbr2title.lut"))) {
+            if (line.isEmpty() || line.startsWith("#")) {
+                continue;
+            }
 
-                if (more.size() == 0) {
-                    throw new IOException("Pattern " + path_glob + " did not match any files for " + id);
-                }
+            int comma = line.indexOf(',');
 
-                matched.addAll(more);
+            if (comma == -1) {
+                throw new IOException("Unable to parse name: " + line);
+            }
 
-                result.put(id, matched);
+            int dash = line.indexOf('-');
+
+            if (dash == -1) {
+                throw new IOException("Unable to parse id: " + line);
+            }
+
+            String name = line.substring(comma + 1).trim();
+            String id = line.substring(dash + 1, comma);
+            String[] location = line.substring(0, dash).split("\\.");
+
+            if (location.length != 4) {
+                throw new IOException("Unable to parse structure: " + line);
+            }
+
+            TextGroup parent = findParent(location, chaucer, gower, groups, line);
+
+            groups.put(String.join(".", location), parent.addChild(id, name));
+        }
+
+        return root;
+    }
+
+    private static TextGroup findParent(String[] location, TextGroup chaucer, TextGroup gower,
+            Map<String, TextGroup> groups, String line) throws IOException {
+        String[] parentLocation = location.clone();
+
+        if (parentLocation[3].equals("0")) {
+            if (parentLocation[2].equals("0")) {
+                // A work of an author, so the parent is the author
+                return switch (parentLocation[0]) {
+                    case "0" -> chaucer;
+                    case "1" -> gower;
+                    default -> throw new IOException("Could not find author for: " + line);
+                };
+            }
+
+            parentLocation[2] = "0";
+        } else {
+            parentLocation[3] = "0";
+        }
+
+        TextGroup parent = groups.get(String.join(".", parentLocation));
+
+        if (parent == null && !parentLocation[2].equals("0")) {
+            // Some groups skip a level of the hierarchy
+            parentLocation[2] = "0";
+            parent = groups.get(String.join(".", parentLocation));
+        }
+
+        if (parent == null) {
+            throw new IOException("Could not find parent of: " + line);
+        }
+
+        return parent;
+    }
+
+    /**
+     * Parses all lines of a text file.
+     *
+     * @param path text file to parse
+     * @return the lines in the order they appear in the file
+     * @throws IOException if the file cannot be read or holds a malformed line
+     */
+    public List<Line> parseText(Path path) throws IOException {
+        List<Line> result = new ArrayList<>();
+
+        for (String line : readLines(path)) {
+            if (!line.isEmpty()) {
+                result.add(parseLine(line));
             }
         }
 
@@ -98,192 +257,81 @@ public class GcmeData {
     }
 
     /**
-     * Load structure of texts described in abbr2name.lut.
+     * Parses a line of tagged text such as
+     * {@code 100-ch 1368 Thow{*thou@pron%nom*} rote{*rote@n4*} of{*of@prep*}}.
      *
+     * <p>The first token is the identifier of the text, the second the line number, and the remaining
+     * tokens are words with their tagged lemmas.
      *
-     * @return TextGroup
-     * @throws IOException
+     * @param line raw line of a text file
+     * @return the parsed line
+     * @throws IOException if the line is malformed
      */
-    public TextGroup loadTextStructure() throws IOException {
-        TextGroup result = new TextGroup(null, "root", "Corpus");
-
-        Path struct_file = base_path.resolve("abbr2title.lut");
-
-        // Each line defines a text which is a node in the tree using a bizarre syntax
-        //
-        // Example:
-        // 0.2.3.13-Bo3.pr7,Boece - Book III: Prose 7
-        //
-        // The first part gives a location in the tree
-        // 0 indicates Chuacer and 1 Gower.
-        // To find parent change right-most non-zero number to zero.
-
-        TextGroup chaucer = new TextGroup(result, "Ch", "Geoffrey Chaucer");
-        TextGroup gower = new TextGroup(result, "Gow", "John Gower");
-
-        // Map structure string to its TextGroup
-        Map<String, TextGroup> struct_map = new HashMap<>();
-
-        try (BufferedReader input = Files.newBufferedReader(struct_file, StandardCharsets.UTF_8)) {
-            String line;
-
-            while ((line = input.readLine()) != null) {
-                line = line.trim();
-
-                if (line.startsWith("#")) {
-                    continue;
-                }
-
-                int name_offset = line.indexOf(',');
-
-                if (name_offset == -1) {
-                    throw new IOException("Unable to parse name: " + line);
-                }
-
-                String name = line.substring(name_offset + 1).trim();
-
-                int id_offset = line.indexOf('-');
-
-                if (id_offset == -1) {
-                    throw new IOException("Unable to parse id: " + line);
-                }
-
-                String id = line.substring(id_offset + 1, name_offset);
-                String[] struct = line.substring(0, id_offset).split("\\.");
-
-                if (struct.length != 4) {
-                    throw new IOException("Unable to parse structure: " + line);
-                }
-
-                // Insert into correct place in tree based on struct
-
-                String[] parent_struct = new String[4];
-
-                parent_struct[0] = struct[0];
-                parent_struct[1] = struct[1];
-                parent_struct[2] = struct[2];
-                parent_struct[3] = struct[3];
-
-                TextGroup parent = null;
-
-                if (parent_struct[3].equals("0")) {
-                    if (parent_struct[2].equals("0")) {
-                        if (parent_struct[0].equals("0")) {
-                            parent = chaucer;
-                        } else if (parent_struct[0].equals("1")) {
-                            parent = gower;
-                        } else {
-                            throw new IOException("Could not find author for: " + line);
-                        }
-                    } else {
-                        parent_struct[2] = "0";
-                    }
-                } else {
-                    parent_struct[3] = "0";
-                }
-
-                if (parent == null) {
-                    parent = struct_map.get(String.join(".", parent_struct));
-
-                    if (parent == null && !parent_struct[2].equals("0")) {
-                        parent_struct[2] = "0";
-                        parent = struct_map.get(String.join(".", parent_struct));
-                    }
-                }
-
-                if (parent == null) {
-                    throw new IOException("Could not find parent of: " + line);
-                }
-
-                TextGroup group = new TextGroup(parent, id, name);
-                struct_map.put(String.join(".", struct), group);
-            }
-        }
-
-        return result;
-
-    }
-
-    public List<Line> parseText(Path path) throws IOException {
-        List<Line> result = new ArrayList<>();
-
-        try (BufferedReader input = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-            String line;
-
-            while ((line = input.readLine()) != null) {
-                line = line.trim();
-
-                if (!line.isEmpty()) {
-                    result.add(parseLine(line));
-                }
-            }
-        }
-
-        return result;
-    }
-
-    // Example:
-    // 100-ch 1368 Thow{*thou@pron%nom*} rote{*rote@n4*} of{*of@prep*}
     public Line parseLine(String line) throws IOException {
-        String[] tokens = line.trim().split("\\s+");
-        StringBuilder words = new StringBuilder();
-        StringBuilder tagged_lemmas = new StringBuilder();
+        String[] tokens = WHITESPACE.split(line.trim());
 
         if (tokens.length < 3) {
             throw new IOException("Malformed line: " + line);
         }
 
         String id = tokens[0];
-        String raw_number = tokens[1];
-        int number;
+        String rawNumber = tokens[1];
+        int number = parseLineNumber(rawNumber, line);
 
-        try {
-            String s = raw_number.replaceAll("\\D+", "");
-
-            if (s.isEmpty()) {
-                number = -1;
-            } else {
-                number = Integer.parseInt(s);
-            }
-        } catch (NumberFormatException e) {
-            throw new IOException("Unable to parse line number: " + line);
-        }
+        StringBuilder words = new StringBuilder();
+        StringBuilder taggedLemmas = new StringBuilder();
 
         for (int i = 2; i < tokens.length; i++) {
-            if (words.length() > 0) {
+            if (!words.isEmpty()) {
                 words.append(' ');
-                tagged_lemmas.append(' ');
+                taggedLemmas.append(' ');
             }
 
-            parseToken(tokens[i], words, tagged_lemmas);
+            parseToken(tokens[i], words, taggedLemmas);
         }
 
-        Line result = new Line(id, number, raw_number, words.toString(), tagged_lemmas.toString());
+        Line result = Line.of(id, number, rawNumber, words.toString(), taggedLemmas.toString());
 
-        if (result.getText().split("\\s+").length != result.getTaggedLemmaText().split("\\s+").length) {
+        if (WHITESPACE.split(result.text()).length != WHITESPACE
+                .split(result.taggedLemmaText()).length) {
             throw new IOException("Malformed line: " + line);
         }
 
         return result;
     }
 
-    private boolean hasChar(String s, int index, char c) throws IOException {
-        if (index >= s.length()) {
-            throw new IOException("Premataure end of token looking for " + c);
+    /**
+     * Extracts the line number from the raw number by keeping only its digits. A raw number such as
+     * {@code Rub} which has no digits gets the number {@code -1}.
+     */
+    private static int parseLineNumber(String rawNumber, String line) throws IOException {
+        String digits = NON_DIGITS.matcher(rawNumber).replaceAll("");
+
+        if (digits.isEmpty()) {
+            return -1;
         }
 
-        return s.charAt(index) == c;
+        try {
+            return Integer.parseInt(digits);
+        } catch (NumberFormatException e) {
+            throw new IOException("Unable to parse line number: " + line, e);
+        }
     }
 
-    private void parseToken(String token, StringBuilder words, StringBuilder tagged_lemmas) throws IOException {
-        boolean in_word = true;
+    /**
+     * Splits a token such as {@code rote{*rote@n4*}} into its word and its tagged lemma, appending
+     * each to the given buffers.
+     */
+    private static void parseToken(String token, StringBuilder words, StringBuilder taggedLemmas)
+            throws IOException {
+        boolean inWord = true;
 
         for (int i = 0; i < token.length();) {
             char c = token.charAt(i);
 
-            if (in_word) {
+            if (inWord) {
                 if (c == '{' && hasChar(token, i + 1, '*')) {
-                    in_word = false;
+                    inWord = false;
                     i += 2;
                 } else {
                     words.append(c);
@@ -297,161 +345,116 @@ public class GcmeData {
                         throw new IOException("Trailing characters after token: " + token);
                     }
                 } else {
-                    tagged_lemmas.append(c);
+                    taggedLemmas.append(c);
                     i++;
                 }
             }
         }
     }
 
-    // Write out in bulk ingest form documents for the line index
-    public void generateElasticsearchBulkLineIngest(Path output) throws IOException {
-        Map<String, List<Path>> map = loadTextMap();
-        TextGroup root = loadTextStructure();
-
-        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
-            generateElasticsearchBulkLineIngest(root, map, null, out);
+    private static boolean hasChar(String s, int index, char c) throws IOException {
+        if (index >= s.length()) {
+            throw new IOException("Premature end of token looking for " + c);
         }
+
+        return s.charAt(index) == c;
     }
 
-    private JSONObject generateElasticsearchDocument(TextGroup group, Line line) throws IOException {
-        JSONObject doc = new JSONObject();
-
-        doc.put("id", line.getId());
-        doc.put("number", line.getNumber());
-        doc.put("raw_number", line.getRawNumber());
-        doc.put("text", line.getText());
-        doc.put("lemma_tag_text", line.getTaggedLemmaText());
-        doc.put("lemma_text", line.getLemmaText());
-
-        List<String> groups = new ArrayList<>();
-
-        // Add all except root group
-        while (group.getParent() != null) {
-            groups.add(0, group.getId());
-            group = group.getParent();
-        }
-
-        if (groups.size() < 2 || groups.size() > 4) {
-            throw new IOException("Unexpected group size: " + line);
-        }
-
-        doc.put("group", groups);
-
-        return doc;
-    }
-
-    private void generateElasticsearchBulkLineIngest(TextGroup group, Map<String, List<Path>> map,
-            Set<Path> parent_files, BufferedWriter out) throws IOException {
-        String action = "{ \"index\" : { } }";
-
-        List<TextGroup> children = group.getChildren();
-
-        if (children == null) {
-            for (Path file : map.get(group.getId())) {
-
-                for (Line line : parseText(file)) {
-                    JSONObject source = generateElasticsearchDocument(group, line);
-
-                    out.write(action + "\n");
-                    out.write(source.toString() + "\n");
-                }
-
-                if (parent_files != null) {
-                    if (parent_files.contains(file)) {
-                        parent_files.remove(file);
-                    } else {
-                        System.err.println("Group consistency warning: " + group.getParent().getId()
-                                + " does not contain file of child " + group.getId() + " " + file);
-                    }
-                }
-            }
-        } else {
-            Set<Path> group_files = null;
-
-            if (map.containsKey(group.getId())) {
-                group_files = new HashSet<>(map.get(group.getId()));
-            }
-
-            if (group_files != null && parent_files != null) {
-                for (Path file : group_files) {
-                    if (parent_files.contains(file)) {
-                        parent_files.remove(file);
-                    } else {
-                        System.err.println("Group consistency warning: " + group.getParent().getId()
-                                + " does not contain file of child " + group.getId() + " " + file);
-                    }
-                }
-            }
-
-            for (TextGroup child : children) {
-                generateElasticsearchBulkLineIngest(child, map, group_files, out);
-            }
-
-            if (group_files != null && !group_files.isEmpty()) {
-                System.err.println("Group consistency warning: " + group.getId() + " files not included in children:"
-                        + group_files);
-            }
-        }
-    }
-
-    // Return map of tagged lemma to dictionary entry.
+    /**
+     * Builds the dictionary of every tagged lemma occurring in the corpus.
+     *
+     * <p>Each entry holds the word forms which occur for the tagged lemma and its definition if one
+     * could be found. Tagged lemmas without a definition are reported as warnings.
+     *
+     * @return map of tagged lemma to its entry
+     * @throws IOException if the data cannot be read
+     */
     public Map<String, DictEntry> loadDictionary() throws IOException {
-        Map<String, DictEntry> result = new HashMap<>();
+        Map<String, String> definitions = new HashMap<>(loadDictionaryDefinitions());
 
-        Map<String, String> def_map = loadDictionaryDefinitions();
+        // Let a tagged lemma without extra tags stand in for a fully tagged one. Keys are sorted so
+        // that the entry which wins does not depend on hash order.
+        definitions.keySet().stream().sorted().toList()
+                .forEach(key -> definitions.putIfAbsent(baseTaggedLemma(key), definitions.get(key)));
 
-        // Add in mapping for base lemma tags
-        HashSet<String> keys = new HashSet<>(def_map.keySet());
-        for (String lemma_tag : keys) {
-            def_map.putIfAbsent(get_tagged_lemma_base(lemma_tag), def_map.get(lemma_tag));
-        }
+        Map<String, DictEntry> result = new LinkedHashMap<>();
 
-        loadDictionary(loadTextStructure(), loadTextMap(), def_map, result);
+        loadDictionary(loadTextStructure(), loadTextMap(), definitions, result);
 
         return result;
     }
 
-    // Map lemma_tag -> definition
+    /**
+     * Loads the dictionary definitions of tagged lemmas from the {@code .lem} files.
+     *
+     * @return map of tagged lemma to definition
+     * @throws IOException if a dictionary file cannot be read
+     */
     public Map<String, String> loadDictionaryDefinitions() throws IOException {
         Map<String, String> result = new HashMap<>();
 
-        String[] dicts = new String[] { "texts/anon/ch/dict/ap-all.lem", "texts/gow/dict/gow-all.lem",
-                "texts/ch/dict/ch-all.lem", };
-
-        for (String s : dicts) {
-            Map<String, String> defs = load_dictionary_definitions(base_path.resolve(s));
-
-            // TODO What about if have different definitions?
-
-            result.putAll(defs);
+        for (String file : DICTIONARY_FILES) {
+            // Definitions of the same tagged lemma in a later file replace earlier ones
+            result.putAll(loadDefinitions(basePath.resolve(file)));
         }
 
         return result;
     }
 
-    // Example:
-    // aforn adv. "before, previously," s.v. afore adv., prep., and conj. OED. KEY:
-    // aforn@adv
-    // Achitofel n. "Achitophel, King David's counselor (in the Bible)," proper n.;
-    // not in MED. KEY: achitofel@
-    // n#propn
-    //
-    // Note the line wrapping. Empty lines separate entries.
-    // May be multiple tagged lemmas separated by spaces after key
-    // May end in a period
-
-    private Map<String, String> load_dictionary_definitions(Path dict_lem_file) throws IOException {
+    /**
+     * Loads the definitions of one {@code .lem} file. An entry is a definition followed by the tagged
+     * lemmas it defines, wrapped over several lines and terminated by an empty line. For example:
+     *
+     * <pre>
+     * Achitofel n. "Achitophel, King David's counselor (in the Bible)," proper n.;
+     * not in MED. KEY: achitofel@
+     * n#propn
+     * </pre>
+     *
+     * <p>Several tagged lemmas may follow the key, separated by spaces.
+     */
+    private static Map<String, String> loadDefinitions(Path dictionaryFile) throws IOException {
         Map<String, String> result = new HashMap<>();
 
-        // First undo the line wrapping and then parse the lines
+        for (String entry : unwrapLines(dictionaryFile)) {
+            int i = entry.indexOf(DEFINITION_KEY);
 
-        List<String> lines = new ArrayList<>();
+            if (i == -1) {
+                System.err.println("Warning: Could not find KEY:" + entry);
+                continue;
+            }
 
-        try (BufferedReader in = Files.newBufferedReader(dict_lem_file, StandardCharsets.UTF_8)) {
+            String definition = entry.substring(0, i).trim();
+            String[] taggedLemmas =
+                    WHITESPACE.split(entry.substring(i + DEFINITION_KEY.length()).trim());
+
+            for (String taggedLemma : taggedLemmas) {
+                if (result.containsKey(taggedLemma)) {
+                    System.err.println("Warning: Entry already exists: " + entry);
+
+                    // Prefer OED definition
+                    if (definition.contains("OED")) {
+                        result.put(taggedLemma, definition);
+                    }
+                } else {
+                    result.put(taggedLemma, definition);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Undoes the line wrapping of a dictionary file. Entries are separated by empty lines and a
+     * trailing period is dropped from every wrapped line.
+     */
+    private static List<String> unwrapLines(Path dictionaryFile) throws IOException {
+        List<String> entries = new ArrayList<>();
+        StringBuilder entry = new StringBuilder();
+
+        try (BufferedReader in = Files.newBufferedReader(dictionaryFile, StandardCharsets.UTF_8)) {
             String line;
-
-            StringBuilder real_line = new StringBuilder();
 
             while ((line = in.readLine()) != null) {
                 if (line.endsWith(".")) {
@@ -459,380 +462,150 @@ public class GcmeData {
                 }
 
                 if (line.isEmpty()) {
-                    if (real_line.length() > 0) {
-                        lines.add(real_line.toString());
-                        real_line.setLength(0);
+                    if (!entry.isEmpty()) {
+                        entries.add(entry.toString());
+                        entry.setLength(0);
                     }
                 } else {
-                    real_line.append(line);
-                }
-            }
-
-            if (real_line.length() > 0) {
-                lines.add(real_line.toString());
-            }
-        }
-
-        // Now parse unwrapped lines
-
-        final String key = "KEY:";
-
-        for (String line : lines) {
-            int i = line.indexOf(key);
-
-            if (i == -1) {
-                // throw new IOException("Malformed entry: " + dict_lem_file + " " + line);
-                System.err.println("Warning: Could not find KEY:" + line);
-                continue;
-            }
-
-            String def = line.substring(0, i).trim();
-            String[] tagged_lemmas = line.substring(i + key.length()).trim().split("\\s+");
-
-            for (String tagged_lemma : tagged_lemmas) {
-                if (result.containsKey(tagged_lemma)) {
-                    // throw new IOException("Entry already exists: " + line);
-                    System.err.println("Warning: Entry already exists: " + line);
-
-                    // Prefer OED definition
-                    if (def.contains("OED")) {
-                        result.put(tagged_lemma, def);
-                    }
-                } else {
-                    result.put(tagged_lemma, def);
+                    entry.append(line);
                 }
             }
         }
 
-        return result;
+        if (!entry.isEmpty()) {
+            entries.add(entry.toString());
+        }
+
+        return entries;
     }
 
-    private void loadDictionary(TextGroup group, Map<String, List<Path>> group_text_map, Map<String, String> def_map,
-            Map<String, DictEntry> tagged_lemma_map) throws IOException {
-        List<TextGroup> children = group.getChildren();
-
-        // Various permutations to try when mapping a tagged lemma to a dictionary
-        // definition key
-        Map<String, String> perm_map = new HashMap<>();
-
-        // Inconsistency with numeral tagging
-        perm_map.put("@num_", "@num#");
-        perm_map.put("@num_adj", "@num");
-        perm_map.put("@num_n", "@num");
-        perm_map.put("@num_n%pl", "@num");
-        perm_map.put("@num_n%gen", "@num");
-
-        // Dictionary entries don't have the absolute form
-        perm_map.put("_abs", "");
-
-        // Seems to be the same
-        perm_map.put("@pron_adj", "@gram_adj");
-
-        if (children == null) {
-            for (Path file : group_text_map.get(group.getId())) {
-                for (Line line : parseText(file)) {
-                    String[] words = line.getText().toLowerCase().split("\\s+");
-                    String[] tagged_lemmas = line.getTaggedLemmaText().split("\\s+");
-
-                    if (words.length != tagged_lemmas.length) {
-                        throw new IOException("Malformed line does not having matching words and tags: " + file + line);
-                    }
-
-                    for (int i = 0; i < words.length; i++) {
-                        String word = words[i];
-                        String tagged_lemma = tagged_lemmas[i];
-
-                        // TODO
-                        // if (tagged_lemma.equals("not-concorded")) {
-                        // continue;
-                        // }
-
-                        // If token is a word, must remove punctuation
-                        if (word.matches(".*\\w.*")) {
-                            word = word.replaceAll("\\p{Punct}", "");
-                        }
-
-                        DictEntry entry = tagged_lemma_map.get(tagged_lemma);
-
-                        if (entry == null) {
-                            String def = def_map.get(tagged_lemma);
-
-                            if (def == null) {
-                                // Try without extra tags
-
-                                String base = get_tagged_lemma_base(tagged_lemma);
-                                def = def_map.get(base);
-
-                                if (def == null) {
-                                    // Various replacements to try
-
-                                    for (String seq : perm_map.keySet()) {
-                                        String s = tagged_lemma.replace(seq, perm_map.get(seq));
-
-                                        def = def_map.get(s);
-
-                                        if (def != null) {
-                                            break;
-                                        }
-                                    }
-
-                                    if (def == null) {
-                                        System.err.println(
-                                                "Warning: No definition for " + tagged_lemma);
-                                    }
-                                }
-                            }
-
-                            // TODO if (!tagged_lemma.equals("not-concorded")) {
-                            entry = new DictEntry(tagged_lemma, def);
-                            tagged_lemma_map.put(tagged_lemma, entry);
-                            // }
-                        }
-
-                        if (!entry.getWords().contains(word)) {
-                            entry.getWords().add(word);
-                        }
-                    }
-                }
+    /**
+     * Walks the hierarchy and records the word forms and definition of every tagged lemma found in
+     * the text of leaf groups.
+     */
+    private void loadDictionary(TextGroup group, Map<String, List<Path>> textMap,
+            Map<String, String> definitions, Map<String, DictEntry> result) throws IOException {
+        if (!group.isLeaf()) {
+            for (TextGroup child : group.children()) {
+                loadDictionary(child, textMap, definitions, result);
             }
-        } else {
-            for (TextGroup child : children) {
-                loadDictionary(child, group_text_map, def_map, tagged_lemma_map);
+
+            return;
+        }
+
+        List<Path> files = textMap.get(group.id());
+
+        if (files == null) {
+            throw new IOException("No text files for group: " + group.id());
+        }
+
+        for (Path file : files) {
+            for (Line line : parseText(file)) {
+                String[] words = WHITESPACE.split(line.text().toLowerCase());
+                String[] taggedLemmas = WHITESPACE.split(line.taggedLemmaText());
+
+                if (words.length != taggedLemmas.length) {
+                    throw new IOException(
+                            "Malformed line does not having matching words and tags: " + file + line);
+                }
+
+                for (int i = 0; i < words.length; i++) {
+                    String word = words[i];
+                    String taggedLemma = taggedLemmas[i];
+
+                    // If the token is a word, punctuation is not part of the word form
+                    if (CONTAINS_WORD_CHARACTER.matcher(word).matches()) {
+                        word = PUNCTUATION.matcher(word).replaceAll("");
+                    }
+
+                    result.computeIfAbsent(taggedLemma,
+                            lemma -> new DictEntry(lemma, findDefinition(lemma, definitions)))
+                            .addWord(word);
+                }
             }
         }
     }
 
-    // seien@v1%imp -> seien@v1
-    private static String get_tagged_lemma_base(String s) {
-        int i = s.indexOf('#');
+    /**
+     * Finds the definition of a tagged lemma, falling back on the definition of the tagged lemma
+     * without extra tags and then on known tagging inconsistencies.
+     *
+     * @return the definition or {@code null} if none could be found
+     */
+    private static String findDefinition(String taggedLemma, Map<String, String> definitions) {
+        String definition = definitions.get(taggedLemma);
+
+        if (definition != null) {
+            return definition;
+        }
+
+        definition = definitions.get(baseTaggedLemma(taggedLemma));
+
+        if (definition != null) {
+            return definition;
+        }
+
+        for (Map.Entry<String, String> permutation : DEFINITION_KEY_PERMUTATIONS.entrySet()) {
+            definition = definitions
+                    .get(taggedLemma.replace(permutation.getKey(), permutation.getValue()));
+
+            if (definition != null) {
+                return definition;
+            }
+        }
+
+        System.err.println("Warning: No definition for " + taggedLemma);
+
+        return null;
+    }
+
+    /**
+     * Strips the extra tags of a tagged lemma, mapping {@code seien@v1%imp} to {@code seien@v1}.
+     *
+     * @param taggedLemma tagged lemma to strip
+     * @return the tagged lemma without extra tags
+     */
+    public static String baseTaggedLemma(String taggedLemma) {
+        String result = taggedLemma;
+
+        int i = result.indexOf('#');
 
         if (i != -1) {
-            s = s.substring(0, i);
+            result = result.substring(0, i);
         }
 
-        i = s.indexOf('%');
+        i = result.indexOf('%');
 
         if (i != -1) {
-            s = s.substring(0, i);
-        }
-
-        return s;
-    }
-
-    private Set<String> to_basic_tagged_lemmas(List<String> tagged_lemmas) {
-        return tagged_lemmas.stream().map(GcmeData::get_tagged_lemma_base).collect(Collectors.toSet());
-    }
-
-    public void generateElasticsearchBulkDictIngest(Path by_word, Path by_lemma, Path by_tag_lemma) throws IOException {
-        Map<String, DictEntry> dict = loadDictionary();
-
-        // Remove stuff that is not tagged
-        dict.remove("not-concorded");
-
-        // basic lemma tag -> definition
-        Map<String, String> basic_lemma_tag_def = new HashMap<>();
-
-        dict.forEach((lemma_tag, entry) -> {
-            basic_lemma_tag_def.put(get_tagged_lemma_base(lemma_tag), entry.getDefinition());
-        });
-
-        String action = "{ \"index\" : { } }";
-
-        // By word
-
-        Map<String, List<DictEntry>> dict_by_word = new HashMap<>();
-
-        dict.forEach((lemma_tag, entry) -> {
-            entry.getWords().forEach(word -> {
-                dict_by_word.computeIfAbsent(word, w -> new ArrayList<>()).add(entry);
-            });
-        });
-
-        try (BufferedWriter out = Files.newBufferedWriter(by_word, StandardCharsets.UTF_8)) {
-            for (Entry<String, List<DictEntry>> entry : dict_by_word.entrySet()) {
-                List<String> tagged_lemmas = entry.getValue().stream().map(e -> e.getTaggedLemma()).toList();
-
-                // Crunch down to basic tagged lemmas with definitions
-                tagged_lemmas = new ArrayList<>(to_basic_tagged_lemmas(tagged_lemmas));
-                List<String> defs = tagged_lemmas.stream().map(s -> basic_lemma_tag_def.get(s)).toList();
-
-                JSONObject source = generateElasticsearchDocumentByWord(entry.getKey(), tagged_lemmas, defs);
-
-                out.write(action + "\n");
-                out.write(source.toString() + "\n");
-            }
-        }
-
-        // By lemma
-
-        Map<String, List<DictEntry>> dict_by_lemma = new HashMap<>();
-
-        dict.forEach((lemma_tag, entry) -> {
-            dict_by_lemma.computeIfAbsent(entry.getLemma(), l -> new ArrayList<>()).add(entry);
-        });
-
-        try (BufferedWriter out = Files.newBufferedWriter(by_lemma, StandardCharsets.UTF_8)) {
-            for (Entry<String, List<DictEntry>> entry : dict_by_lemma.entrySet()) {
-                Set<String> words = entry.getValue().stream().map(e -> e.getWords()).flatMap(Collection::stream).collect(Collectors.toSet());
-                List<String> tagged_lemmas = entry.getValue().stream().map(e -> e.getTaggedLemma()).toList();
-
-                // Crunch down to basic tagged lemmas with definitions
-                tagged_lemmas = new ArrayList<>(to_basic_tagged_lemmas(tagged_lemmas));
-                List<String> defs = tagged_lemmas.stream().map(s -> basic_lemma_tag_def.get(s)).toList();
-
-                JSONObject source = generateElasticsearchDocumentByLemma(entry.getKey(), new ArrayList<>(words), tagged_lemmas, defs);
-
-                out.write(action + "\n");
-                out.write(source.toString() + "\n");
-            }
-        }
-
-        // By tagged lemma
-
-        try (BufferedWriter out = Files.newBufferedWriter(by_tag_lemma, StandardCharsets.UTF_8)) {
-            for (DictEntry entry : dict.values()) {
-                JSONObject source = generateElasticsearchDocumentByLemmaTag(entry);
-
-                out.write(action + "\n");
-                out.write(source.toString() + "\n");
-            }
-        }
-    }
-
-    private JSONObject generateElasticsearchDocumentByLemmaTag(DictEntry entry) {
-        JSONObject doc = new JSONObject();
-
-        doc.put("lemma_tag", entry.getTaggedLemma());
-        Collections.sort(entry.getWords());
-        doc.put("word", entry.getWords());
-        doc.put("definition", entry.getDefinition());
-
-        return doc;
-    }
-
-    private JSONObject generateElasticsearchDocumentByWord(String word, List<String> lemma_tags, List<String> defs) {
-        JSONObject doc = new JSONObject();
-
-        doc.put("word", word);
-        doc.put("lemma_tag", lemma_tags);
-        doc.put("definition", defs);
-
-        return doc;
-    }
-
-    private JSONObject generateElasticsearchDocumentByLemma(String lemma, List<String> word, List<String> lemma_tags,
-            List<String> defs) {
-        JSONObject doc = new JSONObject();
-
-        Collections.sort(word);
-        doc.put("word", word);
-        doc.put("lemma", lemma);
-        doc.put("lemma_tag", lemma_tags);
-        doc.put("definition", defs);
-
-        return doc;
-    }
-
-    // Write out structure of texts for ember
-    //
-    // {label: "Chaucer", id: "Ch", children: []}
-    public void generateTextStructData(Path output) throws IOException {
-        TextGroup root = loadTextStructure();
-
-        JSONObject result = generateTextStructData(root);
-
-        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
-            out.write(result.toString());
-        }
-    }
-
-    private JSONObject generateTextStructData(TextGroup group) {
-        JSONObject result = new JSONObject();
-
-        result.put("label", group.getName());
-        result.put("id", group.getId());
-
-        if (group.hasChildren()) {
-            List<JSONObject> children = new ArrayList<>();
-
-            group.getChildren().forEach(c -> {
-                children.add(generateTextStructData(c));
-            });
-
-            result.put("children", children);
+            result = result.substring(0, i);
         }
 
         return result;
     }
 
-    // Write out data for power select so user can choose a text
-    public void generateTextPowerSelectData(Path output) throws IOException {
-        TextGroup root = loadTextStructure();
+    /**
+     * Loads the part of speech tag table from {@code pos.txt}. Group headers start with {@code ##}
+     * and are followed by their tags. For example:
+     *
+     * <pre>
+     * ##Part of Speech pos
+     * abbrev abbr
+     * adj#interj adj as interjection
+     * </pre>
+     *
+     * @return the rows of the tag table in file order
+     * @throws IOException if the table cannot be read or holds a malformed line
+     */
+    public List<TagTableEntry> loadTagTable() throws IOException {
+        List<TagTableEntry> result = new ArrayList<>();
+        String group = "";
 
-        JSONObject result = generateTextPowerSelectData(root);
-
-        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
-            // Unwrap top level element.
-            out.write(result.getJSONArray("options").toString());
-        }
-    }
-
-    // Each option is {label: name, id: id}
-    // Each TextGroup with children becomes a group
-    private JSONObject generateTextPowerSelectData(TextGroup group) {
-        JSONObject result = new JSONObject();
-
-        // As a hack add groupName for depth 3 entry with no children Gower / Praise of
-        // Peace so it becomes
-        // Gower / Praise of Peace/ Praise of Peace
-
-        boolean depth3_nokids = !group.hasChildren() && group.getParent() != null
-                && group.getParent().getParent() != null && group.getParent().getParent().getParent() == null;
-
-        if (group.hasChildren() || depth3_nokids) {
-            result.put("groupName", group.getName());
-
-            List<JSONObject> children = new ArrayList<>();
-
-            if (group.getParent() != null) {
-                JSONObject option = new JSONObject();
-                option.put("id", group.getId());
-                option.put("label", group.getName());
-                children.add(option);
-            }
-
-            if (group.hasChildren()) {
-                group.getChildren().forEach(c -> {
-                    children.add(generateTextPowerSelectData(c));
-                });
-            }
-
-            result.put("options", children);
-        } else {
-            result.put("id", group.getId());
-            result.put("label", group.getName());
-        }
-
-        return result;
-    }
-
-    // Write out tag table in format for ember-models-table
-    // [{group: "group title", tag: "tag", description: "description"}]
-    // Derived from pos.txt which looks like
-    // ##Part of Speech pos
-    // abbrev abbr
-    // adj#interj adj as interjection
-
-    public void generateTagTable(Path output) throws IOException {
-        List<JSONObject> result = new ArrayList<>();
-
-        try (BufferedReader in = Files.newBufferedReader(base_path.resolve("pos.txt"), StandardCharsets.UTF_8)) {
+        try (BufferedReader in =
+                Files.newBufferedReader(basePath.resolve("pos.txt"), StandardCharsets.UTF_8)) {
             String line;
 
-            String group = "";
-
             while ((line = in.readLine()) != null) {
-                line = line.trim().replaceAll("\\s+", " ");
+                line = WHITESPACE.matcher(line.trim()).replaceAll(" ");
 
                 if (line.startsWith("##")) {
                     int end = line.lastIndexOf(' ');
@@ -849,89 +622,52 @@ public class GcmeData {
                         throw new IOException("Malformed line: " + line);
                     }
 
-                    String tag = line.substring(0, i);
-                    String description = line.substring(i).trim();
-
-                    JSONObject entry = new JSONObject();
-
-                    entry.put("group", group);
-                    entry.put("tag", tag);
-                    entry.put("description", description);
-
-                    result.add(entry);
+                    result.add(new TagTableEntry(group, line.substring(0, i),
+                            line.substring(i).trim()));
                 }
             }
         }
 
-        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
-            out.write(new JSONArray(result).toString());
-        }
+        return List.copyOf(result);
     }
 
-    // Write out map from id -> title
-    public void generateGroupTitleMap(Path output) throws IOException {
-        TextGroup root = loadTextStructure();
+    /**
+     * Maps every group identifier of the hierarchy to its title.
+     *
+     * @return map of identifier to title in hierarchy order
+     * @throws IOException if the structure cannot be read
+     */
+    public Map<String, String> loadGroupTitles() throws IOException {
+        Map<String, String> result = new LinkedHashMap<>();
 
-        JSONObject result = new JSONObject();
-        generateGroupTitleMap(root, result);
-
-        try (BufferedWriter out = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
-            // Unwrap top level element.
-            out.write(result.toString());
-        }
-    }
-
-    private JSONObject generateGroupTitleMap(TextGroup group, JSONObject result) {
-        result.put(group.getId(), group.getName());
-
-        if (group.hasChildren()) {
-            group.getChildren().forEach(c -> {
-                generateGroupTitleMap(c, result);
-            });
-        }
+        collectGroupTitles(loadTextStructure(), result);
 
         return result;
     }
 
-    // Transform a spreadsheet into the text format.
-    // Spreadsheet format is four rows to a line of text.
-    // First row: 99-ch.cat, LGWProG, 99-ch, 1, WORD...
-    // Second row: word stresses
-    // Third row: word stresses?
-    // Fourth row: tagged lemma
-    public void transformSpreadsheet(Path spreadsheet, PrintStream out) throws IOException {
-        List<CSVRecord> recs = CSVParser.parse(spreadsheet, StandardCharsets.UTF_8, CSVFormat.DEFAULT).stream().toList();
+    private static void collectGroupTitles(TextGroup group, Map<String, String> result) {
+        result.put(group.id(), group.name());
 
-        for (int row = 0; row < recs.size(); row += 4) {
-            CSVRecord rec = recs.get(row);
+        group.children().forEach(child -> collectGroupTitles(child, result));
+    }
 
-            // Skip first values: filename, location
-            // First two will be id, number
-            List<String> words = rec.stream().skip(2).filter(w -> !w.isBlank()).toList();
+    /** Reads all lines of a UTF-8 file, trimming each one. */
+    private static List<String> readLines(Path path) throws IOException {
+        return Files.readAllLines(path, StandardCharsets.UTF_8).stream().map(String::trim).toList();
+    }
 
-            rec = recs.get(row + 3);
-            List<String> tagged_lemmas = rec.stream().skip(4).filter(t -> !t.isBlank()).toList();
+    /** Number a file name starts with, or {@link Long#MAX_VALUE} if it starts with no digits. */
+    private static long leadingNumber(Path path) {
+        Matcher matcher = LEADING_DIGITS.matcher(path.getFileName().toString());
 
-            if (words.size() - 2 != tagged_lemmas.size()) {
-                throw new IOException("Words do not match lemmas, row " + row);
-            }
+        if (!matcher.find()) {
+            return Long.MAX_VALUE;
+        }
 
-            out.print(words.get(0));
-            out.print(' ');
-            out.print(words.get(1));
-            out.print(' ');
-
-            for (int i = 2; i < words.size(); i++) {
-                out.print(words.get(i));
-                out.print("{*" + tagged_lemmas.get(i - 2) + "*}");
-
-                if (i == words.size() - 1) {
-                    out.println();
-                    out.println();
-                } else {
-                    out.print(' ');
-                }
-            }
+        try {
+            return Long.parseLong(matcher.group(1));
+        } catch (NumberFormatException e) {
+            return Long.MAX_VALUE;
         }
     }
 }

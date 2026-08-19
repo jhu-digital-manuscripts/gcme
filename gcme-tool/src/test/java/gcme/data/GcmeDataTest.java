@@ -1,133 +1,121 @@
 package gcme.data;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
+import gcme.TestData;
 import gcme.model.DictEntry;
 import gcme.model.Line;
 import gcme.model.TextGroup;
 
-public class GcmeDataTest {
-    private GcmeData data;
+/**
+ * Tests reading the real corpus. The corpus is taken from {@code $GCME_DATA} and defaults to the
+ * {@code data} directory of the repository.
+ */
+class GcmeDataTest {
+    private final GcmeData data = TestData.corpus();
 
-    @Before
-    public void setup() throws Exception {
-        String path = System.getenv("GCME_DATA");
-
-        if (path == null) {
-            path = "/home/msp/work/gcme/data";
-        }
-
-        data = new GcmeData(Paths.get(path));
+    @BeforeAll
+    static void requireCorpus() {
+        assertTrue(TestData.hasCorpus(),
+                "The corpus was not found at " + TestData.corpusPath().toAbsolutePath()
+                        + ". Set GCME_DATA to the data directory.");
     }
 
-    @Rule
-    public TemporaryFolder tmpfolder = new TemporaryFolder();
-
     @Test
-    public void testText() throws Exception {
+    @DisplayName("every leaf group has text files which parse")
+    void loadsEveryText() throws IOException {
         TextGroup root = data.loadTextStructure();
-
-        assertNotNull(root);
-
-        // root.print(0, System.out);
-
         Map<String, List<Path>> map = data.loadTextMap();
 
-        assertNotNull(map);
-
-        System.out.println("Map size: " + map.size());
+        assertFalse(map.isEmpty());
 
         check(root, map);
     }
 
-    @Test
-    public void testParseLine() throws Exception {
-        Line line = data.parseLine(
-                "107-gow 2455 Ferst{*first@adv*} forto{*forto@part*} gete{*geten@v1%inf*} it{*hit@pron*} out{*oute@adv*} of{*of@prep*} Myne,{*mine@n4*}");
-
-        assertEquals("107-gow", line.getId());
-        assertEquals(2455, line.getNumber());
-        assertEquals("Ferst forto gete it out of Myne,", line.getText());
-        assertEquals("first@adv forto@part geten@v1%inf hit@pron oute@adv of@prep mine@n4", line.getTaggedLemmaText());
-
-    }
-
     private void check(TextGroup group, Map<String, List<Path>> map) throws IOException {
-        assertNotNull(group.getName());
-        assertNotNull(group.getId());
+        assertNotNull(group.name());
+        assertNotNull(group.id());
 
-        List<Path> files = map.get(group.getId());
-
-        List<TextGroup> children = group.getChildren();
-
-        if (children == null) {
-            assertNotNull(group.toString(), files);
-            assertTrue(group.toString(), files.size() > 0);
-
-            for (Path f : files) {
-                assertTrue(Files.exists(f));
-
-                List<Line> lines = data.parseText(f);
-
-                assertNotNull("File " + f, lines);
-                assertTrue("File " + f, lines.size() > 0);
+        if (!group.isLeaf()) {
+            for (TextGroup child : group.children()) {
+                check(child, map);
             }
-        } else {
-            for (TextGroup tg : children) {
-                check(tg, map);
-            }
+
+            return;
+        }
+
+        List<Path> files = map.get(group.id());
+
+        assertNotNull(files, group::toString);
+        assertFalse(files.isEmpty(), group::toString);
+
+        for (Path file : files) {
+            assertTrue(Files.exists(file), file::toString);
+
+            List<Line> lines = data.parseText(file);
+
+            assertFalse(lines.isEmpty(), file::toString);
         }
     }
 
     @Test
-    public void testGenerateElasticsearchBulkLineIngest() throws IOException {
-        data.generateElasticsearchBulkLineIngest(tmpfolder.newFile().toPath());
+    @DisplayName("the hierarchy starts with the two authors")
+    void loadsAuthors() throws IOException {
+        TextGroup root = data.loadTextStructure();
+
+        assertEquals(List.of("Ch", "Gow"), root.children().stream().map(TextGroup::id).toList());
     }
 
     @Test
-    public void testGenerateElasticsearchBulkDictIngest() throws IOException {
-        data.generateElasticsearchBulkDictIngest(tmpfolder.newFile().toPath(),
-                tmpfolder.newFile().toPath(), tmpfolder.newFile().toPath());
+    @DisplayName("group paths hold between two and four identifiers")
+    void loadsGroupPaths() throws IOException {
+        checkPaths(data.loadTextStructure());
+    }
+
+    private void checkPaths(TextGroup group) {
+        if (group.isLeaf()) {
+            int size = group.path().size();
+
+            assertTrue(size >= 2 && size <= 4, () -> group + " has path " + group.path());
+        } else {
+            group.children().forEach(this::checkPaths);
+        }
     }
 
     @Test
-    public void testGenerateTagTable() throws IOException {
-        data.generateTagTable(tmpfolder.newFile().toPath());
+    @DisplayName("dictionary definitions are found")
+    void loadsDictionaryDefinitions() throws IOException {
+        Map<String, String> definitions = data.loadDictionaryDefinitions();
+
+        assertFalse(definitions.isEmpty());
+        assertTrue(definitions.containsKey("mouen@v3"), "mouen@v3 has a definition");
     }
 
     @Test
-    public void testGenerateGroupTitleMap() throws IOException {
-        data.generateGroupTitleMap(tmpfolder.newFile().toPath());
+    @DisplayName("the dictionary covers the tagged lemmas of the corpus")
+    void loadsDictionary() throws IOException {
+        Map<String, DictEntry> dictionary = data.loadDictionary();
+
+        assertFalse(dictionary.isEmpty());
+
+        DictEntry entry = dictionary.get("mouen@v3%pr_1");
+
+        assertNotNull(entry, "mouen@v3%pr_1 occurs in the corpus");
+        assertEquals("mouen", entry.lemma());
+        assertTrue(entry.words().contains("may"), entry::toString);
+        assertNotNull(entry.definition(), entry::toString);
     }
-
-    @Test
-    public void testLoadDictionaryDefinitions() throws IOException {
-        Map<String, String> defs = data.loadDictionaryDefinitions();
-
-        assertTrue(defs.size() > 0);
-    }
-
-    @Test
-    public void testGenerateDictionary() throws IOException {
-        Map<String, DictEntry> dict = data.loadDictionary();
-
-        assertTrue(dict.size() > 0);
-    }
-
-
-
 }

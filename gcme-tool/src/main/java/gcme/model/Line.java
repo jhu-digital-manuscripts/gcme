@@ -1,104 +1,53 @@
 package gcme.model;
 
+import java.util.Objects;
+import java.util.regex.Pattern;
+
 /**
- * Represents a line of tagged text.
+ * A line of tagged text.
  *
- * The specified line number is usually just an integer, but occasionally is something like 1081B or Rub.
+ * <p>Every word of {@link #text()} has a corresponding tagged lemma in {@link #taggedLemmaText()} at
+ * the same position. Consider the word {@code may{*mouen@v3%pr_1*}} which has the tagged lemma
+ * {@code mouen@v3%pr_1}, the lemma {@code mouen}, and the tag {@code v3%pr_1}.
+ *
+ * @param id identifier of the text containing the line
+ * @param number line number extracted from {@link #rawNumber()}, or {@code -1} if it contains no
+ *        digits
+ * @param rawNumber number as it appears in the data, usually an integer but occasionally something
+ *        like {@code 1081B} or {@code Rub}
+ * @param text the original words of the line separated by single spaces
+ * @param lemmaText the lemmas of the words of the line separated by single spaces
+ * @param taggedLemmaText the tagged lemmas of the words of the line separated by single spaces
  */
-public class Line {
-    private String id;
-    private int number;
-    private String raw_number;
-    private String text;
-    private String lemma_text;
-    private String tag_lemma_text;
+public record Line(String id, int number, String rawNumber, String text, String lemmaText,
+        String taggedLemmaText) {
 
-    public Line(String id, int number, String raw_number, String text, String tag_lemma_text) {
-        this.id = id;
-        this.number = number;
-        this.raw_number = raw_number;
-        this.text = text;
-        this.lemma_text = to_lemma_text(tag_lemma_text);
-        this.tag_lemma_text = tag_lemma_text;
+    /** Matches the tag portion of a tagged lemma so it can be stripped. */
+    private static final Pattern TAG = Pattern.compile("@\\S*");
+
+    public Line {
+        Objects.requireNonNull(id, "id");
+        Objects.requireNonNull(rawNumber, "rawNumber");
+        Objects.requireNonNull(text, "text");
+        Objects.requireNonNull(lemmaText, "lemmaText");
+        Objects.requireNonNull(taggedLemmaText, "taggedLemmaText");
     }
 
-    private String to_lemma_text(String s) {
-        return s.replaceAll("@\\S*", "");
-    }
+    /**
+     * Creates a line, deriving {@link #lemmaText()} by stripping the tags from the tagged lemmas.
+     *
+     * @param id identifier of the text containing the line
+     * @param number line number
+     * @param rawNumber number as it appears in the data
+     * @param text the original words of the line separated by single spaces
+     * @param taggedLemmaText the tagged lemmas of the words of the line separated by single spaces
+     * @return the line
+     */
+    public static Line of(String id, int number, String rawNumber, String text,
+            String taggedLemmaText) {
+        Objects.requireNonNull(taggedLemmaText, "taggedLemmaText");
 
-    public String getId() {
-        return id;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public String getRawNumber() {
-        return raw_number;
-    }
-
-
-    public String getText() {
-        return text;
-    }
-
-    public String getLemmaText() {
-        return lemma_text;
-    }
-
-    public String getTaggedLemmaText() {
-        return tag_lemma_text;
-    }
-
-    @Override
-    public String toString() {
-        return id + " " + number + ": " + text + " {" + tag_lemma_text + "}";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + number;
-        result = prime * result + ((raw_number == null) ? 0 : raw_number.hashCode());
-        result = prime * result + ((tag_lemma_text == null) ? 0 : tag_lemma_text.hashCode());
-        result = prime * result + ((text == null) ? 0 : text.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Line other = (Line) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        if (number != other.number)
-            return false;
-        if (raw_number == null) {
-            if (other.raw_number != null)
-                return false;
-        } else if (!raw_number.equals(other.raw_number))
-            return false;
-        if (tag_lemma_text == null) {
-            if (other.tag_lemma_text != null)
-                return false;
-        } else if (!tag_lemma_text.equals(other.tag_lemma_text))
-            return false;
-        if (text == null) {
-            if (other.text != null)
-                return false;
-        } else if (!text.equals(other.text))
-            return false;
-        return true;
+        return new Line(id, number, rawNumber, text, TAG.matcher(taggedLemmaText).replaceAll(""),
+                taggedLemmaText);
     }
 }
