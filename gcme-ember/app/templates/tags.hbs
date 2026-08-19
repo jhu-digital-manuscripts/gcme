@@ -1,21 +1,22 @@
-<div type="container">
+<div class="container">
   <h2>Tagging scheme</h2>
 
-  <p>
-    Below is a list of all the tags used.
-  </p>
-
-  {{models-table
-    data=model
-    columns=columns
-    showComponentFooter=false
-    showColumnsDropdown=false
-    useFilteringByColumns=false
-    showGlobalFilter=false
-    themeInstance=theme
-    useDataGrouping=true
-    dataGroupProperties=groupProperties
-    currentGroupingPropertyName="group"
-    pageSize=200
-  }}
+  {{#if this.loadError}}
+    <div class="alert alert-warning" role="alert">{{this.loadError}}</div>
+  {{else}}
+    <p>Below is a list of all the tags used.</p>
+    <ModelsTable
+      @themeInstance={{this.themeInstance}}
+      @data={{this.model.rows}}
+      @columns={{this.columns}}
+      @showComponentFooter={{false}}
+      @showColumnsDropdown={{false}}
+      @useFilteringByColumns={{false}}
+      @showGlobalFilter={{false}}
+      @useDataGrouping={{true}}
+      @dataGroupProperties={{this.groupProperties}}
+      @currentGroupingPropertyName="group"
+      @pageSize={{200}}
+    />
+  {{/if}}
 </div>

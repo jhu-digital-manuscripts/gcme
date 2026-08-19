@@ -40,3 +40,70 @@
 body {
     font-family: 'Helvetica', 'Arial', sans-serif;
 }
+
+/*
+ * Icons for the models-table theme (see app/services/gcme-table-theme.js).
+ * Drawn with CSS so the app needs no icon font; they inherit `currentColor`
+ * and scale with the surrounding font size.
+ */
+.gcme-emt-icon {
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.4em;
+    vertical-align: -0.15em;
+    font-style: normal;
+}
+
+/* Column visibility checkboxes in the Columns dropdown. */
+.gcme-emt-icon-checked,
+.gcme-emt-icon-unchecked {
+    border: 1px solid currentColor;
+    border-radius: 0.15em;
+}
+
+.gcme-emt-icon-checked::after {
+    content: '';
+    position: absolute;
+    box-sizing: border-box;
+    /* Centre the tick's bounding box, which is the whole pseudo-element box:
+       the left border spans its full height and the bottom border its full
+       width, so rotating about the centre keeps the ink centred. */
+    left: 50%;
+    top: 50%;
+    width: 0.52em;
+    height: 0.3em;
+    border-left: 0.16em solid currentColor;
+    border-bottom: 0.16em solid currentColor;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/*
+ * The dropdown caret is drawn by Bootstrap itself: ember-bootstrap's
+ * `Dropdown.button` always carries `.dropdown-toggle`, and Bootstrap 5 gives
+ * that class a `::after` caret. The theme insists on rendering its own caret
+ * element as well, so hide it to avoid showing two.
+ */
+.gcme-emt-icon-caret {
+    display: none;
+}
+
+/* Triangles: sort direction indicators. */
+.gcme-emt-icon-sort-asc,
+.gcme-emt-icon-sort-desc {
+    width: 0;
+    height: 0;
+    border-left: 0.3em solid transparent;
+    border-right: 0.3em solid transparent;
+}
+
+.gcme-emt-icon-sort-asc {
+    border-bottom: 0.3em solid currentColor;
+}
+
+.gcme-emt-icon-sort-desc {
+    border-top: 0.3em solid currentColor;
+}
+

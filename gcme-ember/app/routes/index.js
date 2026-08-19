@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
+import { service } from '@ember/service';
 
-export default Route.extend({
+export default class IndexRoute extends Route {
+  @service router;
+
   beforeModel() {
-    this.replaceWith('search');
+    this.router.transitionTo('search');
   }
-});
+}
