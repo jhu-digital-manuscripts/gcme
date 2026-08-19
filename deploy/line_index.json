@@ -15,17 +15,15 @@
     }
   },
   "mappings": {
-    "_doc": {
-      "dynamic": false,      
-      "properties": {
-        "id": {"type": "keyword"},
-        "number": {"type": "integer"},
-        "raw_number": {"type": "keyword"},        
-        "text": {"type": "text", "analyzer": "simple"},
-        "lemma_text": {"type": "text", "analyzer": "whitespace_ignore_case"},
-        "lemma_tag_text": {"type": "text", "analyzer": "whitespace_ignore_case"},          
-        "group": {"type": "keyword"}
-      }
+    "dynamic": false,
+    "properties": {
+      "id": {"type": "keyword"},
+      "number": {"type": "integer"},
+      "raw_number": {"type": "keyword"},
+      "text": {"type": "text", "analyzer": "simple"},
+      "lemma_text": {"type": "text", "analyzer": "whitespace_ignore_case"},
+      "lemma_tag_text": {"type": "text", "analyzer": "whitespace_ignore_case"},
+      "group": {"type": "keyword"}
     }
   }
 }

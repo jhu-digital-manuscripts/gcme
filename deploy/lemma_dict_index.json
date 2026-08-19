@@ -5,14 +5,12 @@
     }
   },
   "mappings": {
-    "_doc": {
-      "dynamic": false,      
-      "properties": {
-        "word": {"type": "keyword"},
-        "lemma": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "keyword"}}},
-        "lemma_tag": {"type": "keyword"},
-        "definition": {"type": "text"}
-      }
+    "dynamic": false,
+    "properties": {
+      "word": {"type": "keyword"},
+      "lemma": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "keyword"}}},
+      "lemma_tag": {"type": "keyword"},
+      "definition": {"type": "text"}
     }
   }
 }
