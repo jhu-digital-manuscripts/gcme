@@ -1,39 +1,45 @@
 'use strict';
 
-module.exports = function(environment) {
-  let ENV = {
+module.exports = function (environment) {
+  // Default to /gcme/ for GitHub Pages deployment; override with GCME_ROOT_URL.
+  // Must start and end with '/'.
+  let rootURL = process.env.GCME_ROOT_URL || '/gcme/';
+  if (!rootURL.startsWith('/')) {
+    rootURL = '/' + rootURL;
+  }
+  if (!rootURL.endsWith('/')) {
+    rootURL = rootURL + '/';
+  }
+
+  const ENV = {
     modulePrefix: 'gcme-ember',
     environment,
-    rootURL: '/',
-    locationType: 'auto',
+    rootURL,
+    locationType: 'history',
     EmberENV: {
+      EXTEND_PROTOTYPES: {
+        // Prevent Ember Data from overriding Date.parse.
+        Date: false,
+      },
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
       },
-      EXTEND_PROTOTYPES: {
-        // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
     },
 
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    }
+    },
   };
 
+  // searchBackend selects how searches are answered: 'localsearch' answers them
+  // in the browser from the static JSON data files, 'opensearch' queries the
+  // endpoint configured above.
   ENV.gcme = {
-    elasticsearch: 'http://localhost:9200/_search'
+    opensearch: process.env.GCME_OPENSEARCH || 'http://localhost:9200/_search',
+    searchBackend: process.env.GCME_SEARCH_BACKEND || 'localsearch',
   };
-
-  if (environment === 'development') {
-    // ENV.APP.LOG_RESOLVER = true;
-    // ENV.APP.LOG_ACTIVE_GENERATION = true;
-    // ENV.APP.LOG_TRANSITIONS = true;
-    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    // ENV.APP.LOG_VIEW_LOOKUPS = true;
-  }
 
   if (environment === 'test') {
     // Testem prefers this...
@@ -45,10 +51,6 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
-  }
-
-  if (environment === 'production') {
-    ENV.gcme.elasticsearch = '/es';
   }
 
   return ENV;
