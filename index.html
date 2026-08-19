@@ -7,7 +7,7 @@
     <meta name="description" content="The Works of Geoffrey Chaucer and the English Works of John Gower">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="gcme-ember/config/environment" content="%7B%22modulePrefix%22%3A%22gcme-ember%22%2C%22environment%22%3A%22production%22%2C%22rootURL%22%3A%22%2Fgcme%2F%22%2C%22locationType%22%3A%22history%22%2C%22EmberENV%22%3A%7B%22EXTEND_PROTOTYPES%22%3A%7B%22Date%22%3Afalse%7D%2C%22FEATURES%22%3A%7B%7D%2C%22_APPLICATION_TEMPLATE_WRAPPER%22%3Afalse%2C%22_DEFAULT_ASYNC_OBSERVERS%22%3Atrue%2C%22_JQUERY_INTEGRATION%22%3Afalse%2C%22_NO_IMPLICIT_ROUTE_MODEL%22%3Atrue%2C%22_TEMPLATE_ONLY_GLIMMER_COMPONENTS%22%3Atrue%2C%22_USE_EMBER_MODULES%22%3Atrue%7D%2C%22APP%22%3A%7B%22name%22%3A%22gcme-ember%22%2C%22version%22%3A%220.0.1%2B1d87f994%22%7D%2C%22gcme%22%3A%7B%22opensearch%22%3A%22http%3A%2F%2Flocalhost%3A9200%2F_search%22%2C%22searchBackend%22%3A%22localsearch%22%7D%2C%22ember-a11y-testing%22%3A%7B%22componentOptions%22%3A%7B%22axeOptions%22%3A%7B%22rules%22%3A%7B%7D%7D%7D%7D%7D" />
+    <meta name="gcme-ember/config/environment" content="%7B%22modulePrefix%22%3A%22gcme-ember%22%2C%22environment%22%3A%22production%22%2C%22rootURL%22%3A%22%2Fgcme%2F%22%2C%22locationType%22%3A%22history%22%2C%22EmberENV%22%3A%7B%22EXTEND_PROTOTYPES%22%3A%7B%22Date%22%3Afalse%7D%2C%22FEATURES%22%3A%7B%7D%2C%22_APPLICATION_TEMPLATE_WRAPPER%22%3Afalse%2C%22_DEFAULT_ASYNC_OBSERVERS%22%3Atrue%2C%22_JQUERY_INTEGRATION%22%3Afalse%2C%22_NO_IMPLICIT_ROUTE_MODEL%22%3Atrue%2C%22_TEMPLATE_ONLY_GLIMMER_COMPONENTS%22%3Atrue%2C%22_USE_EMBER_MODULES%22%3Atrue%7D%2C%22APP%22%3A%7B%22name%22%3A%22gcme-ember%22%2C%22version%22%3A%220.0.1%2B9d0f13db%22%7D%2C%22gcme%22%3A%7B%22opensearch%22%3A%22http%3A%2F%2Flocalhost%3A9200%2F_search%22%2C%22searchBackend%22%3A%22localsearch%22%7D%2C%22ember-a11y-testing%22%3A%7B%22componentOptions%22%3A%7B%22axeOptions%22%3A%7B%22rules%22%3A%7B%7D%7D%7D%7D%7D" />
 
     <link rel="icon" href="/gcme/favicon.ico" type="image/png">
     <link integrity="" rel="stylesheet" href="/gcme/assets/vendor.css">
@@ -18,10 +18,29 @@
   <body>
     
 
+    <script>
+      // GitHub Pages SPA redirect restoration.
+      // If we arrived here via the 404.html redirect, restore the original URL
+      // in the address bar before Ember boots. This makes the router see the
+      // correct path and the URL stays clean for the user.
+      (function() {
+        var redirectPath = sessionStorage.getItem('spa-redirect-path');
+        if (redirectPath) {
+          sessionStorage.removeItem('spa-redirect-path');
+          // Only restore if we're at the app root (the redirect destination).
+          // This prevents issues if someone manually navigates to index.html.
+          if (window.location.pathname === '/gcme/' || 
+              window.location.pathname === '/gcme/index.html') {
+            window.history.replaceState(null, '', redirectPath);
+          }
+        }
+      })();
+    </script>
+
     <script src="/gcme/assets/vendor.js"></script>
 <script src="/gcme/assets/chunk.790.f9c77b493666003ed1ab.js"></script>
 <script src="/gcme/assets/chunk.329.cf117bae7d46562723c0.js"></script>
-<script src="/gcme/assets/chunk.524.16a4c2850acfa3a81cc1.js"></script>
+<script src="/gcme/assets/chunk.524.5c00628e163c3bd7cd76.js"></script>
     <script src="/gcme/assets/gcme-ember.js"></script>
 
     
