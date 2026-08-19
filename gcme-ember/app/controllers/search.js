@@ -14,7 +14,7 @@ const MAX_PAGE_SIZE = 100;
 export default class SearchController extends Controller {
   @service opensearch;
   @service localsearch;
-  @service('emt-themes/ember-bootstrap-v5') themeInstance;
+  @service('gcme-table-theme') themeInstance;
 
   get searchService() {
     const backend = ENV.gcme.searchBackend || 'localsearch';

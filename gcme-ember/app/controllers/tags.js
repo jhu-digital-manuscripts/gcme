@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 
 export default class TagsController extends Controller {
-  @service('emt-themes/ember-bootstrap-v5') themeInstance;
+  @service('gcme-table-theme') themeInstance;
 
   @tracked loadError = null;
 
