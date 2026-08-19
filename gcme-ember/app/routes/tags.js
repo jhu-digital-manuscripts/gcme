@@ -1,10 +1,11 @@
 import Route from '@ember/routing/route';
 import fetchJson from 'gcme-ember/utils/fetch-json';
+import config from 'gcme-ember/config/environment';
 
 export default class TagsRoute extends Route {
   async model() {
     try {
-      const rows = await fetchJson('/tag-table.json');
+      const rows = await fetchJson(`${config.rootURL}tag-table.json`);
       return { rows, loadError: null };
     } catch (err) {
       return {

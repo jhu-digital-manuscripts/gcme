@@ -1,10 +1,20 @@
 'use strict';
 
 module.exports = function (environment) {
+  // Default to /gcme/ for GitHub Pages deployment; override with GCME_ROOT_URL.
+  // Must start and end with '/'.
+  let rootURL = process.env.GCME_ROOT_URL || '/gcme/';
+  if (!rootURL.startsWith('/')) {
+    rootURL = '/' + rootURL;
+  }
+  if (!rootURL.endsWith('/')) {
+    rootURL = rootURL + '/';
+  }
+
   const ENV = {
     modulePrefix: 'gcme-ember',
     environment,
-    rootURL: '/',
+    rootURL,
     locationType: 'history',
     EmberENV: {
       EXTEND_PROTOTYPES: {

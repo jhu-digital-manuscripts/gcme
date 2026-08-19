@@ -71,8 +71,8 @@ Notes and limits:
   fails the error surfaces in the UI and the next search retries the load.
 - Once loaded, the data and indexes are cached for the life of the page, so the
   roughly 33M download and the index build happen at most once per page load.
-- The files are fetched as `/line.json` and so on, so the app and its data must
-  be served from the root of the host, not from a subdirectory.
+- The files are fetched relative to `rootURL`, which defaults to `/gcme/` for
+  GitHub Pages deployment. Set `GCME_ROOT_URL=/` to deploy at a site root.
 - No search server, proxy, or CORS configuration is involved: after the initial
   fetches the app makes no further network requests to search.
 
@@ -90,16 +90,23 @@ chosen backend and endpoint are baked into `dist/`. Rebuild to change them.
 
 | Variable               | Default                            | Effect                                          |
 | ---------------------- | ---------------------------------- | ----------------------------------------------- |
+| `GCME_ROOT_URL`        | `/gcme/`                           | URL path prefix for all assets and data files   |
 | `GCME_SEARCH_BACKEND`  | `localsearch`                      | `localsearch` or `opensearch`                    |
 | `GCME_OPENSEARCH`      | `http://localhost:9200/_search`    | Endpoint used by the `opensearch` backend only  |
 
 Any other value of `GCME_SEARCH_BACKEND` makes the search page raise
 `Invalid search backend: '<value>'. Must be 'opensearch' or 'localsearch'.`
 
-Build with the default local backend:
+Build with the default local backend (for GitHub Pages at `/gcme/`):
 
 ```sh
 npm run build
+```
+
+Build for deployment at a site root (no path prefix):
+
+```sh
+GCME_ROOT_URL=/ npm run build
 ```
 
 Build against OpenSearch behind the production `/es` proxy:
@@ -111,7 +118,7 @@ GCME_SEARCH_BACKEND=opensearch GCME_OPENSEARCH=/es npm run build
 Serve locally against a development OpenSearch instance:
 
 ```sh
-GCME_SEARCH_BACKEND=opensearch GCME_OPENSEARCH=http://localhost:9200/_search npx ember serve
+GCME_ROOT_URL=/ GCME_SEARCH_BACKEND=opensearch GCME_OPENSEARCH=http://localhost:9200/_search npx ember serve
 ```
 
 ## Development server
@@ -174,5 +181,5 @@ proxy the path given by `GCME_OPENSEARCH` (`/es` in production) to OpenSearch.
 | `npm run build`    | Build the production bundle into `dist/`.             |
 | `npx ember serve`  | Start the development server at `http://localhost:4200`. |
 
-Both `npm run build` and `npx ember serve` honor `GCME_SEARCH_BACKEND` and
-`GCME_OPENSEARCH`; see [Configuration](#configuration).
+Both `npm run build` and `npx ember serve` honor `GCME_ROOT_URL`,
+`GCME_SEARCH_BACKEND`, and `GCME_OPENSEARCH`; see [Configuration](#configuration).

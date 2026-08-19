@@ -1,3 +1,5 @@
+import config from 'gcme-ember/config/environment';
+
 /**
  * DataLoader handles fetching and caching of the four JSON data files
  * required by the localsearch service.
@@ -118,9 +120,10 @@ export default class DataLoader {
    * @private
    */
   async _fetchFile(filename, signal) {
+    const url = `${config.rootURL}${filename}`;
     let response;
     try {
-      response = await fetch(`/${filename}`, { signal });
+      response = await fetch(url, { signal });
     } catch (error) {
       if (error.name === 'AbortError') {
         throw new Error('Data loading timed out');
