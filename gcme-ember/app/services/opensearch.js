@@ -13,13 +13,11 @@ export default class OpensearchService extends Service {
   // Issue a POST to the configured OpenSearch endpoint with the given
   // query body. Resolves with the parsed JSON response on a 2xx status;
   // rejects with an Error otherwise.
-  //
-  // Requirements: 4.1, 4.2, 4.3, 4.4, 8.4
   async executeQuery(query) {
     const url = this.search_uri;
 
     if (typeof url !== 'string' || url.length === 0) {
-      // Req 8.4: missing / empty / non-string config rejects without
+      // missing / empty / non-string config rejects without
       // issuing any network call.
       throw new Error(
         'OpenSearch endpoint configuration is missing or invalid.',
@@ -38,24 +36,22 @@ export default class OpensearchService extends Service {
         signal: controller.signal,
       });
     } catch (err) {
-      // Req 4.4: network error or abort.
+      // network error or abort.
       throw new Error(`OpenSearch request failed: ${err.message}`);
     } finally {
       clearTimeout(timer);
     }
 
     if (!response.ok) {
-      // Req 4.3: non-2xx, message includes status and statusText.
+      // non-2xx, message includes status and statusText.
       throw new Error(
         `OpenSearch request failed: ${response.status} ${response.statusText}`,
       );
     }
 
     try {
-      // Req 4.2: resolve with the parsed JSON body.
       return await response.json();
     } catch (err) {
-      // Req 4.4: response body could not be parsed as JSON.
       throw new Error(
         `OpenSearch response was not valid JSON: ${err.message}`,
       );
@@ -66,8 +62,6 @@ export default class OpensearchService extends Service {
   // return an array of matched source objects, each annotated with
   // `_match` set to the suggestion text. Resolves with `[]` when the
   // response contains no suggestions.
-  //
-  // Requirements: 4.7, 4.9
   async complete(term, prefix) {
     const query = {
       suggest: {

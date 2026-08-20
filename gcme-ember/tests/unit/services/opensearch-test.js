@@ -4,9 +4,6 @@ import ENV from 'gcme-ember/config/environment';
 import { setupStubbedFetch } from '../../helpers/stub-fetch';
 
 // Unit tests for OpenSearch service.
-//
-// Validates: Requirements 9.4, 9.5
-//   (which in turn cover Requirements 4.1, 4.2, 4.3, 4.4, 4.7, 4.9, 8.4)
 
 module('Unit | Service | opensearch', function (hooks) {
   setupTest(hooks);

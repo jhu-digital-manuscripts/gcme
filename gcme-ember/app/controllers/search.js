@@ -51,7 +51,7 @@ export default class SearchController extends Controller {
 
   // Page size with clamp + fallback. Values outside [1, 100] are clamped
   // to the nearest endpoint; null, undefined, and NaN reset to the
-  // default of 25 (Req 7.6).
+  // default of 25
   get pageSize() {
     return this._pageSize;
   }
@@ -69,7 +69,7 @@ export default class SearchController extends Controller {
     this._pageSize = Math.min(MAX_PAGE_SIZE, Math.max(MIN_PAGE_SIZE, numeric));
   }
 
-  // Native getters replace classic computed properties (Req 6.7).
+  // Native getters replace classic computed properties
   get hasResults() {
     return this.totalHits > 0;
   }
@@ -203,10 +203,10 @@ export default class SearchController extends Controller {
 
   // Issue the current query against OpenSearch and update result
   // state. On rejection, set `searchError` and intentionally preserve
-  // `result`, `pageNumber`, and the selection state (Req 7.18).
+  // `result`, `pageNumber`, and the selection state
   async runQuery() {
     if (!this.hasAnyTerms()) {
-      // Req 7.17: no fetch, leave previous result and selections intact.
+      // no fetch, leave previous result and selections intact.
       this.searchError =
         'Enter at least one word, headword, or tagged headword.';
       return;
@@ -221,7 +221,7 @@ export default class SearchController extends Controller {
       // totalHits getter normalizes hits.total (object vs number).
       this.pageCount = Math.max(1, Math.ceil(this.totalHits / this.pageSize));
     } catch (err) {
-      // Req 7.18: surface the error and preserve prior state.
+      // surface the error and preserve prior state.
       this.searchError = `Search service unavailable: ${err.message}`;
     }
   }
@@ -234,7 +234,7 @@ export default class SearchController extends Controller {
 
   @action
   async nextPage() {
-    // Req 7.11: boundary no-op; do not call the service.
+    // boundary no-op; do not call the service.
     if (this.isLastPage) {
       return;
     }
@@ -244,7 +244,7 @@ export default class SearchController extends Controller {
 
   @action
   async prevPage() {
-    // Req 7.12: boundary no-op; do not call the service.
+    // boundary no-op; do not call the service.
     if (this.isFirstPage) {
       return;
     }
@@ -254,7 +254,7 @@ export default class SearchController extends Controller {
 
   @action
   clearQuery() {
-    // Req 7.13: reset selection, result, and page; preserve user
+    // reset selection, result, and page; preserve user
     // preferences (pageSize, requireAllWords, sortLogical).
     this.words = null;
     this.lemmas = null;
