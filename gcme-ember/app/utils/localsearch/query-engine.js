@@ -294,7 +294,7 @@ function buildHighlight(line, highlightFields, queryTokensByField) {
     const sourceField = mapping.sourceField;
     const queryTokens = queryTokensByField.get(sourceField);
 
-    // If no query tokens targeted this field, omit the highlight (Req 9.4)
+    // If no query tokens targeted this field, omit the highlight
     if (!queryTokens || queryTokens.size === 0) continue;
 
     const fieldValue = line[sourceField];

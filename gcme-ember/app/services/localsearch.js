@@ -12,8 +12,6 @@ import { complete } from '../utils/localsearch/completion-engine';
  * Public API mirrors OpensearchService:
  *   - executeQuery(query) → Promise<SearchResult>
  *   - complete(term, prefix) → Promise<CompletionResult[]>
- *
- * Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 2.1, 2.3, 11.1, 12.2
  */
 export default class LocalsearchService extends Service {
   /** @type {DataLoader} */
