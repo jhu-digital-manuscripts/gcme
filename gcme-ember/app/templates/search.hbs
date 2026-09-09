@@ -9,12 +9,12 @@
   <form>
 
     <div class="mb-3">
-      <label for="words" class="form-label">Middle English word(s)</label>
+      <label id="wordsLabel" class="form-label">Middle English word(s)</label>
 
       <PowerSelect
         @multiple={{true}}
         @searchEnabled={{true}}
-        id="words"
+        @ariaLabelledBy="wordsLabel"
         aria-describedby="wordsHelp"
         @placeholder="Enter words"
         @selected={{this.words}}
@@ -36,12 +36,12 @@
     </div>
 
     <div class="mb-3">
-      <label for="lemmas" class="form-label"><em>Middle English Dictionary</em> headword(s)</label>
+      <label id="lemmasLabel" class="form-label"><em>Middle English Dictionary</em> headword(s)</label>
 
       <PowerSelect
         @multiple={{true}}
         @searchEnabled={{true}}
-        id="lemmas"
+        @ariaLabelledBy="lemmasLabel"
         aria-describedby="lemmasHelp"
         @placeholder="Enter headwords"
         @selected={{this.lemmas}}
@@ -64,12 +64,12 @@
     </div>
 
     <div class="mb-3">
-      <label for="tagged_lemmas" class="form-label">Middle English word (by part of speech)</label>
+      <label id="taggedLemmasLabel" class="form-label">Middle English word (by part of speech)</label>
 
       <PowerSelect
         @multiple={{true}}
         @searchEnabled={{true}}
-        id="tagged_lemmas"
+        @ariaLabelledBy="taggedLemmasLabel"
         aria-describedby="taggedLemmasHelp"
         @placeholder="Enter headwords with part of speech"
         @selected={{this.tagged_lemmas}}
@@ -91,12 +91,12 @@
     </div>
 
     <div class="mb-3">
-      <label for="restrict" class="form-label">Restrict to location (to author, text, or part of text)</label>
+      <label id="restrictLabel" class="form-label">Restrict to location (to author, text, or part of text)</label>
 
       <PowerSelect
         @multiple={{true}}
         @searchFieldPosition="before-options"
-        id="restrict"
+        @ariaLabelledBy="restrictLabel"
         aria-describedby="restrictHelp"
         @options={{this.model.restrictData}}
         @selected={{this.restrict}}
