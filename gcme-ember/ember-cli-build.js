@@ -4,12 +4,10 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
-    fingerprint: { enabled: true },
     'ember-bootstrap': {
       importBootstrapCSS: false,
       insertEmberWormholeElementToDom: false
     },
-    'ember-cli-terser': { enabled: true },
     autoImport: {
       // fast-check is a test-only PBT library; ember-auto-import resolves
       // it from devDependencies at build time so test bundles can `import`

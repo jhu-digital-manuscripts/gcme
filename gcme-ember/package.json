@@ -18,7 +18,8 @@
   },
   "devDependencies": {
     "@ember/optional-features": "^3.0.0",
-    "@ember/test-helpers": "^4.0.5",
+    "@ember/test-helpers": "^5.4.3",
+    "@embroider/macros": "^1.20.6",
     "@glimmer/component": "^2.0.0",
     "@glimmer/tracking": "^1.1.2",
     "bootstrap": "^5.3.8",
@@ -29,6 +30,7 @@
     "ember-cli-app-version": "^7.0.0",
     "ember-cli-babel": "^8.3.1",
     "ember-cli-dependency-checker": "^3.3.3",
+    "ember-cli-deprecation-workflow": "^4.0.1",
     "ember-cli-htmlbars": "^7.0.0",
     "ember-cli-inject-live-reload": "^2.1.0",
     "ember-cli-sri": "^2.1.1",
