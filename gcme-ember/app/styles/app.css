@@ -107,3 +107,8 @@ body {
     border-top: 0.3em solid currentColor;
 }
 
+/* Make sure placeholder text can be seen */
+input.ember-power-select-trigger-multiple-input {
+  width: 100%;
+  min-width: 280px;
+}
