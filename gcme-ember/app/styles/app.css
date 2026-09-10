@@ -112,3 +112,12 @@ input.ember-power-select-trigger-multiple-input {
   width: 100%;
   min-width: 280px;
 }
+
+/*
+ * Tags page: keep row grouping (@useDataGrouping=true) but hide the
+ * "Group by" dropdown control that ember-models-table renders in the
+ * table header.
+ */
+.gcme-tags-page .data-group-by-wrapper {
+    display: none;
+}
