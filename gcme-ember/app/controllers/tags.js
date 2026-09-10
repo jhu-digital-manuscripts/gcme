@@ -1,25 +1,20 @@
 import Controller from '@ember/controller';
-import Bootstrap4Theme from 'ember-models-table/themes/bootstrap4';
+import { tracked } from '@glimmer/tracking';
+import { service } from '@ember/service';
 
-export default Controller.extend({
-  theme: Bootstrap4Theme.create(),
+export default class TagsController extends Controller {
+  @service('gcme-table-theme') themeInstance;
 
-  init() {
-    this._super(...arguments);
+  @tracked loadError = null;
 
-    this.set('columns', [
-      {
-        title: 'Tag',
-        propertyName: 'tag',
-      },
-      {
-        title: 'Description',
-        propertyName: 'description'
-      }
-    ]);
+  get columns() {
+    return [
+      { title: 'Tag', propertyName: 'tag' },
+      { title: 'Description', propertyName: 'description' },
+    ];
+  }
 
-    this.set('groupProperties', [
-      {label: 'Type', value: 'group'}
-    ]);
-  },
-});
+  get groupProperties() {
+    return [{ label: 'Type', value: 'group' }];
+  }
+}

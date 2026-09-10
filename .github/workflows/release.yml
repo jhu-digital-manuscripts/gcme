@@ -1,0 +1,144 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release version (e.g., 1.0.0)'
+        required: true
+        type: string
+      next_version:
+        description: 'Next development version (e.g., 1.0.1-SNAPSHOT)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    name: Release gcme-tool and gcme-ember
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Set up JDK 25 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: gcme-ember/package-lock.json
+
+      - name: Set release version in pom.xml
+        working-directory: gcme-tool
+        run: mvn -B versions:set -DnewVersion=${{ inputs.release_version }} -DgenerateBackupPoms=false
+
+      - name: Set release version in package.json
+        working-directory: gcme-ember
+        run: npm version ${{ inputs.release_version }} --no-git-tag-version --allow-same-version
+
+      - name: Build gcme-tool
+        working-directory: gcme-tool
+        env:
+          GCME_DATA: ../data
+        run: mvn -B clean verify
+
+      - name: Generate data
+        working-directory: deploy
+        run: ./gen_data.sh
+
+      - name: Install gcme-ember dependencies
+        working-directory: gcme-ember
+        run: npm ci
+
+      - name: Lint gcme-ember
+        working-directory: gcme-ember
+        run: npm run lint
+
+      - name: Test gcme-ember
+        working-directory: gcme-ember
+        run: npm test
+
+      - name: Build gcme-ember (production)
+        working-directory: gcme-ember
+        run: npm run build
+
+      - name: Commit release version
+        run: |
+          git add gcme-tool/pom.xml gcme-ember/package.json gcme-ember/package-lock.json
+          git commit -m "Release version ${{ inputs.release_version }}"
+
+      - name: Create release tag
+        run: |
+          git tag -a "v${{ inputs.release_version }}" -m "Release ${{ inputs.release_version }}"
+
+      - name: Deploy to gh-pages
+        run: |
+          # Save the dist directory
+          cp -r gcme-ember/dist /tmp/gcme-dist
+
+          # Checkout gh-pages branch
+          git fetch origin gh-pages:gh-pages || git checkout --orphan gh-pages
+          git checkout gh-pages
+
+          # Clear existing content (except .git)
+          git rm -rf . || true
+
+          # Copy new dist content
+          cp -r /tmp/gcme-dist/* .
+
+          # Commit and push
+          git add .
+          git commit -m "Deploy release ${{ inputs.release_version }}" || echo "No changes to commit"
+          git push origin gh-pages
+
+          # Switch back to main
+          git checkout main
+
+      - name: Set next development version in pom.xml
+        working-directory: gcme-tool
+        run: mvn -B versions:set -DnewVersion=${{ inputs.next_version }} -DgenerateBackupPoms=false
+
+      - name: Set next development version in package.json
+        working-directory: gcme-ember
+        run: npm version ${{ inputs.next_version }} --no-git-tag-version --allow-same-version
+
+      - name: Commit next development version
+        run: |
+          git add gcme-tool/pom.xml gcme-ember/package.json gcme-ember/package-lock.json
+          git commit -m "Prepare next development version ${{ inputs.next_version }}"
+
+      - name: Push changes and tag
+        run: |
+          git push origin main
+          git push origin "v${{ inputs.release_version }}"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ inputs.release_version }}" \
+            --title "Release ${{ inputs.release_version }}" \
+            --notes "## Release ${{ inputs.release_version }}
+
+          ### Components
+          - **gcme-tool**: Java command line tool for data generation
+          - **gcme-ember**: Ember.js web UI for the Glossarial Concordance to Middle English
+
+          ### Deployment
+          The gcme-ember UI has been deployed to GitHub Pages." \
+            gcme-tool/target/gcme-tool.jar

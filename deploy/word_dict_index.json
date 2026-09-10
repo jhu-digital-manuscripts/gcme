@@ -5,13 +5,11 @@
     }
   },
   "mappings": {
-    "_doc": {
-      "dynamic": false,      
-      "properties": {
-        "word": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "simple"}}},
-        "lemma_tag": {"type": "keyword"},
-        "definition": {"type": "text"}
-      }
+    "dynamic": false,
+    "properties": {
+      "word": {"type": "keyword", "fields": {"suggest": {"type": "completion", "analyzer": "simple"}}},
+      "lemma_tag": {"type": "keyword"},
+      "definition": {"type": "text"}
     }
   }
 }

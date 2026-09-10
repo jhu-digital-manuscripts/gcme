@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+      // GitHub Pages SPA redirect trick.
+      // When GitHub Pages serves a 404 for a deep link like /gcme/search,
+      // this script redirects to index.html with the original path encoded
+      // in sessionStorage. A script in index.html restores the URL before
+      // the app boots.
+      //
+      // Based on: https://github.com/rafgraph/spa-github-pages
+
+      (function() {
+        // Store the full path (minus origin) so index.html can restore it.
+        // This includes pathname, search, and hash.
+        var path = window.location.pathname + window.location.search + window.location.hash;
+        sessionStorage.setItem('spa-redirect-path', path);
+
+        // Redirect to the root of the app. The rootURL is /gcme/ for this deployment.
+        // We need to figure out the base path to redirect to index.html properly.
+        // For /gcme/search, we want to redirect to /gcme/
+        var segments = window.location.pathname.split('/');
+        // For /gcme/search -> ['', 'gcme', 'search']
+        // We want /gcme/ which is the first two segments + trailing slash
+        // But we need to handle arbitrary depth. The safest approach:
+        // redirect to the same origin with just the first path segment (the app root).
+        
+        // Since rootURL is /gcme/, the base is always /gcme/
+        var basePath = '/gcme/';
+        
+        window.location.replace(window.location.origin + basePath);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
