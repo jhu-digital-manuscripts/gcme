@@ -3,10 +3,10 @@
  *
  * Uses binary search on sorted completion arrays to find the first entry
  * whose token starts with the given prefix, then scans forward collecting
- * up to 10 matches.
+ * up to MAX_RESULTS matches.
  */
 
-const MAX_RESULTS = 10;
+const MAX_RESULTS = 15;
 
 /**
  * Map term names to the corresponding completion index key and dictionary key/field.
