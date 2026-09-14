@@ -1,1 +1,0 @@
-{"version":3,"file":"perform.d.ts","sourceRoot":"","sources":["../../src/helpers/perform.ts"],"names":[],"mappings":";AAGA,OAAO,KAAK,EAAE,IAAI,EAAE,MAAM,UAAU,CAAC;AAmBrC,KAAK,aAAa,GAAG,CAAC,IAAI,EAAE,IAAI,CAAC,GAAG,EAAE,GAAG,EAAE,CAAC,EAAE,GAAG,IAAI,EAAE,GAAG,EAAE,CAAC,CAAC;AAE9D,wBAAgB,aAAa,CAAC,IAAI,EAAE,aAAa,EAAE,IAAI,EAAE,GAAG,gCAgB3D;;;;;;;;AAED,wBAAqC"}
