@@ -1,0 +1,284 @@
+import { lastValue as lastValue$1, createTaskDecorator, createTaskGroupDecorator } from './external/task-decorators.js';
+import { TaskFactory } from './task-factory.js';
+
+const lastValue = lastValue$1;
+
+/**
+ * A Task is a cancelable, restartable, asynchronous operation that
+ * is driven by a generator function. Tasks are automatically canceled
+ * when the object they live on is destroyed (e.g. a Component
+ * is unrendered).
+ *
+ * Turns the decorated generator function into a task.
+ *
+ * Optionally takes a hash of options that will be applied as modifiers to the
+ * task. For instance `maxConcurrency`, `on`, `group` or `keepLatest`.
+ *
+ * By default, tasks have no concurrency constraints
+ * (multiple instances of a task can be running at the same time)
+ * but much of a power of tasks lies in proper usage of Task Modifiers
+ * that you can apply to a task.
+ *
+ * You can also define an
+ * <a href="/docs/advanced/encapsulated-task">Encapsulated Task</a>
+ * by decorating an object that defines a `perform` generator
+ * method.
+ *
+ * ```js
+ * import Component from '@ember/component';
+ * import { task } from 'ember-concurrency';
+ *
+ * class MyComponent extends Component {
+ *   &#64;task
+ *   *plainTask() {}
+ *
+ *   &#64;task({ maxConcurrency: 5, keepLatest: true, cancelOn: 'click' })
+ *   *taskWithModifiers() {}
+ * }
+ * ```
+ *
+ * @function
+ * @param {object?} [options={}] Task modifier options
+ * @param {string|string[]} [options.cancelOn] Events to cancel task on. Applies only to `&#64;ember/component`
+ * @param {boolean} [options.enqueue] Sets `enqueue` modifier on task if `true`
+ * @param {boolean} [options.evented] Enables [task lifecycle events](/docs/advanced/lifecycle-events) for this Task, if `true`
+ * @param {boolean} [options.debug] Enables task debugging if `true`
+ * @param {boolean} [options.drop] Sets `drop` modifier on task if `true`
+ * @param {string} [options.group] Associates task with the group specified
+ * @param {boolean} [options.keepLatest] Sets `keepLatest` modifier on task if `true`
+ * @param {number} [options.maxConcurrency] Sets the maximum number of running task instances for the task
+ * @param {string|string[]} [options.observes] Properties to watch and cause task to be performed when they change
+ * @param {string|string[]} [options.on] Events to perform task on. Applies only to `&#64;ember/component`
+ * @param {function?} [options.onState] Callback to use for state tracking. May be set to `null` to disable state tracking.
+ * @param {boolean} [options.restartable] Sets `restartable` modifier on task if `true`
+ * @return {Task}
+ */
+const task = createTaskDecorator({}, TaskFactory);
+
+/**
+ * Turns the decorated generator function into a task and applies the
+ * `drop` modifier.
+ *
+ * Optionally takes a hash of options that will be applied as modifiers to the
+ * task. For instance `maxConcurrency`, `on`, or `group`.
+ *
+ * You can also define an
+ * <a href="/docs/advanced/encapsulated-task">Encapsulated Task</a>
+ * by decorating an object that defines a `perform` generator
+ * method.
+ *
+ * ```js
+ * import Component from '@ember/component';
+ * import { task, dropTask } from 'ember-concurrency';
+ *
+ * class MyComponent extends Component {
+ *   &#64;task
+ *   *plainTask() {}
+ *
+ *   &#64;dropTask({ cancelOn: 'click' })
+ *   *myDropTask() {}
+ * }
+ * ```
+ *
+ * @function
+ * @param {object?} [options={}] Task modifier options. See {@link task} for list.
+ * @return {Task}
+ */
+const dropTask = createTaskDecorator({
+  drop: true
+}, TaskFactory);
+
+/**
+ * Turns the decorated generator function into a task and applies the
+ * `enqueue` modifier.
+ *
+ * Optionally takes a hash of options that will be applied as modifiers to the
+ * task. For instance `maxConcurrency`, `on`, or `group`.
+ *
+ * You can also define an
+ * <a href="/docs/advanced/encapsulated-task">Encapsulated Task</a>
+ * by decorating an object that defines a `perform` generator
+ * method.
+ *
+ * ```js
+ * import Component from '@ember/component';
+ * import { task, enqueueTask } from 'ember-concurrency';
+ *
+ * class MyComponent extends Component {
+ *   &#64;task
+ *   *plainTask() {}
+ *
+ *   &#64;enqueueTask({ cancelOn: 'click' })
+ *   *myEnqueueTask() {}
+ * }
+ * ```
+ *
+ * @function
+ * @param {object?} [options={}] Task modifier options. See {@link task} for list.
+ * @return {Task}
+ */
+const enqueueTask = createTaskDecorator({
+  enqueue: true
+}, TaskFactory);
+
+/**
+ * Turns the decorated generator function into a task and applies the
+ * `keepLatest` modifier.
+ *
+ * Optionally takes a hash of options that will be applied as modifiers to the
+ * task. For instance `maxConcurrency`, `on`, or `group`.
+ *
+ * You can also define an
+ * <a href="/docs/advanced/encapsulated-task">Encapsulated Task</a>
+ * by decorating an object that defines a `perform` generator
+ * method.
+ *
+ * ```js
+ * import Component from '@ember/component';
+ * import { task, keepLatestTask } from 'ember-concurrency';
+ *
+ * class MyComponent extends Component {
+ *   &#64;task
+ *   *plainTask() {}
+ *
+ *   &#64;keepLatestTask({ cancelOn: 'click' })
+ *   *myKeepLatestTask() {}
+ * }
+ * ```
+ *
+ * @function
+ * @param {object?} [options={}] Task modifier options. See {@link task} for list.
+ * @return {Task}
+ */
+const keepLatestTask = createTaskDecorator({
+  keepLatest: true
+}, TaskFactory);
+
+/**
+ * Turns the decorated generator function into a task and applies the
+ * `restartable` modifier.
+ *
+ * Optionally takes a hash of options that will be applied as modifiers to the
+ * task. For instance `maxConcurrency`, `on`, or `group`.
+ *
+ * You can also define an
+ * <a href="/docs/advanced/encapsulated-task">Encapsulated Task</a>
+ * by decorating an object that defines a `perform` generator
+ * method.
+ *
+ * ```js
+ * import Component from '@ember/component';
+ * import { task, restartableTask } from 'ember-concurrency';
+ *
+ * class MyComponent extends Component {
+ *   &#64;task
+ *   *plainTask() {}
+ *
+ *   &#64;restartableTask({ cancelOn: 'click' })
+ *   *myRestartableTask() {}
+ * }
+ * ```
+ *
+ * @function
+ * @param {object?} [options={}] Task modifier options. See {@link task} for list.
+ * @return {Task}
+ */
+const restartableTask = createTaskDecorator({
+  restartable: true
+}, TaskFactory);
+
+/**
+ * "Task Groups" provide a means for applying
+ * task modifiers to groups of tasks. Once a {@linkcode Task} is declared
+ * as part of a group task, modifiers like `drop` or `restartable`
+ * will no longer affect the individual `Task`. Instead those
+ * modifiers can be applied to the entire group.
+ *
+ * Turns the decorated property into a task group.
+ *
+ * Optionally takes a hash of options that will be applied as modifiers to the
+ * task group. For instance `maxConcurrency` or `keepLatest`.
+ *
+ * ```js
+ * import Component from '@glimmer/component';
+ * import { task, taskGroup } from 'ember-concurrency';
+ *
+ * class MyComponent extends Component {
+ *   &#64;taskGroup({ maxConcurrency: 5 }) chores;
+ *
+ *   &#64;task({ group: 'chores' })
+ *   *mowLawn() {}
+ *
+ *   &#64;task({ group: 'chores' })
+ *   *doDishes() {}
+ * }
+ * ```
+ *
+ * @function
+ * @param {object?} [options={}] Task group modifier options. See {@link task} for list.
+ * @return {TaskGroup}
+ */
+const taskGroup = createTaskGroupDecorator({}, TaskFactory);
+
+/**
+ * Turns the decorated property into a task group and applies the
+ * `drop` modifier.
+ *
+ * Optionally takes a hash of further options that will be applied as modifiers
+ * to the task group.
+ *
+ * @function
+ * @param {object?} [options={}] Task group modifier options. See {@link task} for list.
+ * @return {TaskGroup}
+ */
+const dropTaskGroup = createTaskGroupDecorator({
+  drop: true
+}, TaskFactory);
+
+/**
+ * Turns the decorated property into a task group and applies the
+ * `enqueue` modifier.
+ *
+ * Optionally takes a hash of further options that will be applied as modifiers
+ * to the task group.
+ *
+ * @function
+ * @param {object?} [options={}] Task group modifier options. See {@link task} for list.
+ * @return {TaskGroup}
+ */
+const enqueueTaskGroup = createTaskGroupDecorator({
+  enqueue: true
+}, TaskFactory);
+
+/**
+ * Turns the decorated property into a task group and applies the
+ * `keepLatest` modifier.
+ *
+ * Optionally takes a hash of further options that will be applied as modifiers
+ * to the task group.
+ *
+ * @function
+ * @param {object?} [options={}] Task group modifier options. See {@link task} for list.
+ * @return {TaskGroup}
+ */
+const keepLatestTaskGroup = createTaskGroupDecorator({
+  keepLatest: true
+}, TaskFactory);
+
+/**
+ * Turns the decorated property into a task group and applies the
+ * `restartable` modifier.
+ *
+ * Optionally takes a hash of further options that will be applied as modifiers
+ * to the task group.
+ *
+ * @function
+ * @param {object?} [options={}] Task group modifier options. See {@link task} for list.
+ * @return {TaskGroup}
+ */
+const restartableTaskGroup = createTaskGroupDecorator({
+  restartable: true
+}, TaskFactory);
+
+export { dropTask, dropTaskGroup, enqueueTask, enqueueTaskGroup, keepLatestTask, keepLatestTaskGroup, lastValue, restartableTask, restartableTaskGroup, task, taskGroup };
+//# sourceMappingURL=task-decorators.js.map

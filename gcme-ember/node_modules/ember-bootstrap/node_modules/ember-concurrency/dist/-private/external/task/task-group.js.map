@@ -1,0 +1,1 @@
+{"version":3,"file":"task-group.js","sources":["../../../../src/-private/external/task/task-group.js"],"sourcesContent":["import { Taskable } from './taskable';\n\nexport class TaskGroup extends Taskable {}\n"],"names":["TaskGroup","Taskable"],"mappings":";;kBAEO,MAAMA,SAAS,SAASC,QAAQ,CAAC;;;;"}
