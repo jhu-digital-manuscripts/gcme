@@ -1,5 +1,0 @@
-##Part of Speech pos
-abbrev abbr
-adj#interj adj as interjection
-##Inflection infl
-%pl plural
