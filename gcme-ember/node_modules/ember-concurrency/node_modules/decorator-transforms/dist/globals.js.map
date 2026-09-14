@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/globals.ts"],"sourcesContent":["import * as runtime from \"./runtime.ts\";\nimport { globalId } from \"./global-id.ts\";\n(globalThis as any)[globalId] = runtime;\n"],"mappings":";;;;;;;;;AAEC,WAAmB,QAAQ,IAAI;","names":[]}
