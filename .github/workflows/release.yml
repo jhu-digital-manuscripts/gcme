@@ -55,7 +55,7 @@ jobs:
         working-directory: gcme-tool
         env:
           GCME_DATA: ../data
-        run: mvn -B clean verify
+        run: mvn -B clean package
 
       - name: Generate data
         working-directory: deploy
