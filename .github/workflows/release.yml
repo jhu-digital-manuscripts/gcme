@@ -86,29 +86,6 @@ jobs:
         run: |
           git tag -a "v${{ inputs.release_version }}" -m "Release ${{ inputs.release_version }}"
 
-      - name: Deploy to gh-pages
-        run: |
-          # Save the dist directory
-          cp -r gcme-ember/dist /tmp/gcme-dist
-
-          # Checkout gh-pages branch
-          git fetch origin gh-pages:gh-pages || git checkout --orphan gh-pages
-          git checkout gh-pages
-
-          # Clear existing content (except .git)
-          git rm -rf . || true
-
-          # Copy new dist content
-          cp -r /tmp/gcme-dist/* .
-
-          # Commit and push
-          git add .
-          git commit -m "Deploy release ${{ inputs.release_version }}" || echo "No changes to commit"
-          git push origin gh-pages
-
-          # Switch back to main
-          git checkout main
-
       - name: Set next development version in pom.xml
         working-directory: gcme-tool
         run: mvn -B versions:set -DnewVersion=${{ inputs.next_version }} -DgenerateBackupPoms=false
@@ -142,3 +119,23 @@ jobs:
           ### Deployment
           The gcme-ember UI has been deployed to GitHub Pages." \
             gcme-tool/target/gcme-tool.jar
+
+      - name: Deploy to gh-pages
+        run: |
+          # Save the dist directory
+          cp -r gcme-ember/dist /tmp/gcme-dist
+
+          # Checkout gh-pages branch
+          git fetch origin gh-pages:gh-pages || git checkout --orphan gh-pages
+          git checkout gh-pages
+
+          # Clear existing content (except .git)
+          git rm -rf . || true
+
+          # Copy new dist content
+          cp -r /tmp/gcme-dist/* .
+
+          # Commit and push
+          git add .
+          git commit -m "Deploy release ${{ inputs.release_version }}" || echo "No changes to commit"
+          git push origin gh-pages
