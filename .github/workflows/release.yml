@@ -110,14 +110,7 @@ jobs:
         run: |
           gh release create "v${{ inputs.release_version }}" \
             --title "Release ${{ inputs.release_version }}" \
-            --notes "## Release ${{ inputs.release_version }}
-
-          ### Components
-          - **gcme-tool**: Java command line tool for data generation
-          - **gcme-ember**: Ember.js web UI for the Glossarial Concordance to Middle English
-
-          ### Deployment
-          The gcme-ember UI has been deployed to GitHub Pages." \
+            --generate-notes \
             gcme-tool/target/gcme-tool.jar
 
       - name: Deploy to gh-pages
