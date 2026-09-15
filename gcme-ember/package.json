@@ -1,6 +1,6 @@
 {
   "name": "gcme-ember",
-  "version": "1.0.2-SNAPSHOT",
+  "version": "1.0.2",
   "private": true,
   "description": "Glossarial Concordance to Middle English",
   "license": "MIT",
