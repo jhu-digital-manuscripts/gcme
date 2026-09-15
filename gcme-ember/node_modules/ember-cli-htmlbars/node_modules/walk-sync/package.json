@@ -1,0 +1,46 @@
+{
+  "name": "walk-sync",
+  "description": "Get an array of recursive directory contents",
+  "version": "4.0.2",
+  "author": "Jo Liss <joliss42@gmail.com>",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 20.*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joliss/node-walk-sync"
+  },
+  "files": [
+    "dist/"
+  ],
+  "dependencies": {
+    "ensure-posix-path": "^1.1.1",
+    "matcher-collection": "^2.0.1",
+    "minimatch": "^10.0.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/minimatch": "^5.1.2",
+    "@types/node": "^24.3.0",
+    "glob": "^11.0.3",
+    "jest": "^30.1.3",
+    "memfs": "^4.38.2",
+    "rimraf": "^6.0.1",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.9.2"
+  },
+  "scripts": {
+    "prepare": "yarn run build",
+    "prepack": "yarn run build",
+    "build": "tsc -p .",
+    "clean": "rimraf dist",
+    "test": "jest ."
+  },
+  "volta": {
+    "node": "24.7.0",
+    "yarn": "1.22.22"
+  }
+}

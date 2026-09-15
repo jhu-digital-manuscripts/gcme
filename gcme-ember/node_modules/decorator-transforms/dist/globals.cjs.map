@@ -1,0 +1,1 @@
+{"version":3,"file":"globals.cjs","sources":["../src/globals.ts"],"sourcesContent":["import * as runtime from './runtime.ts';\nimport { globalId } from './global-id.ts';\n(globalThis as any)[globalId] = runtime;\n"],"names":["globalId","runtime"],"mappings":";;;AAEC,WAAmBA,SAAAA,QAAQ,IAAIC,QAAA;"}

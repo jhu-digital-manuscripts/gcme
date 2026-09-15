@@ -1,0 +1,1 @@
+{"version":3,"file":"global-id-BrhFC90G.js","sources":["../src/global-id.ts"],"sourcesContent":["// short (because we refer to it all over the generated code) but reasonably\n// unique\nexport const globalId = `dt7948`;\n"],"names":[],"mappings":"AAEO,MAAM,WAAW;"}

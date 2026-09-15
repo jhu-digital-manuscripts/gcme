@@ -1,0 +1,65 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.templateCompilationModules = exports.emberVirtualPeerDeps = exports.emberVirtualPackages = void 0;
+// I'm doing this as a json import because even though that's not standard JS,
+// it's relaively easy to consume into builds for the web. As opposed to doing
+// something like fs.readFile, which is harder.
+//
+// @ts-ignore
+const mappings_json_1 = __importDefault(require("ember-rfc176-data/mappings.json"));
+// these are packages that available to import in standard ember code that don't
+// exist as real packages. If a build system encounters them in stage 3, it
+// should convert them to runtime AMD require.
+//
+// Some of them (like @embroider/macros) won't ever be seen in stage 3, because
+// earlier plugins should take care of them.
+exports.emberVirtualPackages = new Set(mappings_json_1.default.map((m) => m.module));
+// these are *real* packages that every ember addon is allowed to resolve *as if
+// they were peerDepenedencies, because the host application promises to have
+// these packages. In principle, we could force every addon to declare these as
+// real peerDeps all the way down the dependency graph, but in practice that
+// makes the migration from v1 to v2 addons more painful than necessary, because
+// a v1 addon in between the app and a v2 addon might not declare the peerDep,
+// breaking the deeper v2 addon.
+exports.emberVirtualPeerDeps = new Set(['@glimmer/component', '@glimmer/tracking']);
+// this is a real package, even though it's still listed in rfc176
+exports.emberVirtualPackages.delete('@ember/string');
+exports.emberVirtualPeerDeps.add('@ember/string');
+// these can also appear in ember code and should get compiled away by babel,
+// but we may need to tell a build tool that is inspecting pre-transpiled code
+// (like snowpack) not to worry about these packages.
+exports.emberVirtualPackages.add('@glimmer/env');
+exports.emberVirtualPackages.add('ember');
+exports.emberVirtualPackages.add('ember-testing');
+// this is a real package and even though most of its primary API is implemented
+// as transforms, it does include some runtime code.
+exports.emberVirtualPeerDeps.add('@embroider/macros');
+// while people don't manually import from ember-source, our v1-to-v2 conversion
+// of ember-source can send requests to here, and therefore any addon might need
+// to see it as a peer.
+exports.emberVirtualPeerDeps.add('ember-source');
+// rfc176-data only covers things up to the point where Ember stopped needing
+// the modules-api-polyfill. Newer APIs need to be added here.
+exports.emberVirtualPackages.add('@ember/owner');
+// Added in ember-source 4.5.0-beta.1
+exports.emberVirtualPackages.add('@ember/renderer');
+// Not provided by rfc176-data, but is needed for special librarys
+// that know the dangers of importing private APIs
+exports.emberVirtualPackages.add('@ember/-internals');
+// these are not public API but they're included in ember-source, so for
+// correctness we still want to understand that they come from there.
+exports.emberVirtualPackages.add('@glimmer/validator');
+exports.emberVirtualPackages.add('@glimmer/reference');
+exports.emberVirtualPackages.add('@glimmer/manager');
+// These are the known names that people use to import template precomiplation
+// macros from.
+exports.templateCompilationModules = Object.freeze([
+    { module: 'htmlbars-inline-precompile', exportedName: 'default' },
+    { module: 'ember-cli-htmlbars-inline-precompile', exportedName: 'default' },
+    { module: 'ember-cli-htmlbars', exportedName: 'hbs' },
+    { module: '@ember/template-precompilation', exportedName: 'precompileTemplate' },
+]);
+//# sourceMappingURL=ember-standard-modules.js.map
