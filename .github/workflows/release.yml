@@ -75,7 +75,7 @@ jobs:
 
       - name: Build gcme-ember (production)
         working-directory: gcme-ember
-        run: npm run build
+        run: GCME_ROOT_URL="/" npm run build
 
       - name: Commit release version
         run: |
