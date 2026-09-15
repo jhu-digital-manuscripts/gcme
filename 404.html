@@ -2,39 +2,29 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Redirecting...</title>
-    <script>
-      // GitHub Pages SPA redirect trick.
-      // When GitHub Pages serves a 404 for a deep link like /gcme/search,
-      // this script redirects to index.html with the original path encoded
-      // in sessionStorage. A script in index.html restores the URL before
-      // the app boots.
-      //
-      // Based on: https://github.com/rafgraph/spa-github-pages
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Glossarial Concordance to Middle English</title>
+    <meta name="description" content="The Works of Geoffrey Chaucer and the English Works of John Gower">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      (function() {
-        // Store the full path (minus origin) so index.html can restore it.
-        // This includes pathname, search, and hash.
-        var path = window.location.pathname + window.location.search + window.location.hash;
-        sessionStorage.setItem('spa-redirect-path', path);
+    <meta name="gcme-ember/config/environment" content="%7B%22modulePrefix%22%3A%22gcme-ember%22%2C%22environment%22%3A%22production%22%2C%22rootURL%22%3A%22%2F%22%2C%22locationType%22%3A%22history%22%2C%22EmberENV%22%3A%7B%22EXTEND_PROTOTYPES%22%3A%7B%22Date%22%3Afalse%7D%2C%22FEATURES%22%3A%7B%7D%2C%22_APPLICATION_TEMPLATE_WRAPPER%22%3Afalse%2C%22_DEFAULT_ASYNC_OBSERVERS%22%3Atrue%2C%22_JQUERY_INTEGRATION%22%3Afalse%2C%22_NO_IMPLICIT_ROUTE_MODEL%22%3Atrue%2C%22_TEMPLATE_ONLY_GLIMMER_COMPONENTS%22%3Atrue%2C%22_USE_EMBER_MODULES%22%3Atrue%7D%2C%22APP%22%3A%7B%22name%22%3A%22gcme-ember%22%2C%22version%22%3A%221.0.3%2B2d1d6b76%22%7D%2C%22gcme%22%3A%7B%22opensearch%22%3A%22http%3A%2F%2Flocalhost%3A9200%2F_search%22%2C%22searchBackend%22%3A%22localsearch%22%7D%2C%22ember-a11y-testing%22%3A%7B%22componentOptions%22%3A%7B%22axeOptions%22%3A%7B%22rules%22%3A%7B%7D%7D%7D%7D%7D" />
 
-        // Redirect to the root of the app. The rootURL is /gcme/ for this deployment.
-        // We need to figure out the base path to redirect to index.html properly.
-        // For /gcme/search, we want to redirect to /gcme/
-        var segments = window.location.pathname.split('/');
-        // For /gcme/search -> ['', 'gcme', 'search']
-        // We want /gcme/ which is the first two segments + trailing slash
-        // But we need to handle arbitrary depth. The safest approach:
-        // redirect to the same origin with just the first path segment (the app root).
-        
-        // Since rootURL is /gcme/, the base is always /gcme/
-        var basePath = '/gcme/';
-        
-        window.location.replace(window.location.origin + basePath);
-      })();
-    </script>
+    <link rel="icon" href="/favicon.ico" type="image/png">
+    <link integrity="" rel="stylesheet" href="/assets/vendor.css">
+    <link integrity="" rel="stylesheet" href="/assets/gcme-ember.css">
+
+    
   </head>
   <body>
-    <p>Redirecting...</p>
+    
+
+    <script src="/assets/vendor.js" integrity="sha256-g8NNmxizkJVTu0ESSmQzUg7y6GiGD0ycixG5zA5sWjs= sha512-FNJ41/u2bTqxGBz8It4wTg/utOzo85sPLgUeTjTCtquclQA2+j8Mwql9apnn05968P/CNq0b18Z1Dshy+oT5jw==" ></script>
+<script src="/assets/chunk.458.7619289a8d9d74a8cbea.js" integrity="sha256-pX+Y8IMpKi7yYXS+BoX2GrNxvqFoEUPJyARibV5wZn4= sha512-WoKgEr/0NvN4/1b8Stlh7plCoLMQ+B5bDcVVnHEK66KHpmJK5aKqqXcqIAOFndMJ6kc5O55WENRRaM48cUaA8w==" ></script>
+<script src="/assets/chunk.376.b28c6adb6c7a27b8ac54.js" integrity="sha256-OX65+WOwpNqsIsoDqKnBigLbanSwplvdWw5QR4Mmqro= sha512-kMpu2LtqJxnRootSgxMIVABLispTX3zB/BSgJQy8lF/DeSgWZ8Lv4U8lGyWq1Hge4B5ZlWLFZw9fOrFSOAnPgg==" ></script>
+<script src="/assets/chunk.524.ca07df9c5b3a236a617f.js" integrity="sha256-2CiUonzmX2GFHeavT6EVAl9f8gsqb40cghqYHGm+l0E= sha512-AXA3hm4vheQ1HcQ4djfiusI2Lj+pdYgh1CbjR4IKffMwwpuZDKx64TPwPanoYTvLeAdYGQkaPr3k4lzenDDsfw==" ></script>
+    <script src="/assets/gcme-ember.js" integrity="sha256-NvTF+pyC+NaSyryFmFQnymXoIZs1WKH15YewrPMfanE= sha512-MKBLgPkXACk60VbwWpgmyvGozeBi1BtmCoLZmIolFM/oXNniPEMNCy2+tTB1JePI9vzysXmMlWP2d3fLZMZVvg==" ></script>
+
+    
+    <div id="ember-bootstrap-wormhole"></div>
   </body>
 </html>
