@@ -122,20 +122,37 @@ jobs:
 
       - name: Deploy to gh-pages
         run: |
-          # Save the dist directory
-          cp -r gcme-ember/dist /tmp/gcme-dist
+          set -euo pipefail
 
-          # Checkout gh-pages branch
-          git fetch origin gh-pages:gh-pages || git checkout --orphan gh-pages
-          git checkout gh-pages
+          # Stage the built site. .nojekyll tells GitHub Pages to publish the
+          # files as-is instead of running Jekyll over them.
+          rm -rf /tmp/gcme-site
+          cp -r gcme-ember/dist /tmp/gcme-site
+          touch /tmp/gcme-site/.nojekyll
 
-          # Clear existing content (except .git)
-          git rm -rf . || true
+          # Use a separate worktree so untracked build output (node_modules,
+          # target, dist) in the main checkout can never be committed here.
+          rm -rf /tmp/gh-pages
+          git worktree prune
+          if git fetch origin gh-pages:refs/remotes/origin/gh-pages; then
+            git worktree add -B gh-pages /tmp/gh-pages origin/gh-pages
+          else
+            git worktree add --detach /tmp/gh-pages HEAD
+            git -C /tmp/gh-pages checkout --orphan gh-pages
+          fi
 
-          # Copy new dist content
-          cp -r /tmp/gcme-dist/* .
+          # GitHub writes CNAME into the publishing branch for a custom domain,
+          # so keep it across deploys.
+          if [ -f /tmp/gh-pages/CNAME ]; then
+            cp /tmp/gh-pages/CNAME /tmp/gcme-site/CNAME
+          fi
 
-          # Commit and push
-          git add .
-          git commit -m "Deploy release ${{ inputs.release_version }}" || echo "No changes to commit"
-          git push origin gh-pages
+          # Replace the entire published tree with the new site
+          find /tmp/gh-pages -mindepth 1 -maxdepth 1 -not -name .git -exec rm -rf {} +
+          cp -r /tmp/gcme-site/. /tmp/gh-pages/
+
+          git -C /tmp/gh-pages add -A
+          git -C /tmp/gh-pages commit -m "Deploy release ${{ inputs.release_version }}" \
+            || echo "No changes to commit"
+          git -C /tmp/gh-pages push origin gh-pages
+          git worktree remove --force /tmp/gh-pages
