@@ -11,7 +11,7 @@
   },
   "repository": "",
   "scripts": {
-    "build": "ember build --environment=production",
+    "build": "ember build --environment=production && cp dist/index.html dist/404.html",
     "lint": "eslint . --max-warnings=0",
     "start": "ember serve",
     "test": "ember test"

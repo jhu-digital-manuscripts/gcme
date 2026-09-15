@@ -184,8 +184,12 @@ and searches them locally.
 * Build gcme-ember with `npm run build`.
 * Copy `gcme-ember/dist/*` to a static web server.
 
-The data files are fetched by absolute path, so the application must be served from the root of the
-host rather than a subdirectory.
+The data files are fetched by absolute path under `rootURL`, which defaults to the root of the host.
+To serve the application from a subdirectory, build it with `GCME_ROOT_URL` set to that path, for
+example `GCME_ROOT_URL=/gcme/ npm run build`.
+
+The build also writes `dist/404.html` as a copy of `dist/index.html` so that deep links like
+`/search` work on a static host which falls back to `404.html`, as GitHub Pages does.
 
 ## Deploying with opensearch
 

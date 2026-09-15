@@ -71,8 +71,9 @@ Notes and limits:
   fails the error surfaces in the UI and the next search retries the load.
 - Once loaded, the data and indexes are cached for the life of the page, so the
   roughly 33M download and the index build happen at most once per page load.
-- The files are fetched relative to `rootURL`, which defaults to `/gcme/` for
-  GitHub Pages deployment. Set `GCME_ROOT_URL=/` to deploy at a site root.
+- The files are fetched relative to `rootURL`, which defaults to `/` for
+  deployment at a site root. Set `GCME_ROOT_URL=/gcme/` to deploy under a path
+  prefix.
 - No search server, proxy, or CORS configuration is involved: after the initial
   fetches the app makes no further network requests to search.
 
@@ -90,23 +91,23 @@ chosen backend and endpoint are baked into `dist/`. Rebuild to change them.
 
 | Variable               | Default                            | Effect                                          |
 | ---------------------- | ---------------------------------- | ----------------------------------------------- |
-| `GCME_ROOT_URL`        | `/gcme/`                           | URL path prefix for all assets and data files   |
+| `GCME_ROOT_URL`        | `/`                                | URL path prefix for all assets and data files   |
 | `GCME_SEARCH_BACKEND`  | `localsearch`                      | `localsearch` or `opensearch`                    |
 | `GCME_OPENSEARCH`      | `http://localhost:9200/_search`    | Endpoint used by the `opensearch` backend only  |
 
 Any other value of `GCME_SEARCH_BACKEND` makes the search page raise
 `Invalid search backend: '<value>'. Must be 'opensearch' or 'localsearch'.`
 
-Build with the default local backend (for GitHub Pages at `/gcme/`):
+Build with the default local backend, served from a site root:
 
 ```sh
 npm run build
 ```
 
-Build for deployment at a site root (no path prefix):
+Build for deployment under a path prefix:
 
 ```sh
-GCME_ROOT_URL=/ npm run build
+GCME_ROOT_URL=/gcme/ npm run build
 ```
 
 Build against OpenSearch behind the production `/es` proxy:
@@ -118,7 +119,7 @@ GCME_SEARCH_BACKEND=opensearch GCME_OPENSEARCH=/es npm run build
 Serve locally against a development OpenSearch instance:
 
 ```sh
-GCME_ROOT_URL=/ GCME_SEARCH_BACKEND=opensearch GCME_OPENSEARCH=http://localhost:9200/_search npx ember serve
+GCME_SEARCH_BACKEND=opensearch GCME_OPENSEARCH=http://localhost:9200/_search npx ember serve
 ```
 
 ## Development server
@@ -164,9 +165,18 @@ Produce a fingerprinted production bundle in `dist/`:
 npm run build
 ```
 
-This invokes `ember build --environment=production`. `dist/` contains the
-fingerprinted assets together with everything in `public/`, including the data
-files the `localsearch` backend needs. Copy `dist/*` to a static web server.
+This invokes `ember build --environment=production` and then copies
+`dist/index.html` to `dist/404.html`. `dist/` contains the fingerprinted assets
+together with everything in `public/`, including the data files the
+`localsearch` backend needs. Copy `dist/*` to a static web server.
+
+The router uses `history` location, so a deep link such as `/search` is a real
+URL with no file behind it. `404.html` is a copy of `index.html`, which makes a
+static host that falls back to `404.html` (GitHub Pages does) serve the
+application for those URLs; Ember then routes on the requested path. Asset and
+data URLs in both files are absolute under `rootURL`, so this works at any
+depth. A host that can rewrite unknown paths to `index.html` instead may do
+that and ignore `404.html`.
 
 If you built with `GCME_SEARCH_BACKEND=opensearch`, that web server must also
 proxy the path given by `GCME_OPENSEARCH` (`/es` in production) to OpenSearch.
@@ -178,7 +188,7 @@ proxy the path given by `GCME_OPENSEARCH` (`/es` in production) to OpenSearch.
 | `npm install`      | Install dependencies (requires Node 20).              |
 | `npm run lint`     | Run ESLint with `--max-warnings=0`.                   |
 | `npm test`         | Run the QUnit test suite via `ember test`.            |
-| `npm run build`    | Build the production bundle into `dist/`.             |
+| `npm run build`    | Build the production bundle into `dist/`, including `404.html`. |
 | `npx ember serve`  | Start the development server at `http://localhost:4200`. |
 
 Both `npm run build` and `npx ember serve` honor `GCME_ROOT_URL`,
