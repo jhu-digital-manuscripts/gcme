@@ -1,0 +1,50 @@
+{{! Words are wrapped in buttons one line at a time, so all handlers live on
+    the container and each line carries the data needed to identify it. }}
+<div
+  class="gcme-text"
+  {{on "click" this.handleClick}}
+  {{on "mouseover" this.hydrateLine}}
+  {{on "focusin" this.hydrateLine}}
+  {{on "keydown" this.handleKeydown}}
+>
+  <h3 class="gcme-text-title">{{@text.title}}</h3>
+  <p class="text-muted gcme-text-count">{{@text.lineCount}} lines</p>
+
+  {{#each @text.blocks key="key" as |block|}}
+    {{#each block.headings key="title" as |heading|}}
+      <div
+        class="gcme-text-heading gcme-text-heading-{{heading.level}}"
+        role="heading"
+        aria-level={{heading.level}}
+      >{{heading.title}}</div>
+    {{/each}}
+
+    {{#each block.chunks key="key" as |chunk|}}
+      <div class="gcme-text-chunk">
+        {{#each chunk.rows key="lineIndex" as |row|}}
+          <div
+            class="gcme-text-line"
+            data-line={{row.lineIndex}}
+            data-raw={{row.rawNumber}}
+            tabindex="0"
+          >
+            <span class="gcme-text-number" aria-hidden={{if row.label "false" "true"}}>{{row.label}}</span>
+            {{! One line on purpose: the single space after each button is the space between words. }}
+            <span class="gcme-text-words">{{#if row.hydrated}}{{#each row.words key="@index" as |word index|}}<button type="button" class="gcme-word" data-token={{index}}>{{word}}</button> {{/each}}{{else}}{{row.text}}{{/if}}</span>
+          </div>
+        {{/each}}
+      </div>
+    {{/each}}
+  {{/each}}
+
+  {{#if this.popup}}
+    <WordPopup
+      @info={{this.popup.info}}
+      @top={{this.popup.top}}
+      @left={{this.popup.left}}
+      @textTitle={{@text.title}}
+      @onClose={{this.closePopup}}
+      @onSearch={{this.searchWord}}
+    />
+  {{/if}}
+</div>

@@ -6,6 +6,8 @@ import ENV from 'gcme-ember/config/environment';
 import ResultLocationCell from '../components/result-location-cell';
 import ResultTextLineCell from '../components/result-text-line-cell';
 import ResultLemmaLineCell from '../components/result-lemma-line-cell';
+import { encodeList, decodeList, decodeInteger } from '../utils/query-params';
+import { flattenOptions } from '../utils/powersel';
 
 const DEFAULT_PAGE_SIZE = 25;
 const MIN_PAGE_SIZE = 1;
@@ -14,7 +16,49 @@ const MAX_PAGE_SIZE = 100;
 export default class SearchController extends Controller {
   @service opensearch;
   @service localsearch;
+  @service router;
   @service('gcme-table-theme') themeInstance;
+
+  // The committed search lives in the URL, so a search can be bookmarked and
+  // the browser's history walks through searches. Editing the form only
+  // changes the draft state below; pressing Search transitions to a new URL.
+  queryParams = [
+    'words',
+    'lemmas',
+    'tags',
+    'restrict',
+    'all',
+    'sort',
+    'page',
+    'size',
+  ];
+
+  // Committed search state, mirrored in the URL. The list parameters hold
+  // comma-separated values (see utils/query-params).
+  @tracked words = '';
+  @tracked lemmas = '';
+  @tracked tags = '';
+  @tracked restrict = '';
+  @tracked all = false;
+  @tracked sort = false;
+  @tracked page = 1;
+  @tracked size = DEFAULT_PAGE_SIZE;
+
+  // Draft state: what the form shows. Power-select options, not plain strings.
+  @tracked draftWords = null;
+  @tracked draftLemmas = null;
+  @tracked draftTaggedLemmas = null;
+  @tracked draftRestrict = null;
+  @tracked draftAll = false;
+  @tracked draftSort = false;
+
+  // Latest result payload from the search service (or null when never fetched
+  // or after clear).
+  @tracked result = null;
+
+  // User-readable error string surfaced in the template; null when there
+  // is no current error.
+  @tracked searchError = null;
 
   get searchService() {
     const backend = ENV.gcme.searchBackend || 'localsearch';
@@ -24,49 +68,41 @@ export default class SearchController extends Controller {
     return this[backend];
   }
 
-  // Selected power-select options (PowerSelectOption[] | null).
-  @tracked words = null;
-  @tracked lemmas = null;
-  @tracked tagged_lemmas = null;
+  // Committed selections as plain strings.
+  get wordList() {
+    return decodeList(this.words);
+  }
 
-  // Restrict-to-location selection (RestrictOption[] | null).
-  @tracked restrict = null;
+  get lemmaList() {
+    return decodeList(this.lemmas);
+  }
 
-  // User-toggleable query options.
-  @tracked requireAllWords = false;
-  @tracked sortLogical = false;
+  get taggedLemmaList() {
+    return decodeList(this.tags);
+  }
 
-  // Pagination state.
-  @tracked _pageSize = DEFAULT_PAGE_SIZE;
-  @tracked pageNumber = 1;
-  @tracked pageCount = 0;
+  get restrictList() {
+    return decodeList(this.restrict);
+  }
 
-  // Latest result payload from OpenSearch (or null when never fetched
-  // or after clear).
-  @tracked result = null;
-
-  // User-readable error string surfaced in the template; null when there
-  // is no current error.
-  @tracked searchError = null;
+  // Page number with fallback; values below 1 reset to the first page.
+  get pageNumber() {
+    return decodeInteger(this.page, 1);
+  }
 
   // Page size with clamp + fallback. Values outside [1, 100] are clamped
   // to the nearest endpoint; null, undefined, and NaN reset to the
   // default of 25
   get pageSize() {
-    return this._pageSize;
+    const numeric = Number(this.size);
+    if (this.size === null || this.size === undefined || Number.isNaN(numeric)) {
+      return DEFAULT_PAGE_SIZE;
+    }
+    return Math.min(MAX_PAGE_SIZE, Math.max(MIN_PAGE_SIZE, numeric));
   }
 
-  set pageSize(value) {
-    if (value === null || value === undefined) {
-      this._pageSize = DEFAULT_PAGE_SIZE;
-      return;
-    }
-    const numeric = Number(value);
-    if (Number.isNaN(numeric)) {
-      this._pageSize = DEFAULT_PAGE_SIZE;
-      return;
-    }
-    this._pageSize = Math.min(MAX_PAGE_SIZE, Math.max(MIN_PAGE_SIZE, numeric));
+  get pageCount() {
+    return Math.max(1, Math.ceil(this.totalHits / this.pageSize));
   }
 
   // Native getters replace classic computed properties
@@ -140,13 +176,52 @@ export default class SearchController extends Controller {
     ];
   }
 
-  // True iff at least one word, lemma, or tagged lemma is selected.
+  // True iff the committed search selects at least one word, lemma, or
+  // tagged lemma.
   hasAnyTerms() {
     const total =
-      (this.words?.length ?? 0) +
-      (this.lemmas?.length ?? 0) +
-      (this.tagged_lemmas?.length ?? 0);
+      this.wordList.length +
+      this.lemmaList.length +
+      this.taggedLemmaList.length;
     return total > 0;
+  }
+
+  // True iff the form has at least one word, lemma, or tagged lemma.
+  hasAnyDraftTerms() {
+    const total =
+      (this.draftWords?.length ?? 0) +
+      (this.draftLemmas?.length ?? 0) +
+      (this.draftTaggedLemmas?.length ?? 0);
+    return total > 0;
+  }
+
+  // Rebuild the form from the committed search. Called by the route whenever
+  // the URL changes, which covers bookmarks, reloads, and history navigation.
+  syncDraftsFromQueryParams() {
+    this.draftWords = this.wordList.map((word) => ({ word, _match: word }));
+    this.draftLemmas = this.lemmaList.map((lemma) => ({ lemma, _match: lemma }));
+    this.draftTaggedLemmas = this.taggedLemmaList.map((lemma_tag) => ({
+      lemma_tag,
+      _match: lemma_tag,
+    }));
+    const byId = this.restrictOptionsById;
+    this.draftRestrict = this.restrictList.map((id) =>
+      this.restrictOption(id, byId),
+    );
+    this.draftAll = this.all;
+    this.draftSort = this.sort;
+  }
+
+  // The restrict dropdown option for a group id. Falls back on a synthetic
+  // option labelled from the group titles, then on the bare id.
+  restrictOption(id, byId = this.restrictOptionsById) {
+    return (
+      byId.get(id) ?? { id, label: this.model?.groupTitleMap?.[id] ?? id }
+    );
+  }
+
+  get restrictOptionsById() {
+    return flattenOptions(this.model?.restrictData);
   }
 
   // Pure query builder. Mirrors the OpenSearch query shape documented
@@ -154,19 +229,17 @@ export default class SearchController extends Controller {
   buildQuery() {
     const clauses = [];
 
-    for (const o of this.words ?? []) {
-      clauses.push({ term: { text: o._match } });
+    for (const word of this.wordList) {
+      clauses.push({ term: { text: word } });
     }
-    for (const o of this.lemmas ?? []) {
-      clauses.push({ term: { lemma_text: o._match } });
+    for (const lemma of this.lemmaList) {
+      clauses.push({ term: { lemma_text: lemma } });
     }
-    for (const o of this.tagged_lemmas ?? []) {
-      clauses.push({ term: { lemma_tag_text: o._match } });
+    for (const lemmaTag of this.taggedLemmaList) {
+      clauses.push({ term: { lemma_tag_text: lemmaTag } });
     }
 
-    const inner = this.requireAllWords
-      ? { must: clauses }
-      : { should: clauses };
+    const inner = this.all ? { must: clauses } : { should: clauses };
 
     const query = {
       from: (this.pageNumber - 1) * this.pageSize,
@@ -184,13 +257,12 @@ export default class SearchController extends Controller {
       },
     };
 
-    if (this.restrict?.length) {
-      query.query.bool.filter = {
-        terms: { group: this.restrict.map((o) => o.id) },
-      };
+    const restrict = this.restrictList;
+    if (restrict.length) {
+      query.query.bool.filter = { terms: { group: restrict } };
     }
 
-    if (this.sortLogical) {
+    if (this.sort) {
       query.sort = [
         { id: 'asc' },
         { number: 'asc' },
@@ -201,68 +273,100 @@ export default class SearchController extends Controller {
     return query;
   }
 
-  // Issue the current query against OpenSearch and update result
+  // Issue the committed query against the search service and update result
   // state. On rejection, set `searchError` and intentionally preserve
-  // `result`, `pageNumber`, and the selection state
+  // `result` and the selection state.
   async runQuery() {
     if (!this.hasAnyTerms()) {
-      // no fetch, leave previous result and selections intact.
-      this.searchError =
-        'Enter at least one word, headword, or tagged headword.';
+      // Nothing is being searched for: no fetch, no error, no stale result.
+      this.result = null;
+      this.searchError = null;
       return;
     }
 
     this.searchError = null;
-    const query = this.buildQuery();
 
     try {
-      const result = await this.searchService.executeQuery(query);
-      this.result = result;
-      // totalHits getter normalizes hits.total (object vs number).
-      this.pageCount = Math.max(1, Math.ceil(this.totalHits / this.pageSize));
+      this.result = await this.searchService.executeQuery(this.buildQuery());
     } catch (err) {
       // surface the error and preserve prior state.
       this.searchError = `Search service unavailable: ${err.message}`;
     }
   }
 
-  @action
-  async submitSearch() {
-    this.pageNumber = 1;
-    await this.runQuery();
+  // The query params for a search built from the current form state.
+  draftQueryParams() {
+    return {
+      words: encodeList((this.draftWords ?? []).map(matchValue)),
+      lemmas: encodeList((this.draftLemmas ?? []).map(matchValue)),
+      tags: encodeList((this.draftTaggedLemmas ?? []).map(matchValue)),
+      restrict: encodeList((this.draftRestrict ?? []).map((o) => o.id)),
+      all: this.draftAll,
+      sort: this.draftSort,
+      page: 1,
+      size: this.pageSize,
+    };
   }
 
   @action
-  async nextPage() {
-    // boundary no-op; do not call the service.
+  submitSearch() {
+    if (!this.hasAnyDraftTerms()) {
+      this.searchError =
+        'Enter at least one word, headword, or tagged headword.';
+      return;
+    }
+    this.searchError = null;
+    this.router.transitionTo('search', {
+      queryParams: this.draftQueryParams(),
+    });
+  }
+
+  @action
+  nextPage() {
+    // boundary no-op; do not touch the URL.
     if (this.isLastPage) {
       return;
     }
-    this.pageNumber += 1;
-    await this.runQuery();
+    this.goToPage(this.pageNumber + 1);
   }
 
   @action
-  async prevPage() {
-    // boundary no-op; do not call the service.
+  prevPage() {
+    // boundary no-op; do not touch the URL.
     if (this.isFirstPage) {
       return;
     }
-    this.pageNumber -= 1;
-    await this.runQuery();
+    this.goToPage(this.pageNumber - 1);
+  }
+
+  // Paging replaces the current history entry, so Back leaves the search
+  // instead of walking back through its pages.
+  goToPage(page) {
+    this.router.replaceWith('search', { queryParams: { page } });
   }
 
   @action
   clearQuery() {
-    // reset selection, result, and page; preserve user
-    // preferences (pageSize, requireAllWords, sortLogical).
-    this.words = null;
-    this.lemmas = null;
-    this.tagged_lemmas = null;
-    this.restrict = null;
+    // Reset the form and the result, and drop the search from the URL. The
+    // "all words" and sort preferences are kept.
+    this.draftWords = null;
+    this.draftLemmas = null;
+    this.draftTaggedLemmas = null;
+    this.draftRestrict = null;
     this.result = null;
-    this.pageNumber = 1;
     this.searchError = null;
+    this.router.transitionTo('search', {
+      queryParams: {
+        words: '',
+        lemmas: '',
+        tags: '',
+        restrict: '',
+        all: this.draftAll,
+        sort: this.draftSort,
+        page: 1,
+        size: this.pageSize,
+      },
+    });
   }
 
   @action
@@ -288,4 +392,14 @@ export default class SearchController extends Controller {
       select.actions.choose(select.highlighted);
     }
   }
+}
+
+/**
+ * The string a power-select option contributes to the URL and the query.
+ *
+ * @param {Object} option
+ * @returns {string}
+ */
+function matchValue(option) {
+  return option._match ?? option.word ?? option.lemma ?? option.lemma_tag ?? '';
 }

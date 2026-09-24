@@ -17,9 +17,9 @@
         @ariaLabelledBy="wordsLabel"
         aria-describedby="wordsHelp"
         @placeholder="Enter words"
-        @selected={{this.words}}
+        @selected={{this.draftWords}}
         @selectedItemComponent={{component "selected-item-word"}}
-        @onChange={{fn (mut this.words)}}
+        @onChange={{fn (mut this.draftWords)}}
         @onKeydown={{this.selectOnSpace}}
         @search={{this.completeWord}}
         @searchField="none"
@@ -44,9 +44,9 @@
         @ariaLabelledBy="lemmasLabel"
         aria-describedby="lemmasHelp"
         @placeholder="Enter headwords"
-        @selected={{this.lemmas}}
+        @selected={{this.draftLemmas}}
         @selectedItemComponent={{component "selected-item-lemma"}}
-        @onChange={{fn (mut this.lemmas)}}
+        @onChange={{fn (mut this.draftLemmas)}}
         @onKeydown={{this.selectOnSpace}}
         @search={{this.completeLemma}}
         @searchField="none"
@@ -72,9 +72,9 @@
         @ariaLabelledBy="taggedLemmasLabel"
         aria-describedby="taggedLemmasHelp"
         @placeholder="Enter headwords with part of speech"
-        @selected={{this.tagged_lemmas}}
+        @selected={{this.draftTaggedLemmas}}
         @selectedItemComponent={{component "selected-item-tagged-lemma"}}
-        @onChange={{fn (mut this.tagged_lemmas)}}
+        @onChange={{fn (mut this.draftTaggedLemmas)}}
         @onKeydown={{this.selectOnSpace}}
         @search={{this.completeTaggedLemma}}
         @searchField="none"
@@ -99,8 +99,8 @@
         @ariaLabelledBy="restrictLabel"
         aria-describedby="restrictHelp"
         @options={{this.model.restrictData}}
-        @selected={{this.restrict}}
-        @onChange={{fn (mut this.restrict)}}
+        @selected={{this.draftRestrict}}
+        @onChange={{fn (mut this.draftRestrict)}}
         @searchField="label"
         @placeholder="Select locations"
         @allowClear={{true}}
@@ -118,7 +118,7 @@
         id="allWords"
         class="form-check-input"
         @type="checkbox"
-        @checked={{this.requireAllWords}}
+        @checked={{this.draftAll}}
       />
       <label class="form-check-label" for="allWords">
         All words and headwords must be present in a line.
@@ -130,7 +130,7 @@
         id="sort"
         class="form-check-input"
         @type="checkbox"
-        @checked={{this.sortLogical}}
+        @checked={{this.draftSort}}
       />
       <label class="form-check-label" for="sort">
         Sort results by location instead of relevance.

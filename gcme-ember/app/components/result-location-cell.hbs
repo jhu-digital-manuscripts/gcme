@@ -1,10 +1,11 @@
-{{! Show top group and most-specific group. Groups are 2..4 entries. }}
-{{get @column.groupTitleMap (get @record._source.group "0")}}
+{{! Author, then the most specific group, which links into the reading view at
+    this line. }}
+{{this.topTitle}}
 -
-{{#if (get @column.groupTitleMap (get @record._source.group "3"))}}
-  {{get @column.groupTitleMap (get @record._source.group "3")}}
-{{else if (get @column.groupTitleMap (get @record._source.group "2"))}}
-  {{get @column.groupTitleMap (get @record._source.group "2")}}
-{{else}}
-  {{get @column.groupTitleMap (get @record._source.group "1")}}
+{{#if this.leafGroup}}
+  <LinkTo
+    @route="text"
+    @query={{hash group=this.leafGroup line=this.rawNumber}}
+    title="Read this line in context"
+  >{{this.leafTitle}}</LinkTo>
 {{/if}}

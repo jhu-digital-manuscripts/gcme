@@ -132,7 +132,17 @@ chosen at build time with `GCME_SEARCH_BACKEND`:
   and searches them there. No OpenSearch instance is needed.
 * `opensearch` sends queries to the OpenSearch endpoint given by `GCME_OPENSEARCH`.
 
-See [gcme-ember](gcme-ember) for details on both backends.
+The UI has a Search tab and a Text tab. Searching records the search in the URL, so a search can be
+bookmarked and shared. The Text tab reads the texts themselves: pick anything from a single tale to
+a whole author, every fifth line is numbered, and clicking a word gives its headword, its
+definitions, how many lines contain it here and in the whole corpus, and a way to search for it.
+The Location column of a search result links into the text at the line it found. The reading view
+always reads the static files, whichever search backend was built.
+
+URLs keep their state after a `#`, as in `https://middleenglish.library.jhu.edu/#/text?group=KnT`.
+
+See [gcme-ember](gcme-ember) for details on both backends, the query parameters a search uses, and
+the reading view.
 
 # Running locally
 
@@ -188,8 +198,10 @@ The data files are fetched by absolute path under `rootURL`, which defaults to t
 To serve the application from a subdirectory, build it with `GCME_ROOT_URL` set to that path, for
 example `GCME_ROOT_URL=/gcme/ npm run build`.
 
-The build also writes `dist/404.html` as a copy of `dist/index.html` so that deep links like
-`/search` work on a static host which falls back to `404.html`, as GitHub Pages does.
+The router keeps its state after a `#`, so every URL is served by `dist/index.html` and a static
+host needs no rewriting. The build also writes `dist/404.html` as a copy of `dist/index.html`, which
+keeps links to the paths of earlier releases (`/search`) reaching the application on a host which
+falls back to `404.html`, as GitHub Pages does.
 
 ## Deploying with opensearch
 

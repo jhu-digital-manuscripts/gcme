@@ -121,3 +121,138 @@ input.ember-power-select-trigger-multiple-input {
 .gcme-tags-page .data-group-by-wrapper {
     display: none;
 }
+
+/*
+ * Text (reading) view.
+ *
+ * A selected text may be a whole author, so the lines are rendered in chunks
+ * which the browser may skip while they are off screen, and the words of a
+ * line become separate elements only when the reader reaches that line.
+ */
+.gcme-text {
+    position: relative;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 46rem;
+}
+
+.gcme-text-title {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.gcme-text-count {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-size: 0.85rem;
+}
+
+.gcme-text-heading {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem;
+}
+
+.gcme-text-heading-1 {
+    font-size: 1.3rem;
+}
+
+.gcme-text-heading-2 {
+    font-size: 1.15rem;
+}
+
+.gcme-text-heading-3 {
+    font-size: 1.02rem;
+}
+
+.gcme-text-chunk {
+    content-visibility: auto;
+    /* Roughly 50 lines at the line height above; only a scrollbar estimate. */
+    contain-intrinsic-size: auto 1450px;
+}
+
+.gcme-text-line {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    scroll-margin-top: 3rem;
+}
+
+.gcme-text-line:focus-visible {
+    outline: 2px solid #0072CE;
+    outline-offset: 2px;
+}
+
+.gcme-text-number {
+    flex: 0 0 3.5rem;
+    text-align: right;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-size: 0.8rem;
+    color: #6c757d;
+    user-select: none;
+}
+
+.gcme-text-words {
+    /* Wrapped prose keeps clear of the number column. */
+    flex: 1 1 auto;
+}
+
+.gcme-text-line-target {
+    background-color: #FFF3CD;
+}
+
+/* Words are buttons so they are clickable and reachable by keyboard, but they
+   must flow exactly like the text they replace. */
+.gcme-word {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.gcme-word:hover,
+.gcme-word:focus-visible {
+    background-color: #E7F1FA;
+    text-decoration: underline;
+}
+
+.gcme-word-popup {
+    position: absolute;
+    z-index: 1050;
+    width: min(26rem, 100%);
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-size: 0.9rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+}
+
+.gcme-word-popup-word {
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.gcme-word-popup-terms {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.gcme-word-popup-terms dt {
+    font-weight: 600;
+}
+
+.gcme-word-popup-terms dd {
+    margin-bottom: 0;
+}
+
+.gcme-word-popup-senses {
+    padding-left: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.gcme-word-popup-stats {
+    margin-bottom: 0.75rem;
+}

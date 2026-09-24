@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('about');
   this.route('contact');
   this.route('search');
+  this.route('text');
   this.route('tags');
   this.route('help');
 

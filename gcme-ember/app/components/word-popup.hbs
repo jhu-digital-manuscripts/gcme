@@ -1,0 +1,69 @@
+<div
+  class="gcme-word-popup card"
+  role="dialog"
+  aria-label="Details for {{@info.display}}"
+  tabindex="-1"
+  style={{this.style}}
+>
+  <div class="card-body">
+    <button
+      type="button"
+      class="btn-close float-end"
+      aria-label="Close"
+      {{on "click" this.close}}
+    ></button>
+
+    <h5 class="card-title gcme-word-popup-word">{{@info.display}}</h5>
+
+    {{#if @info.concorded}}
+      <dl class="gcme-word-popup-terms">
+        <dt>Headword</dt>
+        <dd>{{@info.lemma}}</dd>
+        <dt>Tagged headword</dt>
+        <dd><code>{{@info.lemmaTag}}</code></dd>
+      </dl>
+
+      {{#if @info.definition}}
+        <p class="gcme-word-popup-definition">
+          {{#if @info.definition.head}}<strong>{{@info.definition.head}}</strong> {{/if}}{{@info.definition.gloss}}
+        </p>
+      {{else}}
+        <p class="text-muted">No definition is recorded for this tagged headword.</p>
+      {{/if}}
+
+      {{#if this.hasOtherSenses}}
+        <h6>Other senses of this spelling</h6>
+        <ul class="gcme-word-popup-senses">
+          {{#each @info.otherSenses key="lemmaTag" as |sense|}}
+            <li>
+              <code>{{sense.lemmaTag}}</code>
+              {{#if sense.definition}}
+                — {{sense.definition.gloss}}
+              {{/if}}
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    {{else}}
+      <p class="text-muted">This word is not tagged in the concordance, so it has no headword or definition.</p>
+    {{/if}}
+
+    <h6>Lines containing <em>{{@info.word}}</em></h6>
+    <table class="table table-sm gcme-word-popup-stats">
+      <tbody>
+        <tr>
+          <th scope="row">In {{@textTitle}}</th>
+          <td>{{@info.counts.text}}</td>
+        </tr>
+        <tr>
+          <th scope="row">In the whole corpus</th>
+          <td>{{@info.counts.corpus}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary btn-sm" {{on "click" this.search}}>
+      Search for {{@info.word}}
+    </button>
+  </div>
+</div>
