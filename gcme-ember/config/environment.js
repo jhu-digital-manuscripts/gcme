@@ -16,7 +16,9 @@ module.exports = function (environment) {
     modulePrefix: 'gcme-ember',
     environment,
     rootURL,
-    locationType: 'history',
+    // Hash location keeps the whole application state after '#', so every URL
+    // is a real file on a static host and deep links need no server rewrite.
+    locationType: 'hash',
     EmberENV: {
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.

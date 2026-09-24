@@ -54,9 +54,12 @@ based on `ENV.gcme.searchBackend`. Everything else about the UI is identical.
 ### localsearch (default)
 
 `app/services/localsearch.js` answers searches in the browser. On the first
-search or autocompletion it fetches four data files from the site root in
-parallel, builds inverted indexes and sorted completion arrays in memory, and
-then answers every later query synchronously from those indexes.
+search or autocompletion it asks the corpus service (`app/services/corpus.js`)
+for the data: four files are fetched from the site root in parallel, inverted
+indexes and sorted completion arrays are built in memory, and every later query
+is answered synchronously from those indexes. The reading view reads the same
+service, so the download and the index build happen once however they are first
+needed.
 
 | File                  | Size | Contents                              |
 | --------------------- | ---- | ------------------------------------- |
@@ -82,7 +85,11 @@ Notes and limits:
 `app/services/opensearch.js` POSTs the query DSL to `ENV.gcme.opensearch`. This
 requires OpenSearch to be reachable from the browser with the four indices
 loaded, which is what `deploy/update_indices.sh` does. Search results come from
-the server, so the browser only downloads the small static UI files.
+the server, so searching downloads only the small static UI files.
+
+The reading view is not affected by this setting: it always reads the corpus
+from the static files, so opening the Text tab in an `opensearch` build fetches
+`line.json` and the dictionaries just as a `localsearch` build does.
 
 ### Configuration
 
@@ -121,6 +128,67 @@ Serve locally against a development OpenSearch instance:
 ```sh
 GCME_SEARCH_BACKEND=opensearch GCME_OPENSEARCH=http://localhost:9200/_search npx ember serve
 ```
+
+## URLs and bookmarking
+
+The router uses `hash` location: the whole application state lives after the
+`#`, as in `https://middleenglish.library.jhu.edu/#/text?group=KnT`.
+
+A search is recorded in the URL, so it can be bookmarked, shared, and revisited
+with the browser's history. The URL is written when **Search** is pressed, not
+while the form is edited, and paging replaces the current history entry so that
+Back leaves the search instead of walking through its pages. Opening such a URL
+runs the search and refills the form; the chips show the terms themselves,
+without their dictionary definitions.
+
+| Parameter  | Meaning                                    | Default |
+| ---------- | ------------------------------------------ | ------- |
+| `words`    | Words as spelled in the text               | empty   |
+| `lemmas`   | *MED* headwords                            | empty   |
+| `tags`     | Tagged headwords                           | empty   |
+| `restrict` | Group ids the search is restricted to      | empty   |
+| `all`      | Every term must appear in a line           | `false` |
+| `sort`     | Sort by location instead of relevance      | `false` |
+| `page`     | Page of results, from 1                    | `1`     |
+| `size`     | Results per page, clamped to 1–100         | `25`    |
+
+The first four are lists. They are joined with commas, and `%` and `,` inside a
+value are escaped as `%25` and `%2C`, because corpus values contain both — the
+word dictionary has entries such as `he,` and tagged headwords such as
+`mouen@v3%pr_1`. So `?words=god,he%2C` searches for `god` and `he,`. The codec
+is `app/utils/query-params.js`.
+
+Every search parameter is declared with `refreshModel: true`, so a change to any
+of them re-runs the route's model hook and then the search. The model hook
+returns a fresh object each time on purpose: Ember skips setting a route up
+again when the resolved model is the same object, and that setup is what runs
+the search.
+
+## Reading view
+
+The Text tab (`/text?group=<id>&line=<raw_number>`) shows the corpus as
+something to read rather than to search.
+
+- The dropdown offers every group of `text-powersel.json`, from a single tale up
+  to a whole author. A text is every line whose group path contains the selected
+  id, in the order of `line.json`, which is the order of the printed editions.
+- Selecting an intermediate group reads as a sequence of titled sections, one
+  heading per group below the selection.
+- Every fifth line is numbered with its `raw_number`, as are the first line of
+  each section and lines numbered with something other than a number, such as
+  the rubrics of the *Astrolabe*. A line that shares its number with an earlier
+  one, such as `252a` after `252`, is left unnumbered.
+- Clicking a word shows its headword, its tagged headword, the definitions
+  recorded for it, how many lines of this text and of the whole corpus contain
+  it, and a button which searches for it. The counts are of lines, not of
+  occurrences. Untagged words (`not-concorded` in the data) say so.
+- The Location column of a search result links to the line it found.
+
+Because a text may be a whole author — 54,113 lines and 429,230 words for
+Chaucer — the lines are rendered in chunks the browser may skip while they are
+off screen, and the words of a line become separate elements only when the
+pointer or the keyboard focus reaches that line. Rendering the whole of Chaucer
+takes about two seconds, a single tale under a fifth of a second.
 
 ## Development server
 
@@ -170,13 +238,12 @@ This invokes `ember build --environment=production` and then copies
 together with everything in `public/`, including the data files the
 `localsearch` backend needs. Copy `dist/*` to a static web server.
 
-The router uses `history` location, so a deep link such as `/search` is a real
-URL with no file behind it. `404.html` is a copy of `index.html`, which makes a
-static host that falls back to `404.html` (GitHub Pages does) serve the
-application for those URLs; Ember then routes on the requested path. Asset and
-data URLs in both files are absolute under `rootURL`, so this works at any
-depth. A host that can rewrite unknown paths to `index.html` instead may do
-that and ignore `404.html`.
+The router uses `hash` location, so every URL of the application is the single
+file `index.html` with the application state after the `#`, as in
+`https://host/#/text?group=KnT`. No server rewrite is needed for deep links.
+`404.html` remains a copy of `index.html` so that links to the paths the earlier
+`history` location produced (`/search`) still reach the application, which then
+starts at its default route.
 
 If you built with `GCME_SEARCH_BACKEND=opensearch`, that web server must also
 proxy the path given by `GCME_OPENSEARCH` (`/es` in production) to OpenSearch.

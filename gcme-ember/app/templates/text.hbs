@@ -1,0 +1,39 @@
+<div class="container gcme-text-page">
+
+  <h2>Read a text</h2>
+
+  <div class="mb-3">
+    <label id="textSelectLabel" class="form-label">Select a text (author, text, or part of text)</label>
+
+    <PowerSelect
+      @searchFieldPosition="before-options"
+      @ariaLabelledBy="textSelectLabel"
+      aria-describedby="textSelectHelp"
+      @options={{this.model.restrictData}}
+      @selected={{this.selectedOption}}
+      @onChange={{this.selectText}}
+      @searchField="label"
+      @placeholder="Select a text"
+      @allowClear={{true}}
+      @renderInPlace={{true}}
+      as |entry|
+    >
+      {{entry.label}}
+    </PowerSelect>
+
+    <small id="textSelectHelp" class="form-text text-muted">Click any word of the text to see its definitions, how often it occurs, and to search for it.</small>
+  </div>
+
+  {{#if this.model.loadError}}
+    <div class="alert alert-warning" role="alert">{{this.model.loadError}}</div>
+  {{/if}}
+
+  {{#if this.model.text}}
+    <TextBody @text={{this.model.text}} @groupId={{this.model.group}} />
+  {{else}}
+    {{#unless this.model.loadError}}
+      <p class="text-muted">Choose a text above to start reading.</p>
+    {{/unless}}
+  {{/if}}
+
+</div>
