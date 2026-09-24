@@ -25,8 +25,8 @@ See [Search backends](#search-backends) for the tradeoffs and configuration.
   package. The `engines.node` field in `package.json` enforces the range, and
   `npm install` will fail with an `EBADENGINE` error on any other version.
 - npm 10.x (ships with Node 20).
-- The generated data files in `public/`. They are stored in the repository, and
-  are refreshed by running `./gen_data.sh` from the `deploy` directory. The
+- The generated data files in `public/`. They are created by by running
+ n`./gen_data.sh` from the `deploy` directory. The
   `localsearch` backend cannot answer any search without them.
 - Only when building with the `opensearch` backend: an OpenSearch instance
   reachable at the URL configured under `ENV.gcme.opensearch` in
